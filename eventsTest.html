@@ -35,7 +35,7 @@
 
     <!-- Read -->
     <div class="input-group">
-        <button id="readBtn">Read Events</button>
+        <button id="readBtn">Read Event</button>
         <div id="eventList"></div>
     </div>
 
@@ -59,7 +59,7 @@
     </div>
 
     <script type="module">
-        import { createEvent, readEvents, updateEvent, deleteEvent } from './db/crud.js';
+        import { createEvent, readEvents, updateEvent, deleteEvent } from './db/eventsCRUD.js';
 
         // Create event
         document.getElementById("createBtn").addEventListener("click", async () => {
