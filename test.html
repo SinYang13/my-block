@@ -1,0 +1,132 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Firestore CRUD Test</title>
+    <script type="module" src="js/main.js"></script>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            padding: 20px;
+        }
+        .input-group {
+            margin-bottom: 10px;
+        }
+        button {
+            margin-right: 10px;
+        }
+    </style>
+</head>
+<body>
+    <h1>Firestore CRUD Test</h1>
+    
+    <!-- Create -->
+    <div class="input-group">
+        <input type="text" id="eventName" placeholder="Event Name">
+        <input type="date" id="eventDate">
+        <input type="text" id="eventDesc" placeholder="Event Description">
+        <input type="text" id="eventLink" placeholder="Event Link">
+        <button id="createBtn">Create Event</button>
+    </div>
+
+    <!-- Read -->
+    <div class="input-group">
+        <button id="readBtn">Read Events</button>
+        <div id="eventList"></div>
+    </div>
+
+    <!-- Update -->
+    <div class="input-group">
+        <input type="text" id="updateEventId" placeholder="Event ID to Update">
+        <input type="text" id="updateEventName" placeholder="New Event Name">
+        <input type="date" id="updateEventDate">
+        <input type="text" id="updateEventDesc" placeholder="New Event Description">
+        <input type="text" id="updateEventLink" placeholder="New Event Link">
+        <button id="updateBtn">Update Event</button>
+    </div>
+
+    <!-- Delete -->
+    <div class="input-group">
+        <input type="text" id="deleteEventId" placeholder="Event ID to Delete">
+        <button id="deleteBtn">Delete Event</button>
+    </div>
+
+    <script type="module">
+        import { createEvent, readEvents, updateEvent, deleteEvent } from './db/crud.js';
+
+        // Create event
+        document.getElementById("createBtn").addEventListener("click", async () => {
+            const name = document.getElementById("eventName").value.trim();
+            const date = document.getElementById("eventDate").value;
+            const desc = document.getElementById("eventDesc").value.trim();
+            const link = document.getElementById("eventLink").value.trim();
+            
+            // Validate that all fields have values
+            if (!name || !date || !desc || !link) {
+                alert("Please fill in all fields.");
+                return; // Exit the function to prevent creating an invalid event
+            }
+
+            // Create the event object with the validated data
+            const eventData = { name, date, desc, link };
+            try {
+                const eventId = await createEvent(eventData);
+                alert(`Event created with ID: ${eventId}`);
+                // Clear the input fields after successful creation
+                document.getElementById("eventName").value = "";
+                document.getElementById("eventDate").value = "";
+                document.getElementById("eventDesc").value = "";
+                document.getElementById("eventLink").value = "";
+            } catch (error) {
+                console.error("Error creating event:", error);
+                alert("Failed to create event. Please try again.");
+            }
+        });
+
+
+        // Read events
+        document.getElementById("readBtn").addEventListener("click", async () => {
+            const events = await readEvents();
+            const eventList = document.getElementById("eventList");
+            eventList.innerHTML = ""; // Clear previous results
+            for (const [id, eventData] of Object.entries(events)) {
+                const eventItem = document.createElement("div");
+                eventItem.textContent = `ID: ${id}, Name: ${eventData.name}, Date: ${eventData.date}, Description: ${eventData.desc}, Link: ${eventData.link}`;
+                eventList.appendChild(eventItem);
+            }
+        });
+
+        // Update event
+        document.getElementById("updateBtn").addEventListener("click", async () => {
+            const eventId = document.getElementById("updateEventId").value;
+            const name = document.getElementById("updateEventName").value;
+            const date = document.getElementById("updateEventDate").value;
+            const desc = document.getElementById("updateEventDesc").value;
+            const link = document.getElementById("updateEventLink").value;
+            if (eventId && (name || date || desc || link)) {
+                const updatedData = {};
+                if (name) updatedData.name = name;
+                if (date) updatedData.date = date;
+                if (desc) updatedData.desc = desc;
+                if (link) updatedData.link = link;
+                await updateEvent(eventId, updatedData);
+                alert(`Event with ID: ${eventId} updated successfully.`);
+            } else {
+                alert("Please provide the Event ID and at least one field to update.");
+            }
+        });
+
+        // Delete event
+        document.getElementById("deleteBtn").addEventListener("click", async () => {
+            const eventId = document.getElementById("deleteEventId").value;
+            if (eventId) {
+                await deleteEvent(eventId);
+                alert(`Event with ID: ${eventId} deleted successfully.`);
+            } else {
+                alert("Please provide an Event ID to delete.");
+            }
+        });
+    </script>
+</body>
+</html>
