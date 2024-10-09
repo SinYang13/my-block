@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Firestore CRUD Test</title>
+    <title>Firestore Events CRUD Test</title>
     <script type="module" src="js/main.js"></script>
     <style>
         body {
@@ -25,7 +25,10 @@
     <div class="input-group">
         <input type="text" id="eventName" placeholder="Event Name">
         <input type="date" id="eventDate">
-        <input type="text" id="eventDesc" placeholder="Event Description">
+        <input type="text" id="eventFrom" placeholder="Event From">
+        <input type="text" id="eventLocation" placeholder="Event Location">
+        <textarea id="eventContent" placeholder="Event Content"></textarea>
+        <input type="text" id="eventImg" placeholder="Image URL">
         <input type="text" id="eventLink" placeholder="Event Link">
         <button id="createBtn">Create Event</button>
     </div>
@@ -41,7 +44,10 @@
         <input type="text" id="updateEventId" placeholder="Event ID to Update">
         <input type="text" id="updateEventName" placeholder="New Event Name">
         <input type="date" id="updateEventDate">
-        <input type="text" id="updateEventDesc" placeholder="New Event Description">
+        <input type="text" id="updateEventFrom" placeholder="New Event From">
+        <input type="text" id="updateEventLocation" placeholder="New Event Location">
+        <textarea id="updateEventContent" placeholder="New Event Content"></textarea>
+        <input type="text" id="updateEventImg" placeholder="New Image URL">
         <input type="text" id="updateEventLink" placeholder="New Event Link">
         <button id="updateBtn">Update Event</button>
     </div>
@@ -59,31 +65,36 @@
         document.getElementById("createBtn").addEventListener("click", async () => {
             const name = document.getElementById("eventName").value.trim();
             const date = document.getElementById("eventDate").value;
-            const desc = document.getElementById("eventDesc").value.trim();
+            const from = document.getElementById("eventFrom").value.trim();
+            const location = document.getElementById("eventLocation").value.trim();
+            const content = document.getElementById("eventContent").value.trim();
+            const img = document.getElementById("eventImg").value.trim();
             const link = document.getElementById("eventLink").value.trim();
             
             // Validate that all fields have values
-            if (!name || !date || !desc || !link) {
+            if (!name || !date || !from || !location || !content || !img || !link) {
                 alert("Please fill in all fields.");
                 return; // Exit the function to prevent creating an invalid event
             }
 
             // Create the event object with the validated data
-            const eventData = { name, date, desc, link };
+            const eventData = { name, date, from, location, content, img, link };
             try {
                 const eventId = await createEvent(eventData);
                 alert(`Event created with ID: ${eventId}`);
                 // Clear the input fields after successful creation
                 document.getElementById("eventName").value = "";
                 document.getElementById("eventDate").value = "";
-                document.getElementById("eventDesc").value = "";
+                document.getElementById("eventFrom").value = "";
+                document.getElementById("eventLocation").value = "";
+                document.getElementById("eventContent").value = "";
+                document.getElementById("eventImg").value = "";
                 document.getElementById("eventLink").value = "";
             } catch (error) {
                 console.error("Error creating event:", error);
                 alert("Failed to create event. Please try again.");
             }
         });
-
 
         // Read events
         document.getElementById("readBtn").addEventListener("click", async () => {
@@ -92,7 +103,7 @@
             eventList.innerHTML = ""; // Clear previous results
             for (const [id, eventData] of Object.entries(events)) {
                 const eventItem = document.createElement("div");
-                eventItem.textContent = `ID: ${id}, Name: ${eventData.name}, Date: ${eventData.date}, Description: ${eventData.desc}, Link: ${eventData.link}`;
+                eventItem.textContent = `ID: ${id}, Name: ${eventData.name}, Date: ${eventData.date}, From: ${eventData.from}, Location: ${eventData.location}, Content: ${eventData.content}, Image: ${eventData.img}, Link: ${eventData.link}`;
                 eventList.appendChild(eventItem);
             }
         });
@@ -100,21 +111,30 @@
         // Update event
         document.getElementById("updateBtn").addEventListener("click", async () => {
             const eventId = document.getElementById("updateEventId").value;
-            const name = document.getElementById("updateEventName").value;
+            const name = document.getElementById("updateEventName").value.trim();
             const date = document.getElementById("updateEventDate").value;
-            const desc = document.getElementById("updateEventDesc").value;
-            const link = document.getElementById("updateEventLink").value;
-            if (eventId && (name || date || desc || link)) {
-                const updatedData = {};
-                if (name) updatedData.name = name;
-                if (date) updatedData.date = date;
-                if (desc) updatedData.desc = desc;
-                if (link) updatedData.link = link;
-                await updateEvent(eventId, updatedData);
-                alert(`Event with ID: ${eventId} updated successfully.`);
-            } else {
+            const from = document.getElementById("updateEventFrom").value.trim();
+            const location = document.getElementById("updateEventLocation").value.trim();
+            const content = document.getElementById("updateEventContent").value.trim();
+            const img = document.getElementById("updateEventImg").value.trim();
+            const link = document.getElementById("updateEventLink").value.trim();
+
+            if (!eventId || !(name || date || from || location || content || img || link)) {
                 alert("Please provide the Event ID and at least one field to update.");
+                return;
             }
+
+            const updatedData = {};
+            if (name) updatedData.name = name;
+            if (date) updatedData.date = date;
+            if (from) updatedData.from = from;
+            if (location) updatedData.location = location;
+            if (content) updatedData.content = content;
+            if (img) updatedData.img = img;
+            if (link) updatedData.link = link;
+
+            await updateEvent(eventId, updatedData);
+            alert(`Event with ID: ${eventId} updated successfully.`);
         });
 
         // Delete event

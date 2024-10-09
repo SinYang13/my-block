@@ -1,5 +1,5 @@
 // js/main.js
-import { createEvent, readEvents, updateEvent, deleteEvent } from '../db/crud.js';
+import { createEvent, readEvents, updateEvent, deleteEvent } from '../db/eventsCRUD.js';
 
 // Example usage: Create a new event
 document.getElementById("createBtn").addEventListener("click", async () => {
