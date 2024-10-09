@@ -4,7 +4,7 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Announcements CRUD Test</title>
-    <script type="module" src="announcementsCRUD.js"></script>
+    <script type="module" src="./announcementsCRUD.js"></script>
     <style>
         body {
             font-family: Arial, sans-serif;
@@ -66,7 +66,7 @@
     </div>
 
     <script type="module">
-        import { createAnnouncement, readAnnouncements, updateAnnouncement, deleteAnnouncement } from './db/announcementsCRUD.js';
+        import { createAnnouncement, readAnnouncements, updateAnnouncement, deleteAnnouncement } from './announcementsCRUD.js';
 
         // Create announcement
         document.getElementById("createAnnouncementBtn").addEventListener("click", async () => {
@@ -112,8 +112,9 @@
                 announcements.forEach((announcement) => {
                     const announcementItem = document.createElement("div");
                     announcementItem.classList.add("announcement");
-                    // Display each field as a plain string
-                    announcementItem.innerHTML = `<strong>Title:</strong> ${announcement.title} <br> 
+                    // Display each field, including the ID, as a plain string
+                    announcementItem.innerHTML = `<strong>ID:</strong> ${announcement.id} <br>
+                                                <strong>Title:</strong> ${announcement.title} <br> 
                                                 <strong>Content:</strong> ${announcement.content} <br> 
                                                 <strong>Date:</strong> ${announcement.date} <br> 
                                                 <strong>From:</strong> ${announcement.from} <br> 
