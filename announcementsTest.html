@@ -1,0 +1,179 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Announcements CRUD Test</title>
+    <script type="module" src="db/announcementsCRUD.js"></script>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            padding: 20px;
+        }
+        .input-group {
+            margin-bottom: 10px;
+        }
+        button {
+            margin-right: 10px;
+        }
+        textarea {
+            width: 100%;
+            height: 80px;
+        }
+        .announcement {
+            border: 1px solid #ccc;
+            padding: 10px;
+            margin-bottom: 10px;
+        }
+    </style>
+</head>
+<body>
+    <h1>Announcements CRUD Test</h1>
+    
+    <!-- Create Announcement -->
+    <div class="input-group">
+        <input type="text" id="announcementTitle" placeholder="Title">
+        <textarea id="announcementContent" placeholder="Content"></textarea>
+        <input type="date" id="announcementDate">
+        <input type="text" id="announcementFrom" placeholder="From (Author)">
+        <input type="text" id="announcementImg" placeholder="Image URL">
+        <input type="text" id="announcementLocation" placeholder="Location">
+        <button id="createAnnouncementBtn">Create Announcement</button>
+    </div>
+
+    <!-- Read Announcements -->
+    <div class="input-group">
+        <button id="readAnnouncementsBtn">Read Announcements</button>
+        <div id="announcementList"></div>
+    </div>
+
+    <!-- Update Announcement -->
+    <div class="input-group">
+        <input type="text" id="updateAnnouncementId" placeholder="Announcement ID to Update">
+        <input type="text" id="updateAnnouncementTitle" placeholder="New Title">
+        <textarea id="updateAnnouncementContent" placeholder="New Content"></textarea>
+        <input type="date" id="updateAnnouncementDate">
+        <input type="text" id="updateAnnouncementFrom" placeholder="New From (Author)">
+        <input type="text" id="updateAnnouncementImg" placeholder="New Image URL">
+        <input type="text" id="updateAnnouncementLocation" placeholder="New Location">
+        <button id="updateAnnouncementBtn">Update Announcement</button>
+    </div>
+
+    <!-- Delete Announcement -->
+    <div class="input-group">
+        <input type="text" id="deleteAnnouncementId" placeholder="Announcement ID to Delete">
+        <button id="deleteAnnouncementBtn">Delete Announcement</button>
+    </div>
+
+    <script type="module">
+        import { createAnnouncement, readAnnouncements, updateAnnouncement, deleteAnnouncement } from './db/announcementsCRUD.js';
+
+        // Create announcement
+        document.getElementById("createAnnouncementBtn").addEventListener("click", async () => {
+            const title = document.getElementById("announcementTitle").value.trim();
+            const content = document.getElementById("announcementContent").value.trim();
+            const date = document.getElementById("announcementDate").value;
+            const from = document.getElementById("announcementFrom").value.trim();
+            const img = document.getElementById("announcementImg").value.trim();
+            const location = document.getElementById("announcementLocation").value.trim();
+
+            if (!title || !content || !date || !from || !img || !location) {
+                alert("Please fill in all fields.");
+                return;
+            }
+
+            const announcementData = { title, content, date, from, img, location };
+            try {
+                const announcementId = await createAnnouncement(announcementData);
+                alert(`Announcement created with ID: ${announcementId}`);
+                // Clear fields after creation
+                document.getElementById("announcementTitle").value = "";
+                document.getElementById("announcementContent").value = "";
+                document.getElementById("announcementDate").value = "";
+                document.getElementById("announcementFrom").value = "";
+                document.getElementById("announcementImg").value = "";
+                document.getElementById("announcementLocation").value = "";
+            } catch (error) {
+                console.error("Error creating announcement:", error);
+                alert("Failed to create announcement.");
+            }
+        });
+
+        // Read announcements
+        document.getElementById("readAnnouncementsBtn").addEventListener("click", async () => {
+            try {
+                const announcements = await readAnnouncements();
+                const announcementList = document.getElementById("announcementList");
+                announcementList.innerHTML = ""; // Clear previous list
+                if (announcements.length === 0) {
+                    announcementList.innerHTML = "No announcements available.";
+                    return;
+                }
+                announcements.forEach((announcement) => {
+                    const announcementItem = document.createElement("div");
+                    announcementItem.classList.add("announcement");
+                    // Display each field as a plain string
+                    announcementItem.innerHTML = `<strong>Title:</strong> ${announcement.title} <br> 
+                                                <strong>Content:</strong> ${announcement.content} <br> 
+                                                <strong>Date:</strong> ${announcement.date} <br> 
+                                                <strong>From:</strong> ${announcement.from} <br> 
+                                                <strong>Image:</strong> ${announcement.img} <br> 
+                                                <strong>Location:</strong> ${announcement.location}`;
+                    announcementList.appendChild(announcementItem);
+                });
+            } catch (error) {
+                console.error("Error reading announcements:", error);
+                alert("Failed to read announcements.");
+            }
+        });
+
+        // Update announcement
+        document.getElementById("updateAnnouncementBtn").addEventListener("click", async () => {
+            const announcementId = document.getElementById("updateAnnouncementId").value;
+            const title = document.getElementById("updateAnnouncementTitle").value.trim();
+            const content = document.getElementById("updateAnnouncementContent").value.trim();
+            const date = document.getElementById("updateAnnouncementDate").value;
+            const from = document.getElementById("updateAnnouncementFrom").value.trim();
+            const img = document.getElementById("updateAnnouncementImg").value.trim();
+            const location = document.getElementById("updateAnnouncementLocation").value.trim();
+
+            if (!announcementId || !(title || content || date || from || img || location)) {
+                alert("Please provide the Announcement ID and at least one field to update.");
+                return;
+            }
+
+            const updatedData = {};
+            if (title) updatedData.title = title;
+            if (content) updatedData.content = content;
+            if (date) updatedData.date = date;
+            if (from) updatedData.from = from;
+            if (img) updatedData.img = img;
+            if (location) updatedData.location = location;
+
+            try {
+                await updateAnnouncement(announcementId, updatedData);
+                alert(`Announcement with ID: ${announcementId} updated successfully.`);
+            } catch (error) {
+                console.error("Error updating announcement:", error);
+                alert("Failed to update announcement.");
+            }
+        });
+
+        // Delete announcement
+        document.getElementById("deleteAnnouncementBtn").addEventListener("click", async () => {
+            const announcementId = document.getElementById("deleteAnnouncementId").value;
+            if (!announcementId) {
+                alert("Please provide an Announcement ID to delete.");
+                return;
+            }
+            try {
+                await deleteAnnouncement(announcementId);
+                alert(`Announcement with ID: ${announcementId} deleted successfully.`);
+            } catch (error) {
+                console.error("Error deleting announcement:", error);
+                alert("Failed to delete announcement.");
+            }
+        });
+    </script>
+</body>
+</html>

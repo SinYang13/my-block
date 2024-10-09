@@ -71,7 +71,7 @@
     </div>
 
     <script type="module">
-        import { createPost, readPosts, updatePost, deletePost, addComment } from './forum.js';
+        import { createPost, readPosts, updatePost, deletePost, addComment } from './db/forumCRUD.js';
 
         // Create post
         document.getElementById("createPostBtn").addEventListener("click", async () => {
@@ -102,19 +102,31 @@
         });
 
         // Read posts
+
         document.getElementById("readPostsBtn").addEventListener("click", async () => {
+            console.log("Read Posts button clicked");
             try {
                 const posts = await readPosts();
+                console.log("Fetched posts:", posts);
                 const postList = document.getElementById("postList");
                 postList.innerHTML = ""; // Clear previous posts
+                if (posts.length === 0) {
+                    console.log("No posts available");
+                    postList.innerHTML = "No posts available.";
+                    return;
+                }
                 posts.forEach((post) => {
                     const postItem = document.createElement("div");
                     postItem.classList.add("post");
+                    
+                    // Check if tags is an array, otherwise default to an empty array
+                    const tags = Array.isArray(post.tags) ? post.tags.join(", ") : "No tags";
+
                     postItem.innerHTML = `<strong>Title:</strong> ${post.title} <br> 
                                         <strong>Content:</strong> ${post.content} <br> 
                                         <strong>Author:</strong> ${post.author} <br> 
                                         <strong>Category:</strong> ${post.category} <br> 
-                                        <strong>Tags:</strong> ${post.tags.join(", ")} <br> 
+                                        <strong>Tags:</strong> ${tags} <br> 
                                         <strong>Created At:</strong> ${new Date(post.createdAt.seconds * 1000).toLocaleString()}`;
                     postList.appendChild(postItem);
                 });
@@ -123,7 +135,6 @@
                 alert("Failed to read posts.");
             }
         });
-
         // Update post
         document.getElementById("updatePostBtn").addEventListener("click", async () => {
             const postId = document.getElementById("updatePostId").value;
