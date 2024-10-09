@@ -31,7 +31,7 @@
             white-space: nowrap;
         }
         .card-content {
-            height: 20%; /* Set a height for the content segment */
+            height: 100px; /* Set a height for the content segment */
             overflow: hidden;
             display: -webkit-box;
             -webkit-line-clamp: 4; /* Set the maximum number of lines to show */
@@ -51,63 +51,200 @@
         <h1>Announcements</h1>
         <div v-if="loading" class="mb-3">Loading...</div>
         <div v-if="error" class="alert alert-danger">{{ error }}</div>
-        <div v-if="announcements.length === 0 && !loading" class="mb-3">No announcements available.</div>
-        <div class="row properties-box container section properties" v-if="announcements.length > 0">
-            <div class="col-lg-4 col-md-6 mb-4" v-for="announcement in announcements" :key="announcement.id">
-                <div class="item">
-                    <a href="announcement-details.html">
-                        <img v-if="announcement.img" :src="'assets/img/' + announcement.img" alt="Announcement Image" class="img-fluid" style="height: 200px; object-fit: cover;">
-                    </a>
-                    <span class="category">{{ announcement.date }}</span>
-                    <h6>{{ announcement.from }}</h6>
-                    <h4><a href="announcement-details.html">{{ announcement.title }}</a></h4>
-                    <p class="card-content">{{ announcement.content }}</p>
-                    <div class="main-button mt-4">
-                        <button class="btn btn-primary" @click="showMore(announcement)">Show More</button>
+        <div v-if="filteredAnnouncements.length === 0 && otherAnnouncements.length === 0 && !loading" class="mb-3">No announcements available.</div>
+
+        <div class="row d-lg-flex flex-lg-row-reverse align-items-start position-static">
+            <div class="col-lg-4 col-md-12 mb-4 position-sticky" style="top: 20px;">
+              <div class="input-group mb-3">
+                  <label for="locationInput" class="form-label">Set Your Location (Postal Code)</label>
+                  <div class="input-group">
+                      <input type="text" id="locationInput" class="form-control" v-model="postalCode" @change="updateMap" pattern="[0-9]{6}" title="Please enter a valid 6-digit Singapore postal code." required>
+                      <button class="btn btn-outline-secondary" @click="updateMap">Set Location</button>
+                  </div>
+              </div>
+
+              <div id="map" style="height: 600px;"></div>
+            </div>
+            <div class="col-lg-8 col-md-12">
+                <div class="row properties-box section properties g-3" v-if="filteredAnnouncements.length > 0">
+                    <div class="col-lg-4 col-md-6 mb-4" v-for="announcement in filteredAnnouncements" :key="announcement.id">
+                        <div class="item">
+                            <img v-if="announcement.img" :src="'assets/img/' + announcement.img" alt="Announcement Image" class="img-fluid" style="height: 200px; object-fit: cover;">
+                            <span class="category">{{ announcement.date }}</span>
+                            <h6>{{ announcement.from }}</h6>
+                            <h4><a href="announcement-details.html">{{ announcement.title }}</a></h4>
+                            <p class="card-content">{{ announcement.content }}</p>
+                            <p class="card-location"><strong>Location:</strong> {{ announcement.location }}</p>
+                            <div class="main-button mt-4">
+                                <a href="#" class="btn btn-primary" @click.prevent="showMore(announcement)">Show More</a>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+          <div v-if="otherAnnouncements.length > 0">
+              <button class="btn btn-secondary d-block mx-auto my-3" @click="showOtherAnnouncements = !showOtherAnnouncements">
+                  {{ showOtherAnnouncements ? 'Hide Other Announcements' : 'View Other Announcements' }}
+              </button>
+              <div class="row properties-box section properties g-3 mt-3" v-if="showOtherAnnouncements">
+                  <div class="col-lg-4 col-md-6 mb-4" v-for="announcement in otherAnnouncements" :key="announcement.id">
+                      <div class="item">
+                          <a href="announcement-details.html">
+                              <img v-if="announcement.img" :src="'assets/img/' + announcement.img" alt="Announcement Image" class="img-fluid" style="height: 200px; object-fit: cover;">
+                          </a>
+                          <span class="category">{{ announcement.date }}</span>
+                          <h6>{{ announcement.from }}</h6>
+                          <h4><a href="announcement-details.html">{{ announcement.title }}</a></h4>
+                          <p class="card-content">{{ announcement.content }}</p>
+                          <p class="card-location"><strong>Location:</strong> {{ announcement.location }}</p>
+                          <div class="main-button mt-4">
+                            <a href="#" class="btn btn-primary" @click.prevent="showMore(announcement)">Show More</a>
+                        </div>
+                      </div>
+                  </div>
+              </div>
+          </div>
+          
+
+            
+        </div>
+
+        <!-- Modal for Showing More Details -->
+        <div class="modal fade" id="announcementModal" tabindex="-1" aria-labelledby="announcementModalLabel" aria-hidden="true" ref="announcementModal">
+            <div class="modal-dialog">
+                <div class="modal-content">
+                    <div class="modal-header">
+                        <h5 class="modal-title" id="announcementModalLabel">Announcement Details</h5>
+                        <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                    </div>
+                    <div class="modal-body">
+                        <img v-if="modalContent.img" :src="'assets/img/' + modalContent.img" alt="Announcement Image" class="img-fluid my-3" style="object-fit: cover;">
+                        <p><strong>Title:</strong> {{ modalContent.title }}</p>
+                        <p><strong>Content:</strong> {{ modalContent.content }}</p>
+                        <p><strong>From:</strong> {{ modalContent.from }}</p>
+                        <p><strong>Date:</strong> {{ modalContent.date }}</p>
+                        <p><strong>Location:</strong> {{ modalContent.location }}</p>
+                    </div>
+                    <div class="modal-footer">
+                        <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Close</button>
                     </div>
                 </div>
             </div>
         </div>
-        
-        
     </div>
 
     <!-- Bootstrap JS bundle -->
     <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3/dist/js/bootstrap.bundle.min.js"></script>
+    
     <script type="module">
         import { readAnnouncements } from './db/announcementsCRUD.js';
 
         const { createApp } = Vue;
 
         createApp({
-            data() {
-                return {
-                    announcements: [],
-                    loading: false,
-                    error: null
-                };
-            },
+          data() {
+              return {
+                  announcements: [],
+                  filteredAnnouncements: [],
+                  otherAnnouncements: [],
+                  showOtherAnnouncements: false,
+                  loading: false,
+                  error: null,
+                  modalContent: {}, // Data for the modal
+                  postalCode: '123456', // Default postal code
+                  map: null,
+                  marker: null,
+                  googleMapsApiKey: ''
+              };
+          },
             methods: {
-                async fetchAnnouncements() {
-                    this.loading = true;
-                    this.error = null;
-                    try {
-                        this.announcements = await readAnnouncements();
-                    } catch (err) {
-                        console.error("Error fetching announcements:", err);
-                        this.error = "Failed to fetch announcements.";
-                    } finally {
-                        this.loading = false;
-                    }
-                },
+              async fetchAnnouncements() {
+                  this.loading = true;
+                  this.error = null;
+                  try {
+                      let announcements = await readAnnouncements();
+              
+                      // Sort announcements by date in descending order (most recent first)
+                      announcements.sort((a, b) => new Date(b.date) - new Date(a.date));
+              
+                      // Save original announcements for reference
+                      this.announcements = announcements;
+              
+                      // Filter announcements based on the current postal code
+                      this.filteredAnnouncements = this.announcements.filter(announcement => announcement.location === this.postalCode);
+                      this.otherAnnouncements = this.announcements.filter(announcement => announcement.location !== this.postalCode);
+                  } catch (err) {
+                      console.error("Error fetching announcements:", err);
+                      this.error = "Failed to fetch announcements.";
+                  } finally {
+                      this.loading = false;
+                  }
+              },
                 showMore(announcement) {
-                    // Expand content or navigate to detailed view for the announcement
-                    alert(`Title: ${announcement.title}\nContent: ${announcement.content}\nFrom: ${announcement.from}\nDate: ${announcement.date}\nLocation: ${announcement.location}`);
+                    // Set modal content and show the modal
+                    this.modalContent = announcement;
+                    const modal = new bootstrap.Modal(this.$refs.announcementModal);
+                    modal.show();
+                },
+                initMap() {
+                    // Initialize Google Map
+                    this.map = new google.maps.Map(document.getElementById('map'), {
+                        center: { lat: 1.3521, lng: 103.8198 }, // Default center (Singapore)
+                        zoom: 12
+                    });
+                    this.updateMarker();
+                },
+                updateMap() {
+                  if (this.postalCode && /^[0-9]{6}$/.test(this.postalCode)) {
+                      fetch(`https://maps.googleapis.com/maps/api/geocode/json?address=${this.postalCode},Singapore&key=${this.googleMapsApiKey}`)
+                          .then(response => response.json())
+                          .then(data => {
+                              if (data.results && data.results.length > 0) {
+                                  const location = data.results[0].geometry.location;
+                                  this.map.setCenter(location);
+                                  // Update filtered and other announcements
+                                  this.filteredAnnouncements = this.announcements.filter(announcement => announcement.location === this.postalCode);
+                                  this.otherAnnouncements = this.announcements.filter(announcement => announcement.location !== this.postalCode);
+                                  this.updateMarker(location);
+                              }
+                          })
+                          .catch(error => console.error('Error fetching location:', error));
+                  }
+              },
+                updateMarker(location) {
+                    // Update marker on the map
+                    if (!location) {
+                        location = this.map.getCenter();
+                    }
+                    if (!this.marker) {
+                        this.marker = new google.maps.Marker({
+                            position: location,
+                            map: this.map
+                        });
+                    } else {
+                        this.marker.setPosition(location);
+                    }
                 }
             },
-            mounted() {
+            async mounted() {
+                // Load Google Maps API key from db/api.json
+                try {
+                    const response = await fetch('./db/api.json');
+                    const apiData = await response.json();
+                    this.googleMapsApiKey = apiData.maps;
+                    const script = document.createElement('script');
+                    script.src = `https://maps.googleapis.com/maps/api/js?key=${this.googleMapsApiKey}`;
+                    script.async = true;
+                    script.defer = true;
+                    document.head.appendChild(script);
+                    script.onload = () => { this.initMap(); };
+                } catch (err) {
+                    console.error('Error loading Google Maps API key:', err);
+                }
                 // Fetch announcements automatically when the component is mounted
                 this.fetchAnnouncements();
+                // Initialize Google Map after script is loaded
+                
             }
         }).mount('#app');
     </script>
