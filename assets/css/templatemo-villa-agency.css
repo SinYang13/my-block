@@ -31,6 +31,98 @@ font & reset css
 reset
 --------------------------------------------- 
 */
+
+
+.formDisplay {
+  display: block; /* Show the form */
+}
+
+.formNoDisplay {
+  display: none; /* Hide the form */
+}
+
+.section-heading {
+  margin-bottom: 20px; /* Adjust this value to control spacing */
+}
+.search-bar {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  margin: 20px auto; /* Adjust spacing as needed */
+}
+
+.search-input {
+  width: 100%; /* Change from 800px to 100% to make it responsive */
+  max-width: 300px; /* You can adjust this to control the maximum width */
+  padding: 10px;
+  border: 1px solid #ddd;
+  border-radius: 20px 0 0 20px;
+  font-size: 14px;
+  outline: none;
+  transition: all 0.3s ease;
+}
+
+
+.search-button {
+  padding: 10px;
+  border: 1px solid #ddd;
+  border-left: none;
+  background-color: #1e1e1e; /* Adjust color to match your theme */
+  color: #fff;
+  cursor: pointer;
+  border-radius: 0 20px 20px 0;
+  transition: all 0.3s ease;
+}
+
+.search-button i {
+  font-size: 14px;
+}
+
+.search-button:hover {
+  background-color: #f35525; /* Adjust hover color to match your theme */
+}
+
+.search-input:focus {
+  border-color: #f35525; /* Change focus color */
+}
+
+
+
+
+.card:hover {
+  transform: translateY(-10px);
+  box-shadow: 0px 6px 15px rgba(0, 0, 0, 0.15);
+}
+
+
+.card-img-top {
+  width: 100%;
+  height: 300px; /* Set the height you want for the images */
+  object-fit: cover; /* This ensures the image covers the area without distorting */
+}
+
+
+.carousel {
+  max-width: 80%;
+  overflow: hidden;
+  margin: auto;
+  background-color: grey; /* Set the background color for the entire carousel */
+  padding: 30px; /* Add padding to space the content inside the box */
+  border-radius: 10px; /* Add rounded corners to the carousel */
+}
+
+.carousel-item {
+  transition: all 0.5s ease;
+}
+
+.carousel-item img {
+  height: 600px; /* Adjust this height to match the container */
+  object-fit: cover; /* Ensures the image fits well within the container */
+  width: 100%;
+}
+
+
+
 html, body, div, span, applet, object, iframe, h1, h2, h3, h4, h5, h6, p, blockquote, div
 pre, a, abbr, acronym, address, big, cite, code, del, dfn, em, font, img, ins, kbd, q,
 s, samp, small, strike, strong, sub, sup, tt, var, b, u, i, center, dl, dt, dd, ol, ul, li,
