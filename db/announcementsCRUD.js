@@ -13,7 +13,12 @@ export async function readAnnouncements() {
     const querySnapshot = await getDocs(collection(db, "announcements"));
     const announcements = [];
     querySnapshot.forEach((doc) => {
-        announcements.push({ id: doc.id, ...doc.data() });
+        const data = doc.data();
+        // Update img path to Firebase Storage URL
+        if (data.img) {
+            data.img = `https://firebasestorage.googleapis.com/v0/b/myblock-wad.appspot.com/o/announcements%2F${encodeURIComponent(data.img)}?alt=media`;
+        }
+        announcements.push({ id: doc.id, ...data });
     });
     return announcements;
 }
