@@ -36,7 +36,7 @@
         <textarea id="announcementContent" placeholder="Content"></textarea>
         <input type="date" id="announcementDate">
         <input type="text" id="announcementFrom" placeholder="From (Author)">
-        <input type="text" id="announcementImg" placeholder="Image URL">
+        <input type="file" id="announcementImg" accept="image/*">
         <input type="text" id="announcementLocation" placeholder="Location">
         <button id="createAnnouncementBtn">Create Announcement</button>
     </div>
@@ -54,7 +54,7 @@
         <textarea id="updateAnnouncementContent" placeholder="New Content"></textarea>
         <input type="date" id="updateAnnouncementDate">
         <input type="text" id="updateAnnouncementFrom" placeholder="New From (Author)">
-        <input type="text" id="updateAnnouncementImg" placeholder="New Image URL">
+        <input type="file" id="updateAnnouncementImg" accept="image/*">
         <input type="text" id="updateAnnouncementLocation" placeholder="New Location">
         <button id="updateAnnouncementBtn">Update Announcement</button>
     </div>
@@ -67,6 +67,8 @@
 
     <script type="module">
         import { createAnnouncement, readAnnouncements, updateAnnouncement, deleteAnnouncement } from './announcementsCRUD.js';
+        import { getStorage, ref, uploadBytes, getDownloadURL } from "https://www.gstatic.com/firebasejs/10.14.0/firebase-storage.js";
+        const storage = getStorage();
 
         // Create announcement
         document.getElementById("createAnnouncementBtn").addEventListener("click", async () => {
@@ -74,15 +76,21 @@
             const content = document.getElementById("announcementContent").value.trim();
             const date = document.getElementById("announcementDate").value;
             const from = document.getElementById("announcementFrom").value.trim();
-            const img = document.getElementById("announcementImg").value.trim();
+            const imgFile = document.getElementById("announcementImg").files[0];
             const location = document.getElementById("announcementLocation").value.trim();
 
-            if (!title || !content || !date || !from || !img || !location) {
+            if (!title || !content || !date || !from || !imgFile || !location) {
                 alert("Please fill in all fields.");
                 return;
             }
 
-            const announcementData = { title, content, date, from, img, location };
+            // Upload the image to Firebase Storage
+
+            const imgRef = ref(storage, `announcements/${imgFile.name}`);
+            await uploadBytes(imgRef, imgFile);
+            const imgUrl = await getDownloadURL(imgRef);
+
+            const announcementData = { title, content, date, from, img: imgFile.name, location };
             try {
                 const announcementId = await createAnnouncement(announcementData);
                 alert(`Announcement created with ID: ${announcementId}`);
@@ -118,7 +126,7 @@
                                                 <strong>Content:</strong> ${announcement.content} <br> 
                                                 <strong>Date:</strong> ${announcement.date} <br> 
                                                 <strong>From:</strong> ${announcement.from} <br> 
-                                                <strong>Image:</strong> ${announcement.img} <br> 
+                                                <strong>Image:</strong> <img src="https://firebasestorage.googleapis.com/v0/b/wad-myblock.appspot.com/o/announcements%2F${encodeURIComponent(announcement.img)}?alt=media" alt="Announcement Image" style="max-width: 100%; height: auto;"> <br> 
                                                 <strong>Location:</strong> ${announcement.location}`;
                     announcementList.appendChild(announcementItem);
                 });
@@ -135,10 +143,10 @@
             const content = document.getElementById("updateAnnouncementContent").value.trim();
             const date = document.getElementById("updateAnnouncementDate").value;
             const from = document.getElementById("updateAnnouncementFrom").value.trim();
-            const img = document.getElementById("updateAnnouncementImg").value.trim();
+            const imgFile = document.getElementById("updateAnnouncementImg").files[0];
             const location = document.getElementById("updateAnnouncementLocation").value.trim();
 
-            if (!announcementId || !(title || content || date || from || img || location)) {
+            if (!announcementId || !(title || content || date || from || imgFile || location)) {
                 alert("Please provide the Announcement ID and at least one field to update.");
                 return;
             }
@@ -148,7 +156,14 @@
             if (content) updatedData.content = content;
             if (date) updatedData.date = date;
             if (from) updatedData.from = from;
-            if (img) updatedData.img = img;
+            if (imgFile) {
+                // Upload the new image to Firebase Storage
+
+                const storage = getStorage();
+                const imgRef = ref(storage, `announcements/${imgFile.name}`);
+                await uploadBytes(imgRef, imgFile);
+                updatedData.img = imgFile.name;
+            }
             if (location) updatedData.location = location;
 
             try {

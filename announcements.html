@@ -44,7 +44,40 @@
         .show-more {
             margin-top: auto; /* Push the button to the bottom */
         }
-    </style>
+        
+    
+    @media (min-width: 992px) {
+        .map-container {
+            position: sticky;
+            top: 20px;
+            height: 80vh;
+            width: 100%;
+        }
+    }
+    @media (max-width: 991.98px) {
+        .map-container {
+            position: relative;
+            height: 30vh;
+            width: 100%;
+            margin-bottom: 20px;
+            overflow: auto;
+        }
+    }
+    @media (min-width: 992px) {
+        .map-wrapper {
+            position: sticky;
+            top: 20px;
+            height: 80vh;
+        }
+    }
+    @media (max-width: 991.98px) {
+        .map-wrapper {
+            position: relative;
+            height: auto;
+            overflow: auto;
+        }
+    }
+</style>
 </head>
 <body>
     <div id="app" class="container mt-5">
@@ -54,7 +87,7 @@
         <div v-if="filteredAnnouncements.length === 0 && otherAnnouncements.length === 0 && !loading" class="mb-3">No announcements available.</div>
 
         <div class="row d-lg-flex flex-lg-row-reverse align-items-start position-static">
-            <div class="col-lg-4 col-md-12 mb-4 position-sticky" style="top: 20px;">
+            <div class="col-lg-4 col-md-12 mb-4 map-wrapper">
               <div class="input-group mb-3">
                   <label for="locationInput" class="form-label">Set Your Location (Postal Code)</label>
                   <div class="input-group">
@@ -63,13 +96,13 @@
                   </div>
               </div>
 
-              <div id="map" style="height: 600px;"></div>
+              <div id="map" class="map-container" style="height: 400px; width: 100%;"></div>
             </div>
             <div class="col-lg-8 col-md-12">
                 <div class="row properties-box section properties g-3" v-if="filteredAnnouncements.length > 0">
-                    <div class="col-lg-4 col-md-6 mb-4" v-for="announcement in filteredAnnouncements" :key="announcement.id">
+                    <div class="col-xl-4 col-lg-6 col-md-6 mb-4" v-for="announcement in filteredAnnouncements" :key="announcement.id">
                         <div class="item">
-                            <img v-if="announcement.img" :src="'assets/img/' + announcement.img" alt="Announcement Image" class="img-fluid" style="height: 200px; object-fit: cover;">
+                            <img v-if="announcement.img" :src="'https://firebasestorage.googleapis.com/v0/b/myblock-wad.appspot.com/o/announcements%2F' + encodeURIComponent(announcement.img) + '?alt=media'" alt="Announcement Image" class="img-fluid" style="height: 200px; object-fit: cover;">
                             <span class="category">{{ announcement.date }}</span>
                             <h6>{{ announcement.from }}</h6>
                             <h4><a href="announcement-details.html">{{ announcement.title }}</a></h4>
@@ -87,10 +120,10 @@
                   {{ showOtherAnnouncements ? 'Hide Other Announcements' : 'View Other Announcements' }}
               </button>
               <div class="row properties-box section properties g-3 mt-3" v-if="showOtherAnnouncements">
-                  <div class="col-lg-4 col-md-6 mb-4" v-for="announcement in otherAnnouncements" :key="announcement.id">
+                  <div class="col-xl-4 col-lg-6 col-md-6 mb-4" v-for="announcement in otherAnnouncements" :key="announcement.id">
                       <div class="item">
                           <a href="announcement-details.html">
-                              <img v-if="announcement.img" :src="'assets/img/' + announcement.img" alt="Announcement Image" class="img-fluid" style="height: 200px; object-fit: cover;">
+                              <img v-if="announcement.img" :src="'https://firebasestorage.googleapis.com/v0/b/myblock-wad.appspot.com/o/announcements%2F' + encodeURIComponent(announcement.img) + '?alt=media'" alt="Announcement Image" class="img-fluid" style="height: 200px; object-fit: cover;">
                           </a>
                           <span class="category">{{ announcement.date }}</span>
                           <h6>{{ announcement.from }}</h6>
@@ -104,7 +137,7 @@
                   </div>
               </div>
           </div>
-          
+           
 
             
         </div>
@@ -118,7 +151,7 @@
                         <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
                     </div>
                     <div class="modal-body">
-                        <img v-if="modalContent.img" :src="'assets/img/' + modalContent.img" alt="Announcement Image" class="img-fluid my-3" style="object-fit: cover;">
+                        <img v-if="modalContent.img" :src="'https://firebasestorage.googleapis.com/v0/b/myblock-wad.appspot.com/o/announcements%2F' + encodeURIComponent(modalContent.img) + '?alt=media'" alt="Announcement Image" class="img-fluid my-3" style="object-fit: cover;">
                         <p><strong>Title:</strong> {{ modalContent.title }}</p>
                         <p><strong>Content:</strong> {{ modalContent.content }}</p>
                         <p><strong>From:</strong> {{ modalContent.from }}</p>
@@ -227,17 +260,18 @@
                 }
             },
             async mounted() {
+                const app = this;
                 // Load Google Maps API key from db/api.json
                 try {
                     const response = await fetch('./db/api.json');
                     const apiData = await response.json();
                     this.googleMapsApiKey = apiData.maps;
                     const script = document.createElement('script');
-                    script.src = `https://maps.googleapis.com/maps/api/js?key=${this.googleMapsApiKey}`;
+                    script.src = `https://maps.googleapis.com/maps/api/js?key=${this.googleMapsApiKey}&callback=initMap`;
                     script.async = true;
                     script.defer = true;
                     document.head.appendChild(script);
-                    script.onload = () => { this.initMap(); };
+                    window.initMap = () => { app.initMap(); };
                 } catch (err) {
                     console.error('Error loading Google Maps API key:', err);
                 }
