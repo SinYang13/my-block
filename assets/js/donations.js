@@ -19,7 +19,7 @@ const app = Vue.createApp({
             searchTerm: "",
             filteredDonations: [],
             donations: [], // Initialize as an empty array
-            formnodisplayActive: true,
+            // formnodisplayActive: true,
             formdisplayActive: false,
             userName: '',
             startdate: new Date(),
@@ -130,7 +130,6 @@ filterDonations() {
         openForm(itemName) {
             // console.log("sup")
             this.formdisplayActive = true
-            this.formnodisplayActive = false
             this.currItemName = itemName;
             // this.getNums
         },
@@ -138,7 +137,6 @@ filterDonations() {
         closeForm() {
             // console.log("sup")
             this.formdisplayActive = false
-            this.formnodisplayActive = true
             this.curritemName = '';
         },
 
