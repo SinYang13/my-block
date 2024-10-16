@@ -1,4 +1,4 @@
-// forum.js
+// forumCRUD.js
 import { db } from './firebaseConfig.js';
 import { collection, addDoc, getDocs, updateDoc, deleteDoc, doc } from "https://www.gstatic.com/firebasejs/10.14.0/firebase-firestore.js";
 
@@ -14,13 +14,18 @@ export async function readPosts() {
     try {
         const querySnapshot = await getDocs(collection(db, "forum"));
         const posts = [];
-        querySnapshot.forEach((doc) => {
-            posts.push({ id: doc.id, ...doc.data() });
-        });
-        // Inside readPosts function
-        console.log("Fetching posts from Firestore...");
+        for (const forumDoc of querySnapshot.docs) {
+            const postData = forumDoc.data();
+            postData.id = forumDoc.id;
 
-        // Check if posts are retrieved
+            // Fetch comments for each post
+            const commentsSnapshot = await getDocs(collection(db, `forum/${forumDoc.id}/comments`));
+            const comments = commentsSnapshot.docs.map((commentDoc) => ({ id: commentDoc.id, ...commentDoc.data() }));
+            postData.comments = comments;
+
+            posts.push(postData);
+        }
+        console.log("Fetching posts from Firestore...");
         console.log("Posts fetched:", posts);
         return posts;
     } catch (error) {
