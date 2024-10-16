@@ -1,0 +1,154 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Users CRUD Test</title>
+    <script type="module" src="./usersCRUD.js"></script>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            padding: 20px;
+        }
+        .input-group {
+            margin-bottom: 10px;
+        }
+        button {
+            margin-right: 10px;
+        }
+        textarea {
+            width: 100%;
+            height: 80px;
+        }
+        .user {
+            border: 1px solid #ccc;
+            padding: 10px;
+            margin-bottom: 10px;
+        }
+    </style>
+</head>
+<body>
+    <h1>Users CRUD Test</h1>
+    
+    <!-- Create User -->
+    <div class="input-group">
+        <input type="text" id="userEmail" placeholder="Email">
+        <input type="password" id="userPassword" placeholder="Password">
+        <input type="text" id="userType" placeholder="Type (admin/user)">
+        <button id="createUserBtn">Create User</button>
+    </div>
+
+    <!-- Read Users -->
+    <div class="input-group">
+        <button id="readUsersBtn">Read Users</button>
+        <div id="userList"></div>
+    </div>
+
+    <!-- Update User -->
+    <div class="input-group">
+        <input type="text" id="updateUserId" placeholder="User Email to Update">
+        <input type="password" id="updateUserPassword" placeholder="New Password">
+        <input type="text" id="updateUserType" placeholder="New Type (admin/user)">
+        <button id="updateUserBtn">Update User</button>
+    </div>
+
+    <!-- Delete User -->
+    <div class="input-group">
+        <input type="text" id="deleteUserId" placeholder="User Email to Delete">
+        <button id="deleteUserBtn">Delete User</button>
+    </div>
+
+    <script type="module">
+        import { createUser, readUsers, updateUser, deleteUser } from './usersCRUD.js';
+
+        // Create user
+        document.getElementById("createUserBtn").addEventListener("click", async () => {
+            const email = document.getElementById("userEmail").value.trim();
+            const password = document.getElementById("userPassword").value.trim();
+            const type = document.getElementById("userType").value.trim();
+
+            if (!email || !password || !type) {
+                alert("Please fill in all fields.");
+                return;
+            }
+
+            const userData = { password, type };
+            try {
+                await createUser(email, userData);
+                alert('User created successfully.');
+                // Clear fields after creation
+                document.getElementById("userEmail").value = "";
+                document.getElementById("userPassword").value = "";
+                document.getElementById("userType").value = "";
+            } catch (error) {
+                console.error("Error creating user:", error);
+                alert("Failed to create user.");
+            }
+        });
+
+        // Read users
+        document.getElementById("readUsersBtn").addEventListener("click", async () => {
+            try {
+                const users = await readUsers();
+                const userList = document.getElementById("userList");
+                userList.innerHTML = ""; // Clear previous list
+                if (users.length === 0) {
+                    userList.innerHTML = "No users available.";
+                    return;
+                }
+                users.forEach((user) => {
+                    const userItem = document.createElement("div");
+                    userItem.classList.add("user");
+                    userItem.innerHTML = `<strong>Email:</strong> ${user.id} <br>
+                                          <strong>Password:</strong> ${user.password} <br>
+                                          <strong>Type:</strong> ${user.type}`;
+                    userList.appendChild(userItem);
+                });
+            } catch (error) {
+                console.error("Error reading users:", error);
+                alert("Failed to read users.");
+            }
+        });
+
+        // Update user
+        document.getElementById("updateUserBtn").addEventListener("click", async () => {
+            const email = document.getElementById("updateUserId").value.trim();
+            const password = document.getElementById("updateUserPassword").value.trim();
+            const type = document.getElementById("updateUserType").value.trim();
+
+            if (!email || !(password || type)) {
+                alert("Please provide the User Email and at least one field to update.");
+                return;
+            }
+
+            const updatedData = {};
+            if (password) updatedData.password = password;
+            if (type) updatedData.type = type;
+
+            try {
+                await updateUser(email, updatedData);
+                alert(`User with email: ${email} updated successfully.`);
+            } catch (error) {
+                console.error("Error updating user:", error);
+                alert("Failed to update user.");
+            }
+        });
+
+        // Delete user
+        document.getElementById("deleteUserBtn").addEventListener("click", async () => {
+            const email = document.getElementById("deleteUserId").value.trim();
+            if (!email) {
+                alert("Please provide a User Email to delete.");
+                return;
+            }
+            try {
+                await deleteUser(email);
+                alert(`User with email: ${email} deleted successfully.`);
+            } catch (error) {
+                console.error("Error deleting user:", error);
+                alert("Failed to delete user.");
+            }
+        });
+    </script>
+</body>
+</html>
