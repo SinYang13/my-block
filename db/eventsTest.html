@@ -25,7 +25,7 @@
     <div class="input-group">
         <input type="text" id="eventName" placeholder="Event Name">
         <input type="date" id="eventDate">
-        <input type="text" id="eventFrom" placeholder="Event From">
+        <!-- <input type="text" id="eventFrom" placeholder="Event From"> -->
         <input type="text" id="eventLocation" placeholder="Event Location">
         <textarea id="eventContent" placeholder="Event Content"></textarea>
         <input type="text" id="eventImg" placeholder="Image URL">
@@ -44,7 +44,7 @@
         <input type="text" id="updateEventId" placeholder="Event ID to Update">
         <input type="text" id="updateEventName" placeholder="New Event Name">
         <input type="date" id="updateEventDate">
-        <input type="text" id="updateEventFrom" placeholder="New Event From">
+        <!-- <input type="text" id="updateEventFrom" placeholder="New Event From"> -->
         <input type="text" id="updateEventLocation" placeholder="New Event Location">
         <textarea id="updateEventContent" placeholder="New Event Content"></textarea>
         <input type="text" id="updateEventImg" placeholder="New Image URL">
@@ -65,7 +65,7 @@
         document.getElementById("createBtn").addEventListener("click", async () => {
             const name = document.getElementById("eventName").value.trim();
             const date = document.getElementById("eventDate").value;
-            const from = document.getElementById("eventFrom").value.trim();
+            // const from = document.getElementById("eventFrom").value.trim();
             const location = document.getElementById("eventLocation").value.trim();
             const content = document.getElementById("eventContent").value.trim();
             const img = document.getElementById("eventImg").value.trim();
@@ -85,7 +85,7 @@
                 // Clear the input fields after successful creation
                 document.getElementById("eventName").value = "";
                 document.getElementById("eventDate").value = "";
-                document.getElementById("eventFrom").value = "";
+                // document.getElementById("eventFrom").value = "";
                 document.getElementById("eventLocation").value = "";
                 document.getElementById("eventContent").value = "";
                 document.getElementById("eventImg").value = "";
@@ -103,7 +103,7 @@
             eventList.innerHTML = ""; // Clear previous results
             for (const [id, eventData] of Object.entries(events)) {
                 const eventItem = document.createElement("div");
-                eventItem.textContent = `ID: ${id}, Name: ${eventData.name}, Date: ${eventData.date}, From: ${eventData.from}, Location: ${eventData.location}, Content: ${eventData.content}, Image: ${eventData.img}, Link: ${eventData.link}`;
+                eventItem.textContent = `ID: ${id}, Name: ${eventData.name}, Date: ${eventData.date}, Location: ${eventData.location}, Content: ${eventData.content}, Image: ${eventData.img}, Link: ${eventData.link}`;
                 eventList.appendChild(eventItem);
             }
         });
@@ -113,13 +113,13 @@
             const eventId = document.getElementById("updateEventId").value;
             const name = document.getElementById("updateEventName").value.trim();
             const date = document.getElementById("updateEventDate").value;
-            const from = document.getElementById("updateEventFrom").value.trim();
+            // const from = document.getElementById("updateEventFrom").value.trim();
             const location = document.getElementById("updateEventLocation").value.trim();
             const content = document.getElementById("updateEventContent").value.trim();
             const img = document.getElementById("updateEventImg").value.trim();
             const link = document.getElementById("updateEventLink").value.trim();
 
-            if (!eventId || !(name || date || from || location || content || img || link)) {
+            if (!eventId || !(name || date || location || content || img || link)) {
                 alert("Please provide the Event ID and at least one field to update.");
                 return;
             }
@@ -127,7 +127,7 @@
             const updatedData = {};
             if (name) updatedData.name = name;
             if (date) updatedData.date = date;
-            if (from) updatedData.from = from;
+            // if (from) updatedData.from = from;
             if (location) updatedData.location = location;
             if (content) updatedData.content = content;
             if (img) updatedData.img = img;

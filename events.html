@@ -10,14 +10,14 @@
     <title>Events</title>
 
     <!-- Bootstrap core CSS -->
-    <link href="vendor/bootstrap/css/bootstrap.min.css" rel="stylesheet">
+
 
     <!-- Additional CSS Files -->
-    <link rel="stylesheet" href="assets/css/fontawesome.css">
+    <!-- <link rel="stylesheet" href="assets/css/fontawesome.css">
     <link rel="stylesheet" href="assets/css/templatemo-villa-agency.css">
     <link rel="stylesheet" href="assets/css/owl.css">
     <link rel="stylesheet" href="assets/css/animate.css">
-    <link rel="stylesheet"href="https://unpkg.com/swiper@7/swiper-bundle.min.css"/>
+    <link rel="stylesheet"href="https://unpkg.com/swiper@7/swiper-bundle.min.css"/> -->
 <!--
 
 TemplateMo 591 villa agency
@@ -25,12 +25,24 @@ TemplateMo 591 villa agency
 https://templatemo.com/tm-591-villa-agency
 
 -->
+
+<!-- Bootstrap CSS -->
+<link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3/dist/css/bootstrap.min.css" rel="stylesheet">
+<!-- Vue 3 -->
+<script src="https://unpkg.com/vue@3/dist/vue.global.js"></script> 
+<script type="module" src="db/eventsCRUD.js"></script> 
+<link rel="stylesheet" href="assets/css/fontawesome.css">
+<link rel="stylesheet" href="assets/css/templatemo-villa-agency.css">
+<link rel="stylesheet" href="assets/css/owl.css">
+<link rel="stylesheet" href="assets/css/animate.css">
+<link rel="stylesheet" href="https://unpkg.com/swiper@7/swiper-bundle.min.css"/>
+
   </head>
 
 <body>
 
   <!-- ***** Preloader Start ***** -->
-  <div id="js-preloader" class="js-preloader">
+  <!-- <div id="js-preloader" class="js-preloader">
     <div class="preloader-inner">
       <span class="dot"></span>
       <div class="dots">
@@ -39,7 +51,7 @@ https://templatemo.com/tm-591-villa-agency
         <span></span>
       </div>
     </div>
-  </div>
+  </div> -->
   <!-- ***** Preloader End ***** -->
 
   <div class="sub-header">
@@ -77,9 +89,9 @@ https://templatemo.com/tm-591-villa-agency
                     <!-- ***** Menu Start ***** -->
                     <ul class="nav">
                       <li><a href="index.html">Announcement</a></li>
-                      <li><a href="event.html">Events</a></li>
+                      <li><a href="events.html">Events</a></li>
                       <li><a href="property-details.html">Forum</a></li>
-                      <li><a href="contact.html">Donations</a></li>
+                      <li><a href="donations.html">Donations</a></li>
                       <li><a href="#"><i class="fa fa-calendar"></i> Profile</a></li>
                   </ul>   
                     <a class='menu-trigger'>
@@ -125,16 +137,16 @@ https://templatemo.com/tm-591-villa-agency
       <div class="row properties-box">
         <div class="col-lg-4 col-md-6 align-self-center mb-30 properties-items col-md-6 str">
           <div class="item">
-            <img src="event_images/rangoli.jpg" width="300px" height="200px" alt=""></a>
-            <span class="category">299D Multi-Purpose Hall</span>
-            <h6>19 Oct 2024</h6>
+            <img src="event_images/rangoli.jpg" width="300px" height="200px" alt="">{{eventImg}}</a>
+            <span class="category">{{eventLocation}}</span>
+            <h6>{{eventDate}}</h6>
             <h4><a href="https://www.onepa.gov.sg/events/compassvale-green-rn-rangoli-workshop-67554311">
-              Compassvale Green RN - Rangoli Workshop</a></h4>
+              {{eventName}}</a></h4>
             <ul>
-              <li><span>Join our Rangoli Workshop and unleash your creativity! Learn traditional designs, master techniques, and create your own vibrant Rangoli artwork. </span></li>
+              <li><span>{{eventContent}} </span></li>
             </ul>
             <div class="main-button">
-              <a href="https://www.onepa.gov.sg/events/compassvale-green-rn-rangoli-workshop-67554311">Visit Link</a>
+              <a href="https://www.onepa.gov.sg/events/compassvale-green-rn-rangoli-workshop-67554311">{{eventLink}}</a>
             </div>
           </div>
         </div>
@@ -404,12 +416,12 @@ https://templatemo.com/tm-591-villa-agency
 
   <!-- Scripts -->
   <!-- Bootstrap core JavaScript -->
-  <script src="vendor/jquery/jquery.min.js"></script>
+  <!-- <script src="vendor/jquery/jquery.min.js"></script>
   <script src="vendor/bootstrap/js/bootstrap.min.js"></script>
   <script src="assets/js/isotope.min.js"></script>
   <script src="assets/js/owl-carousel.js"></script>
   <script src="assets/js/counter.js"></script>
-  <script src="assets/js/custom.js"></script>
+  <script src="assets/js/custom.js"></script> -->
 
   </body>
 </html>
