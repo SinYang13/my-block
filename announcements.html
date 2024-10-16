@@ -152,10 +152,17 @@
                     </div>
                     <div class="modal-body">
                         <img v-if="modalContent.img" :src="'https://firebasestorage.googleapis.com/v0/b/myblock-wad.appspot.com/o/announcements%2F' + encodeURIComponent(modalContent.img) + '?alt=media'" alt="Announcement Image" class="img-fluid my-3" style="object-fit: cover;">
-                        <p><strong>Title:</strong> {{ modalContent.title }}</p>
-                        <p><strong>Content:</strong> {{ modalContent.content }}</p>
-                        <p><strong>From:</strong> {{ modalContent.from }}</p>
-                        <p><strong>Date:</strong> {{ modalContent.date }}</p>
+                        
+                        <div style="display: flex; justify-content: space-between; align-items: center;">
+                            <h1>{{ modalContent.title }}</h1>
+                            <div style="text-align: right;">
+                                <p><strong>Sent By: {{ modalContent.from }}</strong></p>
+                                <p><strong>Date: {{ modalContent.date }}</strong></p>
+                            </div>
+                        </div>
+                        
+                        <p>{{ modalContent.content }}</p>
+                        <br>
                         <p><strong>Location:</strong> {{ modalContent.location }}</p>
                     </div>
                     <div class="modal-footer">
@@ -164,6 +171,7 @@
                 </div>
             </div>
         </div>
+        
     </div>
 
     <!-- Bootstrap JS bundle -->
@@ -187,7 +195,8 @@
                   postalCode: '123456', // Default postal code
                   map: null,
                   marker: null,
-                  googleMapsApiKey: ''
+                  googleMapsApiKey: '',
+                  longAddress: '' // To store the full address
               };
           },
             methods: {
@@ -214,16 +223,41 @@
                   }
               },
                 showMore(announcement) {
-                    // Set modal content and show the modal
+                    // Set modal content
                     this.modalContent = announcement;
+                    // Fetch the full address
+                    this.getAddressFromPostalCode(announcement.location)
+                      .then((address) => {
+                          this.longAddress = address;
+                      })
+                      .catch((error) => {
+                          console.error('Error fetching address:', error);
+                          this.longAddress = 'Unable to retrieve address';
+                      });
+                    // Show the modal
                     const modal = new bootstrap.Modal(this.$refs.announcementModal);
                     modal.show();
+                },
+                async getAddressFromPostalCode(postalCode) {
+                    const apiKey = this.googleMapsApiKey;
+                    const geocodeUrl = `https://maps.googleapis.com/maps/api/geocode/json?address=${postalCode},Singapore&key=${apiKey}`;
+                    try {
+                        const response = await fetch(geocodeUrl);
+                        const data = await response.json();
+                        if (data.status === 'OK' && data.results.length > 0) {
+                            return data.results[0].formatted_address;
+                        } else {
+                            return 'Address not found';
+                        }
+                    } catch (error) {
+                        throw new Error('Error fetching address');
+                    }
                 },
                 initMap() {
                     // Initialize Google Map
                     this.map = new google.maps.Map(document.getElementById('map'), {
                         center: { lat: 1.3521, lng: 103.8198 }, // Default center (Singapore)
-                        zoom: 12
+                        zoom: 12,
                     });
                     this.updateMarker();
                 },
@@ -252,7 +286,7 @@
                     if (!this.marker) {
                         this.marker = new google.maps.Marker({
                             position: location,
-                            map: this.map
+                            map: this.map,
                         });
                     } else {
                         this.marker.setPosition(location);
@@ -277,8 +311,6 @@
                 }
                 // Fetch announcements automatically when the component is mounted
                 this.fetchAnnouncements();
-                // Initialize Google Map after script is loaded
-                
             }
         }).mount('#app');
     </script>
