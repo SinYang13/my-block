@@ -17,8 +17,8 @@ const app = Vue.createApp({
     data() {
         return {
             searchTerm: "",
-            filteredDonations: [],
-            donations: [], // Initialize as an empty array
+            filteredLoans: [],
+            loans: [], // Initialize as an empty array
             // formnodisplayActive: true,
             formdisplayActive: false,
             userName: '',
@@ -40,7 +40,7 @@ const app = Vue.createApp({
         },
 
         getNums() {
-            this.donations.forEach(element => {
+            this.loans.forEach(element => {
                 if (element.name == this.currItemName) {
                     // console.log(element.quantity)
                     const currNo = element.quantity
@@ -62,28 +62,28 @@ const app = Vue.createApp({
 
     },
     async mounted() {
-        // Fetch the donations when the component is mounted
-        const donationlist = await this.readDonation();
-        this.donations = donationlist; // Update the reactive property
-        this.filteredDonations = this.donations;
+        // Fetch the loans when the component is mounted
+        const loanlist = await this.readLoan();
+        this.loans = loanlist; // Update the reactive property
+        this.filteredLoans = this.loans;
     },
     methods: {
-        async readDonation() {
-            const donationlist = [];
-            const querySnapshot = await getDocs(collection(db, "donation"));
+        async readLoan() {
+            const loanlist = [];
+            const querySnapshot = await getDocs(collection(db, "loans"));
             for (const doc of querySnapshot.docs) {
                 const docId = doc.id;
-                const loansRef = collection(db, `donation/${docId}/loans`);
-                const orderedQuery = query(loansRef, orderBy("endDate", "asc"));
+                const rentalRef = collection(db, `loans/${docId}/rental`);
+                const orderedQuery = query(rentalRef, orderBy("endDate", "asc"));
                 const loansSnapshot = await getDocs(orderedQuery);
-                const loans = [];
-                loansSnapshot.forEach((loanDoc) => {
+                const rental = [];
+                loansSnapshot.forEach((rentalDoc) => {
                     // var finish = new Date(loanDoc.data().endDate.seconds * 1000)
                     // var formate = formatDate(finish) 
-                    loans.push({
-                        loanedto: loanDoc.data().loanedTo,
-                        endDate: formatDate(loanDoc.data().endDate),
-                        startDate: formatDate(loanDoc.data().startDate)
+                    rental.push({
+                        loanedto: rentalDoc.data().loanedTo,
+                        endDate: formatDate(rentalDoc.data().endDate),
+                        startDate: formatDate(rentalDoc.data().startDate)
                     });
                     // var date = loanDoc.data().endDate
                     // var jsDate = new Date(date.seconds * 1000)
@@ -102,27 +102,27 @@ const app = Vue.createApp({
                     console.error("Error getting image URL:", error);
                 }
 
-                donationlist.push({
+                loanlist.push({
                     name: docId,
                     quantity: doc.data().availableQuantity,
                     image: imageUrl,
-                    loans: loans
+                    loans: rental
                 });
             }
-            console.log(donationlist);
-            return donationlist;
+            console.log(loanlist);
+            return loanlist;
         },
 
-filterDonations() {
+        filterLoans() {
             const term = this.searchTerm.toLowerCase();
             if (term != "") {
                 console.log(term)
-                this.filteredDonations = this.donations.filter(donation =>
-                    donation.name.toLowerCase().includes(term)
+                this.filteredLoans = this.loans.filter(loan =>
+                    loan.name.toLowerCase().includes(term)
                 );
             }
             else {
-                this.filteredDonations = this.donations
+                this.filteredLoans = this.loans
             }
 
         },
@@ -142,9 +142,10 @@ filterDonations() {
 
         submitLoan() {
             //need to connect to firebase and include all the random stuff
-            const loanRef = collection(db, 'donation/' + this.currItemName + '/loans')
+            const loanRef = collection(db, 'loans/' + this.currItemName + '/rental')
 
-            this.editDonation();
+            this.editLoan();
+
 
             addDoc(loanRef, {
                 endDate: Timestamp.fromDate(new Date(this.endDate)),
@@ -153,7 +154,7 @@ filterDonations() {
             })
                 .then(() => {
                     // console.log("successful") //try to reset page
-                    this.editDonation();
+                    this.editLoan();
 
                 })
                 .catch((error) => {
@@ -164,16 +165,16 @@ filterDonations() {
             console.log(); // This is your Firestore timestamp
         },
 
-        async editDonation() {
+        async editLoan() {
             var currNo = 0
-            this.donations.forEach(element => {
+            this.loans.forEach(element => {
                 if (element.name == this.currItemName) {
                     currNo = element.quantity
                 }
             });
 
             // this.getNums;
-            const don = doc(db, 'donation/' + this.currItemName)
+            const don = doc(db, 'loans/' + this.currItemName)
             const newTotal = currNo - 1
             console.log(currNo, newTotal)
             const niceDate = new Date(this.startdate)
@@ -188,7 +189,7 @@ filterDonations() {
                 window.location.reload();
             }
             catch (error) {
-                console.error("Error updating donations: " + error)
+                console.error("Error updating loans: " + error)
             }
         },
 
