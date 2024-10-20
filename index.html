@@ -19,6 +19,10 @@
     <link rel="stylesheet" href="assets/css/owl.css">
     <link rel="stylesheet" href="assets/css/animate.css">
     <link rel="stylesheet"href="https://unpkg.com/swiper@7/swiper-bundle.min.css"/>
+
+    <script src="https://unpkg.com/vue@3/dist/vue.global.js"></script>
+    <!-- Import your JavaScript file -->
+    <script type="module" src="assets/js/index.js"></script>
   </head>
   
 
@@ -438,21 +442,47 @@
     </div>
   </div> -->
 
-  <div class="properties section " >
-    <div class="container">
-      <div class="row">
-        <div class="col-lg-4 offset-lg-4">
-          <div class="section-heading text-center">
-            <h6>Events</h6>
-            <h2>Join us for a fun time!</h2>
+  <!-- PREVIOUS EVENTS SECTIONS -->
+
+  <div id="app">
+    <div class="properties section " >
+      <div class="container">
+        <div class="row">
+          <div class="col-lg-4 offset-lg-4">
+            <div class="section-heading text-center">
+              <h6>Events</h6>
+              <h2>Join us for a fun time!</h2>
+            </div>
+          </div>
+        </div>
+  
+        <div class="row row-cols-1 row-cols-md-3 g-4">
+          <div class="col" v-for="event in events" :key="event.id">
+            <div class="item card h-100">
+              <a :href="event.link">
+                <img :src="event.imageURL" class="card-img-top" alt="Event Image" />
+              </a>
+              <div class="card-body">
+                <span class="category">{{ event.cat }}</span>
+                <h6>{{ event.price }}</h6>
+                <h4 class="card-title">{{ event.place }}</h4>
+                <p class="card-text">{{ event.description }}</p>
+              </div>
+              <div class="main-button text-center">
+                <a :href="event.link" class="btn btn-primary">See more!</a>
+              </div>
+            </div>
           </div>
         </div>
       </div>
+    </div>
+  </div>
   
-      <!-- Bootstrap card structure for events while keeping your classes -->
-      <div class="row row-cols-1 row-cols-md-3 g-4">
+  
+    
+      <!-- <div class="row row-cols-1 row-cols-md-3 g-4">
         <div class="col">
-          <div class="item card h-100"> <!-- Retained 'item' class and added Bootstrap 'card' class -->
+          <div class="item card h-100">
             <a href="property-details.html">
               <img src="assets/images/img/pic1.png" class="card-img-top" alt="Event Image 1">
             </a>
@@ -462,8 +492,8 @@
               <h4 class="card-title">Yishun Primary school</h4>
               <p class="card-text">Join us for an amazing game of badminton with Yishun's best player Wenjie!</p>
             </div>
-            <div class="main-button text-center"> <!-- Retained your 'main-button' class -->
-              <a href="property-details.html" class="btn btn-primary">See more!</a> <!-- Added Bootstrap button class -->
+            <div class="main-button text-center">
+              <a href="property-details.html" class="btn btn-primary">See more!</a> 
             </div>
           </div>
         </div>
@@ -554,7 +584,7 @@
         </div>
       </div>
     </div>
-  </div>
+  </div> -->
   
 
   <div class="video section">
