@@ -1,132 +1,142 @@
 <!DOCTYPE html>
 <html lang="en">
 
-<head>
+  <head>
 
-  <meta charset="utf-8">
-  <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
-  <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@100;200;300;400;500;600;700;800;900&display=swap"
-    rel="stylesheet">
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
+    <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@100;200;300;400;500;600;700;800;900&display=swap" rel="stylesheet">
 
-  <title>myBlock</title>
+    <title>myBlock</title>
 
-  <!-- Bootstrap core CSS -->
-  <link href="vendor/bootstrap/css/bootstrap.min.css" rel="stylesheet">
+    <!-- Bootstrap core CSS -->
+    <link href="vendor/bootstrap/css/bootstrap.min.css" rel="stylesheet">
 
 
-  <!-- Additional CSS Files -->
-  <link rel="stylesheet" href="assets/css/fontawesome.css">
-  <link rel="stylesheet" href="assets/css/templatemo-villa-agency.css">
-  <link rel="stylesheet" href="assets/css/owl.css">
-  <link rel="stylesheet" href="assets/css/animate.css">
-  <link rel="stylesheet" href="https://unpkg.com/swiper@7/swiper-bundle.min.css" />
+    <!-- Additional CSS Files -->
+    <link rel="stylesheet" href="assets/css/fontawesome.css">
+    <link rel="stylesheet" href="assets/css/templatemo-villa-agency.css">
+    <link rel="stylesheet" href="assets/css/owl.css">
+    <link rel="stylesheet" href="assets/css/animate.css">
+    <link rel="stylesheet"href="https://unpkg.com/swiper@7/swiper-bundle.min.css"/>
 
-  <script src="https://unpkg.com/vue@3/dist/vue.global.js"></script>
-  <!-- Import your JavaScript file -->
-  <script type="module" src="assets/js/events.js"></script>
-</head>
-
-<body>
-
-  <!-- Subheader -->
-  <div class="sub-header">
-    <div class="container">
-      <div class="row">
-        <div class="col-lg-8 col-md-8">
-          <ul class="info">
-            <li><i class="fa fa-envelope"></i> my-block.com</li>
-            <li><i class="fa fa-map"></i> Singapore</li>
-          </ul>
-        </div>
-        <div class="col-lg-4 col-md-4">
-          <ul class="social-links">
-            <li><a href="#"><i class="fab fa-facebook"></i></a></li>
-            <li><a href="https://x.com/minthu" target="_blank"><i class="fab fa-twitter"></i></a></li>
-            <li><a href="#"><i class="fab fa-linkedin"></i></a></li>
-            <li><a href="#"><i class="fab fa-instagram"></i></a></li>
-          </ul>
+    <script src="https://unpkg.com/vue@3/dist/vue.global.js"></script>
+    <!-- Import your JavaScript file -->
+    <script type="module" src="assets/js/events.js"></script>
+  </head>
+  
+  <body>
+    <!-- Preloader -->
+    <!-- <div id="js-preloader" class="js-preloader">
+      <div class="preloader-inner">
+        <span class="dot"></span>
+        <div class="dots">
+          <span></span>
+          <span></span>
+          <span></span>
         </div>
       </div>
-    </div>
-  </div>
+    </div> -->
 
-  <!-- Header Area Start -->
-  <header class="header-area header-sticky">
-    <div class="container">
-      <div class="row">
-        <div class="col-12">
-          <nav class="main-nav">
-            <a href="index.html" class="logo">
-              <h1><span><inline>MyBlock</inline></span></h1>
-            </a>
-            <ul class="nav">
-              <li><a href="index.html">Announcement</a></li>
-              <li><a href="event.html">Events</a></li>
-              <li><a href="property-details.html">Forum</a></li>
-              <li><a href="contact.html">Donations</a></li>
-              <li><a href="#"><i class="fa fa-calendar"></i> Profile</a></li>
-            </ul>
-            <a class="menu-trigger"><span>Menu</span></a>
-          </nav>
-        </div>
-      </div>
-    </div>
-  </header>
-
-  <!-- Events Section -->
-  <div class="properties section" id="app">
-    <div class="page-heading header-text">
+    <!-- Subheader -->
+    <div class="sub-header">
       <div class="container">
         <div class="row">
-          <div class="col-lg-12">
-            <span class="breadcrumb"><a href="#">Home</a> / Events</span>
-            <h3>Events</h3>
+          <div class="col-lg-8 col-md-8">
+            <ul class="info">
+              <li><i class="fa fa-envelope"></i> my-block.com</li>
+              <li><i class="fa fa-map"></i> Singapore</li>
+            </ul>
+          </div>
+          <div class="col-lg-4 col-md-4">
+            <ul class="social-links">
+              <li><a href="#"><i class="fab fa-facebook"></i></a></li>
+              <li><a href="https://x.com/minthu" target="_blank"><i class="fab fa-twitter"></i></a></li>
+              <li><a href="#"><i class="fab fa-linkedin"></i></a></li>
+              <li><a href="#"><i class="fab fa-instagram"></i></a></li>
+            </ul>
           </div>
         </div>
       </div>
     </div>
 
-    <!-- Filter Buttons -->
-    <div class="section properties">
-      <div class="row mb-4">
-        <div class="col-lg-12 text-center">
-          <button class="btn btn-outline-primary mx-2" :class="{ 'active': filter === 'all' }" @click="setFilter('all')">All</button>
-          <button class="btn btn-outline-primary mx-2" v-for="category in categories" :key="category"
-            @click="setFilter(category)" :class="{ 'active': filter === category }">
-            {{ category }}
-          </button>
+    <!-- Header Area Start -->
+    <header class="header-area header-sticky">
+      <div class="container">
+        <div class="row">
+          <div class="col-12">
+            <nav class="main-nav">
+              <a href="index.html" class="logo">
+                <h1><span><inline>MyBlock</inline></span></h1>
+              </a>
+              <ul class="nav">
+                <li><a href="index.html">Announcement</a></li>
+                <li><a href="event.html">Events</a></li>
+                <li><a href="property-details.html">Forum</a></li>
+                <li><a href="contact.html">Donations</a></li>
+                <li><a href="#"><i class="fa fa-calendar"></i> Profile</a></li>
+              </ul>
+              <a class="menu-trigger"><span>Menu</span></a>
+            </nav>
+          </div>
         </div>
       </div>
+    </header>
 
-      <!-- Events Display -->
-      <div class="row row-cols-1 row-cols-md-3 g-4">
-        <div class="col" v-for="event in filteredEvents" :key="event.id">
-          <div class="item card h-100">
-            <a :href="event.link">
-              <img :src="event.imageURL" class="card-img-top" alt="Event Image" />
-            </a>
-            <div class="card-body">
-              <span class="category">{{ event.cat }}</span>
-              <h6>{{ event.price }}</h6>
-              <h4 class="card-title">{{ event.place }}</h4>
-              <p class="card-text">{{ event.description }}</p>
+      <div id="app">
+        <div class="page-heading header-text">
+          <div class="container">
+            <div class="row">
+              <div class="col-lg-12">
+                <span class="breadcrumb"><a href="#">Home</a> / Events</span>
+                <h3>Events</h3>
+              </div>
             </div>
-            <div class="main-button text-center">
-              <a :href="event.link" class="btn btn-primary">See more!</a>
+          </div>
+        </div>
+        <div class="properties section " >
+          <div class="container">
+          <!-- Filter buttons -->
+          <div class="row mb-4">
+            <div class="col-lg-12 text-center">
+              <button class="btn btn-outline-primary mx-2" :class="{ 'active': filter === 'all' }" @click="setFilter('all')">All</button>
+              <button class="btn btn-outline-primary mx-2" v-for="category in categories" :key="category" @click="setFilter(category)" :class="{ 'active': filter === category }">
+                {{ category }}
+              </button>
+            </div>
+          </div>
+    
+          <div class="row row-cols-1 row-cols-md-3 g-4">
+            <div class="col" v-for="event in filteredEvents" :key="event.id">
+              <div class="item card h-100">
+                <a :href="event.link">
+                  <img :src="event.imageURL" class="card-img-top" alt="Event Image" />
+                </a>
+                <div class="card-body">
+                  <span class="category">{{ event.cat }}</span>
+                  <h6>{{ event.price }}</h6>
+                  <h4 class="card-title">{{ event.place }}</h4>
+                  <p class="card-text">{{ event.description }}</p>
+                </div>
+                <div class="main-button text-center">
+                  <a :href="event.link" class="btn btn-primary">See more!</a>
+                </div>
+              </div>
             </div>
           </div>
         </div>
       </div>
     </div>
-  </div>
+    
+ 
+    
 
-  <!-- Scripts -->
-  <script src="vendor/jquery/jquery.min.js"></script>
-  <script src="vendor/bootstrap/js/bootstrap.min.js"></script>
-  <script src="assets/js/isotope.min.js"></script>
-  <script src="assets/js/owl-carousel.js"></script>
-  <script src="assets/js/counter.js"></script>
-  <script src="assets/js/custom.js"></script>
-</body>
-
+    <!-- Scripts -->
+    <script src="vendor/jquery/jquery.min.js"></script>
+    <script src="vendor/bootstrap/js/bootstrap.min.js"></script>
+    <script src="assets/js/isotope.min.js"></script>
+    <script src="assets/js/owl-carousel.js"></script>
+    <script src="assets/js/counter.js"></script>
+    <script src="assets/js/custom.js"></script>
+  </body>
 </html>
