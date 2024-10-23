@@ -12,6 +12,7 @@ const eventsApp = Vue.createApp({
       categories: [],  // Store unique categories for filtering
       filter: 'all',   // Set the default filter to show all events
       isLoading: true, // Track whether data is being loaded
+      selectedEvent: null, // Track the event to show in the modal
     };
   },
   methods: {
@@ -62,6 +63,14 @@ const eventsApp = Vue.createApp({
     setFilter(category) {
       this.filter = category;
     },
+
+    openEventModal(event) {
+      this.selectedEvent = {
+        ...event,
+        date: event.date.toDate().toLocaleString() // Convert Firestore timestamp to readable date
+      };
+    }
+    
   },
   computed: {
     // Return filtered events based on the selected category
