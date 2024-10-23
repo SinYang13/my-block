@@ -1,6 +1,15 @@
 import { db } from "./config.js"; // Firebase config import
-import { getStorage, ref, getDownloadURL } from "https://www.gstatic.com/firebasejs/10.14.0/firebase-storage.js";
-import { collection, getDocs, query, orderBy } from "https://www.gstatic.com/firebasejs/10.14.0/firebase-firestore.js";
+import {
+  getStorage,
+  ref,
+  getDownloadURL,
+} from "https://www.gstatic.com/firebasejs/10.14.0/firebase-storage.js";
+import {
+  collection,
+  getDocs,
+  query,
+  orderBy,
+} from "https://www.gstatic.com/firebasejs/10.14.0/firebase-firestore.js";
 
 // Initialize Firebase storage
 const storage = getStorage();
@@ -8,9 +17,9 @@ const storage = getStorage();
 const eventsApp = Vue.createApp({
   data() {
     return {
-      events: [],      // Store event data fetched from Firestore
-      categories: [],  // Store unique categories for filtering
-      filter: 'all',   // Set the default filter to show all events
+      events: [], // Store event data fetched from Firestore
+      categories: [], // Store unique categories for filtering
+      filter: "all", // Set the default filter to show all events
       isLoading: true, // Track whether data is being loaded
       selectedEvent: null, // Track the event to show in the modal
     };
@@ -25,7 +34,7 @@ const eventsApp = Vue.createApp({
         const eventsQuery = query(eventsRef, orderBy("place", "asc")); // Replace 'name' with your actual field name
         const querySnapshot = await getDocs(eventsQuery);
 
-        const eventsArray = [];     // Store event data
+        const eventsArray = []; // Store event data
         const categoriesSet = new Set(); // Store unique categories
 
         // Collect promises to fetch image URLs for each event
@@ -67,10 +76,45 @@ const eventsApp = Vue.createApp({
     openEventModal(event) {
       this.selectedEvent = {
         ...event,
-        date: event.date.toDate().toLocaleString() // Convert Firestore timestamp to readable date
+        date: event.date.toDate().toLocaleString(), // Convert Firestore timestamp to readable date
       };
-    }
-    
+    },
+    handleScroll() {
+      const scrollPosition = window.scrollY;
+      const headerHeight = document.querySelector("header").offsetHeight;
+      const headerElement = document.querySelector("header");
+      if (scrollPosition >= headerHeight) {
+        headerElement.classList.add("background-header");
+      } else {
+        headerElement.classList.remove("background-header");
+      }
+    },
+    handleProfileLink() {
+      const email = sessionStorage.getItem("loggedInUserEmail");
+      const userName = sessionStorage.getItem("loggedInUserName");
+      const userType = sessionStorage.getItem("loggedInUserType");
+      const profileLink = document.getElementById("profileLink");
+
+      if (email && userType && userName) {
+        const profileLinkRedir = document.getElementById("profileLinkRedir");
+        profileLinkRedir.setAttribute("href", "profile.html");
+
+        const profileLinkImg = document.getElementById("profileLinkImg");
+        profileLinkImg.className = "fa fa-calendar";
+
+        const profileLinkText = document.getElementById("profileLinkText");
+        profileLinkText.textContent = "Profile";
+      } else {
+        const profileLinkRedir = document.getElementById("profileLinkRedir");
+        profileLinkRedir.setAttribute("href", "login.html");
+
+        const profileLinkImg = document.getElementById("profileLinkImg");
+        profileLinkImg.className = "fa fa-sign-in-alt";
+
+        const profileLinkText = document.getElementById("profileLinkText");
+        profileLinkText.textContent = "Login / Register";
+      }
+    },
   },
   computed: {
     // Return filtered events based on the selected category
@@ -82,9 +126,13 @@ const eventsApp = Vue.createApp({
       }
     },
   },
-  mounted() {
+  async mounted() {
     // Fetch the events once the component is mounted
     this.fetchEvents();
+
+    const app = this;
+    this.handleProfileLink();
+    window.addEventListener("scroll", this.handleScroll);
   },
 });
 

@@ -68,16 +68,23 @@
         <div class="col-12">
           <nav class="main-nav">
             <a href="index.html" class="logo">
-              <h1><span>
+              <h1>
+                <span>
                   <inline>MyBlock</inline>
-                </span></h1>
+                </span>
+              </h1>
             </a>
             <ul class="nav">
-              <li><a href="index.html">Announcement</a></li>
+              <li><a href="announcements.html">Announcements</a></li>
               <li><a href="events.html">Events</a></li>
               <li><a href="forum.html">Forum</a></li>
-              <li><a href="donations.html">Donations</a></li>
-              <li><a href="#"><i class="fa fa-calendar"></i> Profile</a></li>
+              <li><a href="loans.html">Loans</a></li>
+              <li id="profileLink">
+                <a href="profile.html" id="profileLinkRedir">
+                  <i class="fa fa-calendar" id="profileLinkImg"></i>
+                  <span id="profileLinkText">Profile</span>
+                </a>
+              </li>
             </ul>
             <a class="menu-trigger"><span>Menu</span></a>
           </nav>
@@ -128,7 +135,8 @@
                 <p class="card-text">{{ event.description }}</p>
               </div>
               <div class="main-button text-center">
-                <a :href="event.link" class="btn btn-primary" @click="openEventModal(event)" data-bs-toggle="modal" data-bs-target="#eventModal">See more!</a>
+                <a :href="event.link" class="btn btn-primary" @click="openEventModal(event)" data-bs-toggle="modal"
+                  data-bs-target="#eventModal">See more!</a>
               </div>
             </div>
           </div>
