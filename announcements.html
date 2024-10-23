@@ -1,5 +1,6 @@
 <!DOCTYPE html>
 <html lang="en">
+
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
@@ -13,23 +14,26 @@
     <link rel="stylesheet" href="assets/css/templatemo-villa-agency.css">
     <link rel="stylesheet" href="assets/css/owl.css">
     <link rel="stylesheet" href="assets/css/animate.css">
-    <link rel="stylesheet" href="https://unpkg.com/swiper@7/swiper-bundle.min.css"/>
+    <link rel="stylesheet" href="https://unpkg.com/swiper@7/swiper-bundle.min.css" />
     <style>
         .card {
             height: 600px;
         }
+
         .card-body {
             height: 70%;
             overflow: hidden;
             display: flex;
             flex-direction: column;
         }
+
         .card-title {
             height: 10%;
             overflow: hidden;
             text-overflow: ellipsis;
             white-space: nowrap;
         }
+
         .card-content {
             height: 100px;
             overflow: hidden;
@@ -38,9 +42,11 @@
             -webkit-box-orient: vertical;
             text-overflow: ellipsis;
         }
+
         .show-more {
             margin-top: auto;
         }
+
         @media (min-width: 992px) {
             .map-container {
                 position: sticky;
@@ -49,6 +55,7 @@
                 width: 100%;
             }
         }
+
         @media (max-width: 991.98px) {
             .map-container {
                 position: relative;
@@ -60,6 +67,7 @@
         }
     </style>
 </head>
+
 <body>
     <div class="sub-header">
         <div class="container">
@@ -81,8 +89,8 @@
             </div>
         </div>
     </div>
-  
-      <!-- Header Area Start -->
+
+    <!-- Header Area Start -->
     <header class="header-area header-sticky">
         <div class="container">
             <div class="row">
@@ -102,7 +110,7 @@
                             <li><a href="loans.html">Loans</a></li>
                             <li id="profileLink">
                                 <a href="profile.html" id="profileLinkRedir">
-                                    <i class="fa fa-calendar" id="profileLinkImg"></i> 
+                                    <i class="fa fa-calendar" id="profileLinkImg"></i>
                                     <span id="profileLinkText">Profile</span>
                                 </a>
                             </li>
@@ -114,55 +122,78 @@
         </div>
     </header>
 
+    <div class="page-heading header-text">
+        <div class="container">
+            <div class="row">
+                <div class="col-lg-12">
+                    <span class="breadcrumb"><a href="#">Home</a> / Announcements</span>
+                    <h3>Announcements</h3>
+                </div>
+            </div>
+        </div>
+    </div>
+
     <div id="app" class="container mt-5">
-        <h1>Announcements</h1>
+        <!-- <h1>Announcements</h1> -->
         <div v-if="loading" class="mb-3">Loading...</div>
         <div v-if="error" class="alert alert-danger">{{ error }}</div>
-        <div v-if="filteredAnnouncements.length === 0 && otherAnnouncements.length === 0 && !loading" class="mb-3">No announcements available.</div>
+        <div v-if="filteredAnnouncements.length === 0 && otherAnnouncements.length === 0 && !loading" class="mb-3">No
+            announcements available.</div>
 
         <div class="row d-lg-flex flex-lg-row-reverse align-items-start position-static">
             <div class="col-lg-4 col-md-12 mb-4 map-wrapper">
                 <div class="input-group mb-3">
                     <label for="locationInput" class="form-label">Set Your Location (Postal Code)</label>
                     <div class="input-group">
-                        <input type="text" id="locationInput" class="form-control" v-model="postalCode" @change="updateMap" pattern="[0-9]{6}" title="Please enter a valid 6-digit Singapore postal code." required>
+                        <input type="text" id="locationInput" class="form-control" v-model="postalCode"
+                            @change="updateMap" pattern="[0-9]{6}"
+                            title="Please enter a valid 6-digit Singapore postal code." required>
                         <button class="btn btn-outline-secondary" @click="updateMap">Set Location</button>
                     </div>
                 </div>
                 <div id="map" class="map-container" style="height: 400px; width: 100%;"></div>
             </div>
             <div class="col-lg-8 col-md-12">
-                <div class="row properties-box section properties g-3" v-if="filteredAnnouncements.length > 0" style="margin-top: 0px">
-                    <div class="col-xl-4 col-lg-6 col-md-6 mb-4" v-for="announcement in filteredAnnouncements" :key="announcement?.id">
+                <div class="row properties-box section properties g-3" v-if="filteredAnnouncements.length > 0"
+                    style="margin-top: 0px">
+                    <div class="col-xl-4 col-lg-6 col-md-6 mb-4" v-for="announcement in filteredAnnouncements"
+                        :key="announcement?.id">
                         <div class="item">
-                            <img v-if="announcement?.img && announcement.img !== ''" :src="announcement.img" alt="Announcement Image" class="img-fluid" style="height: 200px; object-fit: cover;">
+                            <img v-if="announcement?.img && announcement.img !== ''" :src="announcement.img"
+                                alt="Announcement Image" class="img-fluid" style="height: 200px; object-fit: cover;">
                             <span class="category">{{ announcement?.date }}</span>
                             <h6>{{ announcement?.from }}</h6>
                             <h4><a href="announcement-details.html">{{ announcement?.title }}</a></h4>
                             <p class="card-content">{{ announcement?.content }}</p>
                             <p class="card-location"><strong>Location:</strong> {{ announcement?.location }}</p>
                             <div class="main-button mt-4">
-                                <a href="#" class="btn btn-primary" @click.prevent="showMore(announcement)">Show More</a>
+                                <a href="#" class="btn btn-primary" @click.prevent="showMore(announcement)">Show
+                                    More</a>
                             </div>
                         </div>
                     </div>
                 </div>
 
                 <div v-if="otherAnnouncements.length > 0">
-                    <button class="btn btn-secondary d-block mx-auto my-3" @click="showOtherAnnouncements = !showOtherAnnouncements">
+                    <button class="btn btn-secondary d-block mx-auto my-3"
+                        @click="showOtherAnnouncements = !showOtherAnnouncements">
                         {{ showOtherAnnouncements ? 'Hide Other Announcements' : 'View Other Announcements' }}
                     </button>
                     <div class="row properties-box section properties g-3 mt-3" v-if="showOtherAnnouncements">
-                        <div class="col-xl-4 col-lg-6 col-md-6 mb-4" v-for="announcement in otherAnnouncements" :key="announcement?.id">
+                        <div class="col-xl-4 col-lg-6 col-md-6 mb-4" v-for="announcement in otherAnnouncements"
+                            :key="announcement?.id">
                             <div class="item">
-                                <img v-if="announcement?.img && announcement.img !== ''" :src="announcement.img" alt="Announcement Image" class="img-fluid" style="height: 200px; object-fit: cover;">
+                                <img v-if="announcement?.img && announcement.img !== ''" :src="announcement.img"
+                                    alt="Announcement Image" class="img-fluid"
+                                    style="height: 200px; object-fit: cover;">
                                 <span class="category">{{ announcement?.date }}</span>
                                 <h6>{{ announcement?.from }}</h6>
                                 <h4><a href="announcement-details.html">{{ announcement?.title }}</a></h4>
                                 <p class="card-content">{{ announcement?.content }}</p>
                                 <p class="card-location"><strong>Location:</strong> {{ announcement?.location }}</p>
                                 <div class="main-button mt-4">
-                                    <a href="#" class="btn btn-primary" @click.prevent="showMore(announcement)">Show More</a>
+                                    <a href="#" class="btn btn-primary" @click.prevent="showMore(announcement)">Show
+                                        More</a>
                                 </div>
                             </div>
                         </div>
@@ -172,7 +203,8 @@
         </div>
 
         <!-- Modal for Showing More Details -->
-        <div class="modal fade" id="announcementModal" tabindex="-1" aria-labelledby="announcementModalLabel" aria-hidden="true" ref="announcementModal">
+        <div class="modal fade" id="announcementModal" tabindex="-1" aria-labelledby="announcementModalLabel"
+            aria-hidden="true" ref="announcementModal">
             <div class="modal-dialog">
                 <div class="modal-content">
                     <div class="modal-header">
@@ -180,9 +212,10 @@
                         <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
                     </div>
                     <div class="modal-body">
-                        <img v-if="modalContent?.img" :src="modalContent.img" alt="Announcement Image" class="img-fluid my-3" style="object-fit: cover;">
+                        <img v-if="modalContent?.img" :src="modalContent.img" alt="Announcement Image"
+                            class="img-fluid my-3" style="object-fit: cover;">
                         <div style="display: flex; justify-content: space-between; align-items: center;">
-                            <h1>{{ modalContent?.title }}</h1>
+                            <h3>{{ modalContent?.title }}</h3>
                             <div style="text-align: right;">
                                 <p><strong>Sent By: {{ modalContent?.from }}</strong></p>
                                 <p><strong>Date: {{ modalContent?.date }}</strong></p>
@@ -202,56 +235,56 @@
 
     <!-- Bootstrap JS bundle -->
     <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3/dist/js/bootstrap.bundle.min.js"></script>
-    
+
     <script type="module">
         import { readAnnouncements } from './db/announcementsCRUD.js';
 
         const { createApp } = Vue;
 
         createApp({
-          data() {
-              return {
-                  announcements: [],
-                  filteredAnnouncements: [],
-                  otherAnnouncements: [],
-                  showOtherAnnouncements: false,
-                  loading: false,
-                  error: null,
-                  modalContent: {},
-                  postalCode: '123456',
-                  map: null,
-                  marker: null,
-                  googleMapsApiKey: '',
-                  longAddress: ''
-              };
-          },
+            data() {
+                return {
+                    announcements: [],
+                    filteredAnnouncements: [],
+                    otherAnnouncements: [],
+                    showOtherAnnouncements: false,
+                    loading: false,
+                    error: null,
+                    modalContent: {},
+                    postalCode: '123456',
+                    map: null,
+                    marker: null,
+                    googleMapsApiKey: '',
+                    longAddress: ''
+                };
+            },
             methods: {
-              async fetchAnnouncements() {
-                  this.loading = true;
-                  this.error = null;
-                  try {
-                      let announcements = await readAnnouncements();
-                      announcements.sort((a, b) => new Date(b.date) - new Date(a.date));
-                      this.announcements = announcements;
-                      this.filteredAnnouncements = this.announcements.filter(announcement => announcement.location === this.postalCode);
-                      this.otherAnnouncements = this.announcements.filter(announcement => announcement.location !== this.postalCode);
-                  } catch (err) {
-                      console.error("Error fetching announcements:", err);
-                      this.error = "Failed to fetch announcements.";
-                  } finally {
-                      this.loading = false;
-                  }
-              },
+                async fetchAnnouncements() {
+                    this.loading = true;
+                    this.error = null;
+                    try {
+                        let announcements = await readAnnouncements();
+                        announcements.sort((a, b) => new Date(b.date) - new Date(a.date));
+                        this.announcements = announcements;
+                        this.filteredAnnouncements = this.announcements.filter(announcement => announcement.location === this.postalCode);
+                        this.otherAnnouncements = this.announcements.filter(announcement => announcement.location !== this.postalCode);
+                    } catch (err) {
+                        console.error("Error fetching announcements:", err);
+                        this.error = "Failed to fetch announcements.";
+                    } finally {
+                        this.loading = false;
+                    }
+                },
                 showMore(announcement) {
                     this.modalContent = announcement;
                     this.getAddressFromPostalCode(announcement.location)
-                      .then((address) => {
-                          this.longAddress = address;
-                      })
-                      .catch((error) => {
-                          console.error('Error fetching address:', error);
-                          this.longAddress = 'Unable to retrieve address';
-                      });
+                        .then((address) => {
+                            this.longAddress = address;
+                        })
+                        .catch((error) => {
+                            console.error('Error fetching address:', error);
+                            this.longAddress = 'Unable to retrieve address';
+                        });
                     const modal = new bootstrap.Modal(this.$refs.announcementModal);
                     modal.show();
                 },
@@ -278,21 +311,21 @@
                     this.updateMarker();
                 },
                 updateMap() {
-                  if (this.postalCode && /^[0-9]{6}$/.test(this.postalCode)) {
-                      fetch(`https://maps.googleapis.com/maps/api/geocode/json?address=${this.postalCode},Singapore&key=${this.googleMapsApiKey}`)
-                          .then(response => response.json())
-                          .then(data => {
-                              if (data.results && data.results.length > 0) {
-                                  const location = data.results[0].geometry.location;
-                                  this.map.setCenter(location);
-                                  this.filteredAnnouncements = this.announcements.filter(announcement => announcement.location === this.postalCode);
-                                  this.otherAnnouncements = this.announcements.filter(announcement => announcement.location !== this.postalCode);
-                                  this.updateMarker(location);
-                              }
-                          })
-                          .catch(error => console.error('Error fetching location:', error));
-                  }
-              },
+                    if (this.postalCode && /^[0-9]{6}$/.test(this.postalCode)) {
+                        fetch(`https://maps.googleapis.com/maps/api/geocode/json?address=${this.postalCode},Singapore&key=${this.googleMapsApiKey}`)
+                            .then(response => response.json())
+                            .then(data => {
+                                if (data.results && data.results.length > 0) {
+                                    const location = data.results[0].geometry.location;
+                                    this.map.setCenter(location);
+                                    this.filteredAnnouncements = this.announcements.filter(announcement => announcement.location === this.postalCode);
+                                    this.otherAnnouncements = this.announcements.filter(announcement => announcement.location !== this.postalCode);
+                                    this.updateMarker(location);
+                                }
+                            })
+                            .catch(error => console.error('Error fetching location:', error));
+                    }
+                },
                 updateMarker(location) {
                     if (!location) {
                         location = this.map.getCenter();
@@ -321,7 +354,7 @@
                     const userName = sessionStorage.getItem('loggedInUserName');
                     const userType = sessionStorage.getItem('loggedInUserType');
                     const profileLink = document.getElementById('profileLink');
-                    
+
                     if (email && userType && userName) {
                         const profileLinkRedir = document.getElementById("profileLinkRedir");
                         profileLinkRedir.setAttribute("href", "profile.html");
@@ -369,4 +402,5 @@
         }).mount('#app');
     </script>
 </body>
+
 </html>
