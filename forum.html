@@ -1,0 +1,220 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Login</title>
+    <!-- Bootstrap CSS -->
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3/dist/css/bootstrap.min.css" rel="stylesheet">
+    <!-- Vue 3 -->
+    <script src="https://unpkg.com/vue@3/dist/vue.global.js"></script>
+    <link rel="stylesheet" href="assets/css/fontawesome.css">
+    <link rel="stylesheet" href="assets/css/templatemo-villa-agency.css">
+    <link rel="stylesheet" href="assets/css/owl.css">
+    <link rel="stylesheet" href="assets/css/animate.css">
+    <link rel="stylesheet" href="https://unpkg.com/swiper@7/swiper-bundle.min.css"/>
+
+    
+    <script type="module" src="./assets/js/Forum.js"></script>
+    <style>
+        /* #app {
+            position: relative;
+        } */
+        body {
+            margin: 20px;
+            font-family: Arial, sans-serif;
+        }
+        .forum-container {
+            max-width: 800px;
+            margin: auto;
+        }
+        .forum-post {
+            border-bottom: 1px solid #ddd;
+            padding: 20px 0;
+        }
+        .forum-post:last-child {
+            border-bottom: none;
+        }
+        .comments-section {
+            margin-left: 20px;
+        }
+        .comment {
+            border-left: 2px solid #ccc;
+            padding-left: 10px;
+            margin-bottom: 10px;
+        }
+        .category-buttons button {
+            margin-right: 10px;
+        }
+
+        .topright {
+            position: relative;
+            float: right;
+            top: 8px;
+            right: 16px;
+            font-size: 18px;
+        }
+    </style>
+</head>
+<body id="app">
+    <div class="sub-header">
+        <div class="container">
+            <div class="row">
+                <div class="col-lg-8 col-md-8">
+                    <ul class="info">
+                        <li><i class="fa fa-envelope"></i> my-block.com</li>
+                        <li><i class="fa fa-map"></i> Singapore</li>
+                    </ul>
+                </div>
+                <div class="col-lg-4 col-md-4">
+                    <ul class="social-links">
+                        <li><a href="#"><i class="fab fa-facebook"></i></a></li>
+                        <li><a href="https://x.com/minthu" target="_blank"><i class="fab fa-twitter"></i></a></li>
+                        <li><a href="#"><i class="fab fa-linkedin"></i></a></li>
+                        <li><a href="#"><i class="fab fa-instagram"></i></a></li>
+                    </ul>
+                </div>
+            </div>
+        </div>
+    </div>
+  
+      <!-- Header Area Start -->
+    <header class="header-area header-sticky">
+        <div class="container">
+            <div class="row">
+                <div class="col-12">
+                    <nav class="main-nav">
+                        <a href="index.html" class="logo">
+                            <h1>
+                                <span>
+                                    <inline>MyBlock</inline>
+                                </span>
+                            </h1>
+                        </a>
+                        <ul class="nav">
+                            <li><a href="announcements.html">Announcements</a></li>
+                            <li><a href="events.html">Events</a></li>
+                            <li><a href="forum.html">Forum</a></li>
+                            <li><a href="loans.html">Loans</a></li>
+                            <li id="profileLink">
+                                <a href="profile.html" id="profileLinkRedir">
+                                    <i class="fa fa-calendar" id="profileLinkImg"></i> 
+                                    <span id="profileLinkText">Profile</span>
+                                </a>
+                            </li>
+                        </ul>
+                        <a class="menu-trigger"><span>Menu</span></a>
+                    </nav>
+                </div>
+            </div>
+        </div>
+    </header>
+
+
+    <div class="forum-container">
+        <!-- Forum Header -->
+        <h1 class="text-center">Forum</h1>
+        <button type="button" class="btn btn-primary buttonDisplay topright" v-show="displayButton" @click="openForm">New Post</button>
+
+        <!-- Category Filter Buttons -->
+        <div class="category-buttons mt-4 text-center">
+            <button 
+                class="btn btn-outline-primary" 
+                :class="{ active: selectedCategory === 'All' }" 
+                @click="selectedCategory = 'All'">
+                All
+            </button>
+            <button 
+                class="btn btn-outline-primary" 
+                :class="{ active: selectedCategory === 'General' }" 
+                @click="selectedCategory = 'General'">
+                General
+            </button>
+            <button 
+                class="btn btn-outline-primary" 
+                :class="{ active: selectedCategory === 'Feedback' }" 
+                @click="selectedCategory = 'Feedback'">
+                Feedback
+            </button>
+            <button 
+                class="btn btn-outline-primary" 
+                :class="{ active: selectedCategory === 'Lost and Found' }" 
+                @click="selectedCategory = 'Lost and Found'">
+                Lost and Found
+            </button>
+        </div>
+        
+
+        <!-- New Post Form -->
+        <div id="forumForm" v-show="!displayForumForm">
+            <div class="topright">
+                <button type="button" class="btn btn-light" style="padding: 10px;" @click="closeForm">
+                    <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor" class="bi bi-x-lg" viewBox="0 0 16 16">
+                        <path d="M2.146 2.854a.5.5 0 1 1 .708-.708L8 7.293l5.146-5.147a.5.5 0 0 1 .708.708L8.707 8l5.147 5.146a.5.5 0 0 1-.708.708L8 8.707l-5.146 5.147a.5.5 0 0 1-.708-.708L7.293 8z"/>
+                    </svg>
+                </button>
+            </div>
+            <div class="card my-4">
+                
+                <div class="card-header">Create a New Post</div>
+                <div class="card-body">
+                    <form>
+                        <div class="mb-3">
+                            <label for="category" class="form-label">Category</label>
+                            <select class="form-select" id="category" name="category" v-model="category" required>
+                                <option value="General">General</option>
+                                <option value="Feedback">Feedback</option>
+                                <option value="Lost and Found">Lost and Found</option>
+                            </select>
+                        </div>
+                        <div class="mb-3">
+                            <label for="title" class="form-label">Title</label>
+                            <input type="text" class="form-control" id="title" name="title" v-model="title" required>
+                        </div>
+                        <div class="mb-3">
+                            <label for="content" class="form-label">Content</label>
+                            <textarea class="form-control" id="content" name="content" rows="4" v-model="content" required></textarea>
+                        </div>
+                        <a style="margin-top: 25px;" class="btn btn-primary" @click="createPost">Submit</a>
+                    </form>
+                </div>
+            </div>
+        </div>
+
+        <!-- Forum Posts -->
+        <div class="forum-post" v-for="post in filteredPosts" :key="post.id">
+            <h3>{{ post.title }}</h3>
+            <p><strong>Category:</strong> {{ post.category }}</p>
+            <p><strong>Author:</strong> {{ post.author }}</p>
+            <p>{{ post.content }}</p>
+
+            <!-- Comments Section -->
+            <div class="comments-section">
+                <h5>Comments</h5>
+                <!-- Check if comments exist -->
+                <div v-if="post.comments.length > 0">
+                    <!-- Toggle Comments Button -->
+                    <button class="btn btn-link" @click="post.showComments = !post.showComments">
+                        {{ post.showComments ? 'Hide Comments' : 'Show Comments' }}
+                    </button>
+
+                    <!-- Display Comments if toggle is active -->
+                    <div v-if="post.showComments">
+                        <div class="comment" v-for="comment in post.comments" :key="comment.id">
+                            <p><strong>Commenter:</strong> {{ comment.author }}</p>
+                            <p>{{ comment.content }}</p>
+                        </div>
+                    </div>
+                </div>
+                <!-- Display "No comments" if there are no comments -->
+                <div v-else>
+                    <p>No comments</p>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Bootstrap JS bundle -->
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3/dist/js/bootstrap.bundle.min.js"></script> 
+</body>
+</html>
