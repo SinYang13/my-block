@@ -71,9 +71,9 @@
               </a>
               <ul class="nav">
                 <li><a href="index.html">Announcement</a></li>
-                <li><a href="event.html">Events</a></li>
+                <li><a href="events.html">Events</a></li>
                 <li><a href="forum.html">Forum</a></li>
-                <li><a href="contact.html">Donations</a></li>
+                <li><a href="donations.html">Donations</a></li>
                 <li><a href="#"><i class="fa fa-calendar"></i> Profile</a></li>
               </ul>
               <a class="menu-trigger"><span>Menu</span></a>
@@ -99,12 +99,22 @@
           <!-- Filter buttons -->
           <div class="row mb-4">
             <div class="col-lg-12 text-center">
-              <button class="btn btn-outline-primary mx-2" :class="{ 'active': filter === 'all' }" @click="setFilter('all')">All</button>
-              <button class="btn btn-outline-primary mx-2" v-for="category in categories" :key="category" @click="setFilter(category)" :class="{ 'active': filter === category }">
+              <button class="btn btn-outline-primary btn-filter mx-2" 
+                      :class="{ 'active': filter === 'all' }" 
+                      @click="setFilter('all')">
+                All
+              </button>
+              
+              <button class="btn btn-outline-primary btn-filter mx-2" 
+                      v-for="category in categories" 
+                      :key="category" 
+                      @click="setFilter(category)" 
+                      :class="{ 'active': filter == category }">
                 {{ category }}
               </button>
             </div>
           </div>
+          
     
           <div class="row row-cols-1 row-cols-md-3 g-4">
             <div class="col" v-for="event in filteredEvents" :key="event.id">

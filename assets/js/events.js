@@ -1,61 +1,75 @@
 import { db } from "./config.js"; // Firebase config import
 import { getStorage, ref, getDownloadURL } from "https://www.gstatic.com/firebasejs/10.14.0/firebase-storage.js";
-import { collection, getDocs, query } from "https://www.gstatic.com/firebasejs/10.14.0/firebase-firestore.js";
+import { collection, getDocs, query, orderBy } from "https://www.gstatic.com/firebasejs/10.14.0/firebase-firestore.js";
 
 // Initialize Firebase storage
 const storage = getStorage();
 
-// Create a new Vue app instance
 const eventsApp = Vue.createApp({
   data() {
     return {
-      events: [], // Store event data fetched from Firestore
-      categories: [], // Store unique categories for filtering
-      filter: 'all', // Set the default filter to show all events
+      events: [],      // Store event data fetched from Firestore
+      categories: [],  // Store unique categories for filtering
+      filter: 'all',   // Set the default filter to show all events
+      isLoading: true, // Track whether data is being loaded
     };
   },
   methods: {
     // Fetch events from Firestore
     async fetchEvents() {
-      const eventsRef = collection(db, "events");
-      const querySnapshot = await getDocs(query(eventsRef));
+      try {
+        const eventsRef = collection(db, "events");
 
-      // Temporary set to collect unique categories
-      let categoriesSet = new Set();
+        // Use orderBy to order by the 'name' field in ascending order (A-Z)
+        const eventsQuery = query(eventsRef, orderBy("place", "asc")); // Replace 'name' with your actual field name
+        const querySnapshot = await getDocs(eventsQuery);
 
-      // Loop through the events and fetch associated image URLs from Firebase Storage
-      querySnapshot.forEach(async (doc) => {
-        const eventData = doc.data();
-        const imageRef = ref(storage, "events/" + eventData.image);
-        const imageURL = await getDownloadURL(imageRef);
+        const eventsArray = [];     // Store event data
+        const categoriesSet = new Set(); // Store unique categories
 
-        // Push event data to the events array
-        this.events.push({
-          ...eventData,
-          id: doc.id,
-          imageURL, // Store the image URL for displaying
-          link: eventData.link || "#", // Set a default link if none is provided
+        // Collect promises to fetch image URLs for each event
+        const promises = querySnapshot.docs.map(async (doc) => {
+          const eventData = doc.data();
+          const imageRef = ref(storage, "events/" + eventData.image);
+          const imageURL = await getDownloadURL(imageRef);
+
+          // Add the event to eventsArray with imageURL
+          eventsArray.push({
+            ...eventData,
+            id: doc.id,
+            imageURL,
+            link: eventData.link || "#", // Set a default link if none is provided
+          });
+
+          // Add the event category to the Set
+          categoriesSet.add(eventData.cat);
         });
 
-        // Add the event category to the categories set
-        categoriesSet.add(eventData.cat);
-      });
+        // Wait for all promises (image fetch) to resolve
+        await Promise.all(promises);
 
-      // Convert the set to an array to populate the categories filter
-      this.categories = Array.from(categoriesSet);
+        // Set the events and categories
+        this.events = eventsArray;
+        this.categories = Array.from(categoriesSet);
+        console.log(this.categories); // Debug to check categories
+        this.isLoading = false; // Data has finished loading
+      } catch (error) {
+        console.error("Error fetching events:", error);
+        this.isLoading = false;
+      }
     },
     // Update the filter when a button is clicked
     setFilter(category) {
-      this.filter = category; // Set the selected category as the filter
+      this.filter = category;
     },
   },
   computed: {
     // Return filtered events based on the selected category
     filteredEvents() {
-      if (this.filter === 'all') {
+      if (this.filter === "all") {
         return this.events; // Show all events if 'all' is selected
       } else {
-        return this.events.filter(event => event.cat === this.filter); // Show only events that match the selected category
+        return this.events.filter((event) => event.cat === this.filter); // Show only events that match the selected category
       }
     },
   },
