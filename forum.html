@@ -20,10 +20,6 @@
         /* #app {
             position: relative;
         } */
-        body {
-            margin: 20px;
-            font-family: Arial, sans-serif;
-        }
         .forum-container {
             max-width: 800px;
             margin: auto;
@@ -31,6 +27,7 @@
         .forum-post {
             border-bottom: 1px solid #ddd;
             padding: 20px 0;
+            margin: 20px;
         }
         .forum-post:last-child {
             border-bottom: none;
@@ -50,9 +47,23 @@
         .topright {
             position: relative;
             float: right;
-            top: 8px;
-            right: 16px;
             font-size: 18px;
+        }
+        #forumForm {
+            position: fixed;
+            top: 50%;
+            left: 50%;
+            transform: translate(-50%, -50%);
+            z-index: 1000;
+            background: white;
+            border-radius: 8px;
+            box-shadow: 0 2px 10px rgba(0, 0, 0, 0.1);
+            padding: 20px;
+            /* Add padding for better spacing */
+            width: 90%;
+            /* Make the form responsive */
+            max-width: 500px;
+            /* Set a maximum width for larger screens */
         }
     </style>
 </head>
@@ -110,10 +121,21 @@
         </div>
     </header>
 
+    <div class="page-heading header-text">
+        <div class="container">
+          <div class="row">
+            <div class="col-lg-12">
+              <span class="breadcrumb"><a href="#">Home</a> / Events</span>
+              <h3>Forum</h3>
+            </div>
+          </div>
+        </div>
+      </div>
 
     <div class="forum-container">
+        
         <!-- Forum Header -->
-        <h1 class="text-center">Forum</h1>
+        <!-- <h1 class="text-center">Forum</h1> -->
         <button type="button" class="btn btn-primary buttonDisplay topright" v-show="displayButton" @click="openForm">New Post</button>
 
         <!-- Category Filter Buttons -->
@@ -154,6 +176,7 @@
                     </svg>
                 </button>
             </div>
+            <br><br>
             <div class="card my-4">
                 
                 <div class="card-header">Create a New Post</div>
