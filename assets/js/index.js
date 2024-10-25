@@ -12,6 +12,7 @@ import {
   query,
   limit,
 } from "https://www.gstatic.com/firebasejs/10.14.0/firebase-firestore.js";
+import { readAnnouncements } from '../../db/announcementsCRUD.js';
 
 const storage = getStorage();
 
@@ -22,6 +23,7 @@ const eventsApp = Vue.createApp({
       events: [], // Stores the event data
       map: null,
       googleMapsApiKey: "",
+      announcements: []
     };
   },
   methods: {
@@ -44,6 +46,16 @@ const eventsApp = Vue.createApp({
         });
       });
     },
+    async fetchAnnouncements() {
+      try {
+          let announcements = await readAnnouncements();
+          announcements.sort((a, b) => new Date(b.date) - new Date(a.date));
+          this.announcements = announcements;
+          console.log(this.announcements)
+      } catch (err) {
+          console.error("Error fetching announcements:", err);
+      }
+  },
     initMap() {
       // Initialize the map
       this.map = new google.maps.Map(document.getElementById("map"), {
@@ -138,6 +150,7 @@ const eventsApp = Vue.createApp({
     }
 
     this.fetchEvents(); // Fetch events when the component is mounted
+    this.fetchAnnouncements();
 
     this.handleProfileLink();
     window.addEventListener("scroll", this.handleScroll);
