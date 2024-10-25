@@ -74,6 +74,8 @@
 
             const userData = { password, type };
             try {
+                console.log(email)
+                console.log(userData)
                 await createUser(email, userData);
                 alert('User created successfully.');
                 // Clear fields after creation

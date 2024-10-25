@@ -82,10 +82,10 @@
         <h2 class="text-center">Register</h2>
         <div v-if="error" class="alert alert-danger">{{ error }}</div>
         <form @submit.prevent="register">
-            <div class="mb-3">
+            <!-- <div class="mb-3">
                 <label for="name" class="form-label">Name</label>
                 <input type="text" id="name" v-model="name" class="form-control" required>
-            </div>
+            </div> -->
             <div class="mb-3">
                 <label for="email" class="form-label">Email</label>
                 <input type="email" id="email" v-model="email" class="form-control" required>
@@ -132,12 +132,15 @@
                     }
                     try {
                         // Create new user in the database
-                        await createUser({
-                            name: this.name,
-                            email: this.email,
-                            password: this.password,
-                            type: 'user'
-                        });
+                        var password = this.password;
+                        const type = "user";
+                        const userData = { password, type };
+                        var email = this.email
+
+                        console.log(email)
+                        console.log(userData)
+
+                        await createUser(email, userData);
                         window.location.href = 'login.html';
                     } catch (err) {
                         console.error('Error registering:', err);
