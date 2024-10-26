@@ -21,7 +21,7 @@ const app = Vue.createApp({
             loans: [], // Initialize as an empty array
             // formnodisplayActive: true,
             formdisplayActive: false,
-            userName: '',
+            userName: sessionStorage.getItem("loggedInUserName"),
             startdate: new Date(),
             currItemName: '',
             // totalQuantity:0,
@@ -146,24 +146,34 @@ const app = Vue.createApp({
 
         submitLoan() {
             //need to connect to firebase and include all the random stuff
-            const loanRef = collection(db, 'loans/' + this.currItemName + '/rental')
+            let inputDate = new Date(this.startdate)
+            let currentDate = new Date()
+            if(inputDate >= currentDate){
+                this.editLoan();
 
-            this.editLoan();
-
-
-            addDoc(loanRef, {
-                endDate: Timestamp.fromDate(new Date(this.endDate)),
-                startDate: Timestamp.fromDate(new Date(this.startdate)),
-                loanedTo: this.userName
-            })
-                .then(() => {
-                    // console.log("successful") //try to reset page
-                    this.editLoan();
-
+                const loanRef = collection(db, 'loans/' + this.currItemName + '/rental')
+                addDoc(loanRef, {
+                    endDate: Timestamp.fromDate(new Date(this.endDate)),
+                    startDate: Timestamp.fromDate(new Date(this.startdate)),
+                    loanedTo: this.userName,
+                    status: "Collection"
                 })
-                .catch((error) => {
-                    console.error("Error adding loan: ", error);
-                });
+                    .then(() => {
+                        // console.log("successful") //try to reset page
+                        this.editLoan();
+    
+                    })
+                    .catch((error) => {
+                        console.error("Error adding loan: ", error);
+                    });
+            }
+            else{
+                window.alert("The date you have inputed is not valid")
+
+            }
+            
+
+           
 
 
             console.log(); // This is your Firestore timestamp
