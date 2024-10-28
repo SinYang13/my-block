@@ -7,6 +7,10 @@ import { collection, setDoc, getDocs, updateDoc, deleteDoc, doc, getDoc } from '
 export async function createUser(email, userData) {
     try {
         const userDocRef = doc(db, 'users', email);
+        // Adding registerDate if not already provided
+        if (!userData.registerDate) {
+            userData.registerDate = new Date();
+        }
         await setDoc(userDocRef, userData);
     } catch (error) {
         console.error('Error creating user:', error);

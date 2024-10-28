@@ -11,8 +11,15 @@ import {
   getDocs,
   query,
   limit,
+  doc,
+  getDoc,
+  updateDoc,
+  setDoc,
+  addDoc,
 } from "https://www.gstatic.com/firebasejs/10.14.0/firebase-firestore.js";
-import { readAnnouncements } from '../../db/announcementsCRUD.js';
+import { readAnnouncements } from "../../db/announcementsCRUD.js";
+
+import { logEvent } from "https://www.gstatic.com/firebasejs/10.14.0/firebase-analytics.js";
 
 const storage = getStorage();
 
@@ -23,7 +30,7 @@ const eventsApp = Vue.createApp({
       events: [], // Stores the event data
       map: null,
       googleMapsApiKey: "",
-      announcements: []
+      announcements: [],
     };
   },
   methods: {
@@ -48,14 +55,14 @@ const eventsApp = Vue.createApp({
     },
     async fetchAnnouncements() {
       try {
-          let announcements = await readAnnouncements();
-          announcements.sort((a, b) => new Date(b.date) - new Date(a.date));
-          this.announcements = announcements;
-          console.log(this.announcements)
+        let announcements = await readAnnouncements();
+        announcements.sort((a, b) => new Date(b.date) - new Date(a.date));
+        this.announcements = announcements;
+        console.log(this.announcements);
       } catch (err) {
-          console.error("Error fetching announcements:", err);
+        console.error("Error fetching announcements:", err);
       }
-  },
+    },
     initMap() {
       // Initialize the map
       this.map = new google.maps.Map(document.getElementById("map"), {
@@ -135,6 +142,45 @@ const eventsApp = Vue.createApp({
         // profileLink.innerHTML = `<a href="login.html"><i class="fa fa-sign-in-alt"></i> Login / Register</a>`;
       }
     },
+    trackPageView() {
+      logEvent(analytics, "page_view", {
+        page_title: document.title,
+        page_location: window.location.href,
+        page_path: window.location.pathname,
+      });
+    },
+    async incrementVisitorCount() {
+      try {
+        // Reference to the visitorCount document
+        const visitorDocRef = doc(db, "visitors", "visitorCount");
+        const visitorDoc = await getDoc(visitorDocRef);
+
+        // Increment the visitor count
+        if (visitorDoc.exists()) {
+          await updateDoc(visitorDocRef, {
+            count: visitorDoc.data().count + 1,
+          });
+        } else {
+          // Initialize count if document doesn't exist
+          await setDoc(visitorDocRef, { count: 1 });
+        }
+
+        // Add new document in the datetime subcollection with the current datetime
+        const datetimeSubCollectionRef = collection(
+          db,
+          "visitors",
+          "visitorCount",
+          "datetime"
+        );
+        await addDoc(datetimeSubCollectionRef, {
+          datetime: new Date(),
+        });
+
+        console.log("Visitor count incremented and datetime logged.");
+      } catch (error) {
+        console.error("Error incrementing visitor count:", error);
+      }
+    },
   },
   async mounted() {
     try {
@@ -154,6 +200,8 @@ const eventsApp = Vue.createApp({
 
     this.handleProfileLink();
     window.addEventListener("scroll", this.handleScroll);
+
+    await this.incrementVisitorCount();
   },
 });
 

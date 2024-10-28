@@ -35,6 +35,7 @@
         <input type="text" id="userEmail" placeholder="Email">
         <input type="password" id="userPassword" placeholder="Password">
         <input type="text" id="userType" placeholder="Type (admin/user)">
+        <input type="date" id="userRegisterDate" placeholder="Register Date">
         <button id="createUserBtn">Create User</button>
     </div>
 
@@ -49,6 +50,7 @@
         <input type="text" id="updateUserId" placeholder="User Email to Update">
         <input type="password" id="updateUserPassword" placeholder="New Password">
         <input type="text" id="updateUserType" placeholder="New Type (admin/user)">
+        <input type="date" id="updateUserRegisterDate" placeholder="New Register Date">
         <button id="updateUserBtn">Update User</button>
     </div>
 
@@ -66,22 +68,23 @@
             const email = document.getElementById("userEmail").value.trim();
             const password = document.getElementById("userPassword").value.trim();
             const type = document.getElementById("userType").value.trim();
+            const registerDateInput = document.getElementById("userRegisterDate").value;
+            const registerDate = registerDateInput ? new Date(registerDateInput) : new Date();
 
             if (!email || !password || !type) {
                 alert("Please fill in all fields.");
                 return;
             }
 
-            const userData = { password, type };
+            const userData = { password, type, registerDate };
             try {
-                console.log(email)
-                console.log(userData)
                 await createUser(email, userData);
                 alert('User created successfully.');
                 // Clear fields after creation
                 document.getElementById("userEmail").value = "";
                 document.getElementById("userPassword").value = "";
                 document.getElementById("userType").value = "";
+                document.getElementById("userRegisterDate").value = "";
             } catch (error) {
                 console.error("Error creating user:", error);
                 alert("Failed to create user.");
@@ -103,7 +106,8 @@
                     userItem.classList.add("user");
                     userItem.innerHTML = `<strong>Email:</strong> ${user.id} <br>
                                           <strong>Password:</strong> ${user.password} <br>
-                                          <strong>Type:</strong> ${user.type}`;
+                                          <strong>Type:</strong> ${user.type} <br>
+                                          <strong>Register Date:</strong> ${user.registerDate ? new Date(user.registerDate.seconds * 1000).toLocaleDateString() : 'N/A'}`;
                     userList.appendChild(userItem);
                 });
             } catch (error) {
@@ -117,8 +121,10 @@
             const email = document.getElementById("updateUserId").value.trim();
             const password = document.getElementById("updateUserPassword").value.trim();
             const type = document.getElementById("updateUserType").value.trim();
+            const registerDateInput = document.getElementById("updateUserRegisterDate").value;
+            const registerDate = registerDateInput ? new Date(registerDateInput) : null;
 
-            if (!email || !(password || type)) {
+            if (!email || !(password || type || registerDate)) {
                 alert("Please provide the User Email and at least one field to update.");
                 return;
             }
@@ -126,6 +132,7 @@
             const updatedData = {};
             if (password) updatedData.password = password;
             if (type) updatedData.type = type;
+            if (registerDate) updatedData.registerDate = registerDate;
 
             try {
                 await updateUser(email, updatedData);
