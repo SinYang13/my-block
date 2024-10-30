@@ -68,7 +68,8 @@
             <li><a href="announcements.html">Announcements</a></li>
             <li><a href="events.html">Events</a></li>
             <li><a href="forum.html">Forum</a></li>
-            <li><a href="loans.html">Loans</a></li>
+            <li><a href="loans.html" class="active">Loans</a></li>
+            <li><a href="services.html">Services</a></li>
             <li id="profileLink">
               <a href="profile.html" id="profileLinkRedir">
                 <i class="fa fa-calendar" id="profileLinkImg"></i>
@@ -83,13 +84,24 @@
   </div>
 </header>
 
+<div class="page-heading header-text">
+  <div class="container">
+    <div class="row">
+      <div class="col-lg-12">
+        <span class="breadcrumb"><a href="index.html">Home</a> / Loans</span>
+        <h3>Loans</h3>
+      </div>
+    </div>
+  </div>
+</div>
+
 <body>
   <div id="app">
     <!-- <div class="{notif:notifDisplayActive, hideNotif: hideDisplayActive} alert alert-success">
             <strong>Success!</strong> This alert box could indicate a successful or positive action.
           </div> -->
     <div class="section-heading text-center">
-      <h2>Loans</h2>
+      <!-- <h2>Loans</h2> -->
       <div class="search-bar">
         <input type="text" v-model="searchTerm" placeholder="Search..." class="search-input" @input="filterLoans">
         <button class="search-button">

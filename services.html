@@ -1,0 +1,138 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
+  <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@100;200;300;400;500;600;700;800;900&display=swap"
+    rel="stylesheet">
+
+  <title>myBlock - Services</title>
+
+  <!-- Bootstrap core CSS -->
+  <link href="vendor/bootstrap/css/bootstrap.min.css" rel="stylesheet">
+
+  <!-- Additional CSS Files -->
+  <link rel="stylesheet" href="assets/css/fontawesome.css">
+  <link rel="stylesheet" href="assets/css/templatemo-villa-agency.css">
+  <link rel="stylesheet" href="assets/css/owl.css">
+  <link rel="stylesheet" href="assets/css/animate.css">
+  <link rel="stylesheet" href="https://unpkg.com/swiper@7/swiper-bundle.min.css" />
+</head>
+
+<body>
+
+  <!-- Header (Kept from existing structure) -->
+  <header class="header-area header-sticky">
+    <div class="container">
+      <div class="row">
+        <div class="col-12">
+          <nav class="main-nav">
+            <a href="index.html" class="logo">
+              <h1><span><inline>MyBlock</inline></span></h1>
+            </a>
+            <ul class="nav">
+              <li><a href="announcements.html">Announcements</a></li>
+              <li><a href="events.html">Events</a></li>
+              <li><a href="forum.html">Forum</a></li>
+              <li><a href="loans.html">Loans</a></li>
+              <li><a href="services.html" class="active">Services</a></li>
+              <li id="profileLink">
+                <a href="profile.html" id="profileLinkRedir">
+                  <i class="fa fa-calendar" id="profileLinkImg"></i>
+                  <span id="profileLinkText">Profile</span>
+                </a>
+              </li>
+            </ul>
+            <a class="menu-trigger"><span>Menu</span></a>
+          </nav>
+        </div>
+      </div>
+    </div>
+  </header>
+
+  <div class="page-heading header-text">
+    <div class="container">
+      <div class="row">
+        <div class="col-lg-12">
+          <span class="breadcrumb"><a href="index.html">Home</a> / Services</span>
+          <h3>Services</h3>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- Vue Mounting Point (This is where Vue will mount) -->
+  <div id="app">
+    <!-- Search Bar -->
+    <div class="section-heading text-center">
+      <div class="search-bar">
+        <input type="text" v-model="searchTerm" placeholder="Search services..." class="search-input" @input="filterServices">
+        <button class="search-button">
+          <i class="fa fa-search"></i>
+        </button>
+      </div>
+    </div>
+
+    <!-- Services Section -->
+    <div class="properties section">
+      <div class="container">
+        <div class="row row-cols-1 row-cols-md-3 g-4">
+          <div class="col" v-for="service in filteredServices" :key="service.id">
+            <div class="item card h-100">
+              <a :href="service.link">
+                <!-- Use 'serviceImage' instead of 'imageURL' -->
+                <img :src="service.imageURL" class="card-img-top" alt="Event Image" />
+              </a>
+              <div class="card-body">
+                <!-- Use 'serviceName' instead of 'name' -->
+                <h6>{{ service.price }}</h6>
+                <h4 class="card-title">{{ service.serviceName }}</h4>
+                <p class="card-text">{{ service.description }}</p>
+              </div>
+              <div class="main-button text-center">
+                <a class="btn btn-primary" @click="openServiceModal(service)" data-bs-toggle="modal" data-bs-target="#serviceModal">See more!</a>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+
+
+
+  <!-- Modal for Detailed View -->
+<div class="modal" id="serviceModal" tabindex="-1" aria-labelledby="serviceModalLabel" aria-hidden="true">
+  <div class="modal-dialog modal-md">
+    <div class="modal-content" v-if="selectedService">
+      <div class="modal-header">
+        <h5 class="modal-title" id="serviceModalLabel">{{ selectedService.serviceName }}</h5>
+        <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+      </div>
+      <div class="modal-body">
+        <!-- Here we're using the correct imageURL from Firebase -->
+        <img :src="selectedService.imageURL" class="img-fluid w-100 mb-3" alt="Service Image">
+        <p><strong>Price:</strong> {{ selectedService.price }}</p>
+        <p><strong>Description:</strong> {{ selectedService.detailedServiceDescription }}</p>
+        <p><strong>Rating:</strong> {{ selectedService.rating }}</p>
+        <p><strong>Provider:</strong> {{ selectedService.serviceProviderInformation }}</p>
+        <p><strong>Duration:</strong> {{ selectedService.serviceDuration }}</p>
+      </div>
+      <div class="modal-footer">
+        <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Close</button>
+      </div>
+    </div>
+  </div>
+</div>
+  </div>
+
+
+  <!-- Scripts -->
+  <script src="vendor/jquery/jquery.min.js"></script>
+  <script src="vendor/bootstrap/js/bootstrap.min.js"></script>
+  <script src="assets/js/custom.js"></script>
+  <script src="https://unpkg.com/vue@3/dist/vue.global.js"></script>
+  <script type="module" src="assets/js/services.js"></script>
+</body>
+
+</html>
