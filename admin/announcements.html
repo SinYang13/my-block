@@ -1,0 +1,498 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Announcements</title>
+    <!-- Bootstrap CSS -->
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3/dist/css/bootstrap.min.css" rel="stylesheet">
+    <!-- Vue 3 -->
+    <script src="https://unpkg.com/vue@3/dist/vue.global.js"></script>
+    <script type="module" src="../db/announcementsCRUD.js"></script>
+    <link rel="stylesheet" href="../assets/css/fontawesome.css">
+    <link rel="stylesheet" href="../assets/css/templatemo-villa-agency.css">
+    <link rel="stylesheet" href="../assets/css/owl.css">
+    <link rel="stylesheet" href="../assets/css/animate.css">
+    <link rel="stylesheet" href="https://unpkg.com/swiper@7/swiper-bundle.min.css" />
+    <style>
+        .dashboard-container {
+            display: flex;
+            flex-direction: column;
+            height: 80vh;
+        }
+
+        @media (min-width: 992px) {
+            .dashboard-container {
+                flex-direction: row;
+            }
+        }
+
+        .dashboard-menu {
+            width: 100%;
+            background-color: #f8f9fa;
+        }
+
+        @media (min-width: 992px) {
+            .dashboard-menu {
+                width: 20%;
+            }
+        }
+
+        .dashboard-visualization {
+            width: 100%;
+            padding-left: 20px;
+            padding-right: 20px;
+            display: flex;
+            flex-direction: column;
+            gap: 20px;
+        }
+
+        @media (min-width: 992px) {
+            .dashboard-visualization {
+                width: 80%;
+                display: flex;
+                flex-direction: row;
+                flex-wrap: wrap;
+                gap: 20px;
+            }
+        }
+
+        .dashboard-menu ul {
+            list-style-type: none;
+            padding: 0px;
+        }
+
+        .dashboard-menu ul li {
+            padding: 10px 20px;
+            margin-bottom: 15px;
+        }
+
+        .dashboard-menu ul li a {
+            text-decoration: none;
+            color: #333;
+            font-weight: bold;
+        }
+
+        .visualization-tile {
+            background-color: #e9ecef;
+            border-radius: 8px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            position: relative;
+            overflow-y: auto;
+        }
+
+        .visualization-tile.small {
+            height: 35%;
+            padding: 10px;
+            overflow: hidden;
+            width: calc(50% - 10px);
+        }
+
+        .visualization-tile.large {
+            height: 65%;
+            width: 100%;
+            overflow-x: hidden;
+        }
+
+        .visitor-count {
+            font-size: 2em;
+            font-weight: bold;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+        }
+
+        .card-body {
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            height: 100%;
+            width: 100%;
+        }
+
+        .card-title {
+            margin-top: 20px;
+        }
+
+        .line-chart {
+            width: 100%;
+            height: 100%;
+        }
+
+        #createAnnouncementForm {
+            width: 100%;
+        }
+    </style>
+    <!-- Firebase App (compatibility version) -->
+    <script src="https://www.gstatic.com/firebasejs/9.15.0/firebase-app-compat.js"></script>
+
+    <!-- Firebase Firestore (compatibility version) -->
+    <script src="https://www.gstatic.com/firebasejs/9.15.0/firebase-firestore-compat.js"></script>
+
+    <!-- Firebase Authentication (compatibility version) -->
+    <script src="https://www.gstatic.com/firebasejs/9.15.0/firebase-auth-compat.js"></script>
+
+    <!-- Firebase Storage (compatibility version) -->
+    <script src="https://www.gstatic.com/firebasejs/9.15.0/firebase-storage-compat.js"></script>
+</head>
+
+<body>
+    <div class="sub-header" style="background-color: rgb(248, 208, 208);">
+        <div class="container">
+            <div class="row">
+                <div class="col-lg-8 col-md-8">
+                    <ul class="info">
+                        <li>Admin Dashboard</li>
+                    </ul>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Header Area Start -->
+    <header class="header-area header-sticky">
+        <div class="container">
+            <div class="row">
+                <div class="col-12">
+                    <nav class="main-nav">
+                        <a href="../admin.html" class="logo">
+                            <h1>
+                                <span>
+                                    <inline>MyBlock</inline>
+                                </span>
+                            </h1>
+                        </a>
+                        <ul class="nav">
+                            <li><a href="../index.html">Home</a></li>
+                            <li id="profileLink">
+                                <a href="../profile.html" id="profileLinkRedir">
+                                    <i class="fa fa-calendar" id="profileLinkImg"></i>
+                                    <span id="profileLinkText">Profile</span>
+                                </a>
+                            </li>
+                        </ul>
+                        <a class="menu-trigger"><span>Menu</span></a>
+                    </nav>
+                </div>
+            </div>
+        </div>
+    </header>
+
+
+    <div id="app">
+        <!-- Update Announcement Modal -->
+        <div class="modal fade" id="updateModal" tabindex="-1" aria-labelledby="updateModalLabel" aria-hidden="true">
+            <div class="modal-dialog">
+                <div class="modal-content">
+                    <div class="modal-header">
+                        <h5 class="modal-title" id="updateModalLabel">Update Announcement</h5>
+                        <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"
+                            @click="clear"></button>
+                    </div>
+                    <div class="modal-body">
+                        <form id="updateAnnouncementForm">
+                            <div class="mb-3">
+                                <label for="updateAnnouncementTitle" class="form-label">Title</label>
+                                <textarea class="form-control" id="updateAnnouncementTitle" v-model="announcement.title"
+                                    rows="2" required></textarea>
+                            </div>
+                            <div class="mb-3">
+                                <label for="updateAnnouncementContent" class="form-label">Content</label>
+                                <textarea class="form-control" id="updateAnnouncementContent"
+                                    v-model="announcement.content" rows="2" required></textarea>
+                            </div>
+                            <div class="mb-3">
+                                <label for="updateAnnouncementDate" class="form-label">Date</label>
+                                <input type="date" class="form-control" id="updateAnnouncementDate"
+                                    v-model="announcement.date" required>
+                            </div>
+                            <div class="mb-3">
+                                <label for="updateAnnouncementFrom" class="form-label">From</label>
+                                <input type="text" class="form-control" id="updateAnnouncementFrom"
+                                    v-model="announcement.from" required>
+                            </div>
+                            <div class="mb-3">
+                                <label for="updateAnnouncementLocation" class="form-label">Location</label>
+                                <input type="text" class="form-control" id="updateAnnouncementLocation"
+                                    v-model="announcement.location" required>
+                            </div>
+                            <div class="mb-3">
+                                <label for="updateAnnouncementImg" class="form-label">Image (optional)</label>
+                                <input type="file" class="form-control" id="updateAnnouncementImg"
+                                    @change="handleUpdateFileUpload">
+                            </div>
+                        </form>
+                    </div>
+                    <div class="modal-footer">
+                        <button type="button" class="btn btn-secondary" data-bs-dismiss="modal"
+                            @click="clear">Close</button>
+                        <button type="button" class="btn btn-primary" @click="handleSaveUpdate">Save changes</button>
+                    </div>
+                </div>
+            </div>
+        </div>
+        <div class="dashboard-container">
+            <div class="dashboard-menu">
+                <ul>
+                    <li style="background-color: lightcoral"><a href="announcements.html">Announcements</a></li>
+                    <li><a href="events.html">Events</a></li>
+                    <li><a href="forum.html">Forum</a></li>
+                    <li><a href="loans.html">Loans</a></li>
+                </ul>
+            </div>
+            <div class="dashboard-visualization">
+                <div class="visualization-tile small">
+                    <form id="createAnnouncementForm">
+                        <div class="row">
+                            <div class="mb-3 col-3">
+                                <label for="announcementTitle" class="form-label">Title</label>
+                                <textarea class="form-control" id="announcementTitle" v-model="announcement.title"
+                                    rows="2" required></textarea>
+                            </div>
+                            <div class="mb-3 col-9">
+                                <label for="announcementContent" class="form-label">Content</label>
+                                <textarea class="form-control" id="announcementContent" v-model="announcement.content"
+                                    rows="2" required></textarea>
+                            </div>
+                        </div>
+                        <div class="row">
+                            <div class="mb-3 col-3">
+                                <label for="announcementDate" class="form-label">Date</label>
+                                <input type="date" class="form-control" id="announcementDate"
+                                    v-model="announcement.date" required>
+                            </div>
+                            <div class="mb-3 col-3">
+                                <label for="announcementFrom" class="form-label">From</label>
+                                <input type="text" class="form-control" id="announcementFrom"
+                                    v-model="announcement.from" required>
+                            </div>
+                            <div class="mb-3 col-3">
+                                <label for="announcementImg" class="form-label">Image</label>
+                                <input type="file" class="form-control" id="announcementImg" @change="handleFileUpload"
+                                    required>
+                            </div>
+                            <div class="mb-3 col-3">
+                                <label for="announcementLocation" class="form-label">Location</label>
+                                <input type="text" class="form-control" id="announcementLocation"
+                                    v-model="announcement.location" required>
+                            </div>
+                        </div>
+
+
+                        <button type="button" class="btn btn-primary" @click="handleCreateAnnouncement">Create
+                            Announcement</button>
+                    </form>
+                </div>
+                <div class="visualization-tile small">
+                    <div class="visitor-count">
+                        Announcements Count: {{ announcements.length }}
+                    </div>
+                </div> <!-- New smaller tile added -->
+                <div class="visualization-tile large" style="padding-top: 20px;">
+                    <div class="row" style="height:100%; margin:5px">
+                        <div v-for="announcement in announcements" :key="announcement.id" class="col-12 mb-3">
+                            <div class="card">
+                                <div class="row g-0" style="height:100px">
+                                    <div class="col-2">
+                                        <img :src="announcement.img" class="img-fluid rounded-start"
+                                            alt="Announcement Image" style="height:100px">
+                                    </div>
+                                    <div class="col-8">
+                                        <div class="" style="height:100px; padding: 10px">
+                                            <h5 class="">{{ announcement.title }}</h5>
+                                            <p class="">{{ announcement.content }}</p>
+                                            <p class=""><small class="text-muted">From: {{ announcement.from }}
+                                                    | Date: {{ announcement.date }} | Location: {{ announcement.location
+                                                    }}</small></p>
+                                        </div>
+                                    </div>
+                                    <div class="col-md-2 d-flex align-items-center justify-content-end">
+                                        <button type="button" class="btn btn-warning me-2"
+                                            @click="handleUpdateAnnouncement(announcement)">Update</button>
+                                        <button type="button" class="btn btn-danger"
+                                            @click="handleDeleteAnnouncement(announcement.id)">Delete</button>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+    </div>
+
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3/dist/js/bootstrap.bundle.min.js"></script>
+    <script type="module">
+        import { createAnnouncement, readAnnouncements, updateAnnouncement, deleteAnnouncement } from '../db/announcementsCRUD.js';
+        import { getStorage, ref, uploadBytes, getDownloadURL } from "https://www.gstatic.com/firebasejs/10.14.0/firebase-storage.js";
+        const storage = getStorage();
+
+        const { createApp } = Vue;
+
+        createApp({
+            data() {
+                return {
+                    announcement: {
+                        title: '',
+                        content: '',
+                        date: '',
+                        from: '',
+                        imgFile: null,
+                        location: ''
+                    },
+                    announcements: []
+                };
+            },
+            methods: {
+                handleUpdateAnnouncement(announcement) {
+                    this.announcement = { ...announcement };
+                    const updateModal = new bootstrap.Modal(document.getElementById('updateModal'));
+                    updateModal.show();
+                },
+                clear() {
+                    this.announcement = {
+                        title: '',
+                        content: '',
+                        date: '',
+                        from: '',
+                        imgFile: null,
+                        location: ''
+                    }
+                },
+                async handleDeleteAnnouncement(id) {
+                    try {
+                        await deleteAnnouncement(id);
+                        alert('Announcement deleted successfully');
+                        await this.loadAnnouncements();
+                    } catch (error) {
+                        console.error('Error deleting announcement:', error);
+                        alert('Failed to delete announcement.');
+                    }
+                },
+                handleScroll() {
+                    const scrollPosition = window.scrollY;
+                    const headerHeight = document.querySelector('header').offsetHeight;
+                    const headerElement = document.querySelector('header');
+                    if (scrollPosition >= headerHeight) {
+                        headerElement.classList.add('background-header');
+                    } else {
+                        headerElement.classList.remove('background-header');
+                    }
+                },
+                handleProfileLink() {
+                    const email = sessionStorage.getItem('loggedInUserEmail');
+                    const userName = sessionStorage.getItem('loggedInUserName');
+                    const userType = sessionStorage.getItem('loggedInUserType');
+                    const profileLink = document.getElementById('profileLink');
+
+                    if (email && userType && userName) {
+                        const profileLinkRedir = document.getElementById("profileLinkRedir");
+                        profileLinkRedir.setAttribute("href", "../profile.html");
+
+                        const profileLinkImg = document.getElementById("profileLinkImg");
+                        profileLinkImg.className = "fa fa-calendar";
+
+                        const profileLinkText = document.getElementById("profileLinkText");
+                        profileLinkText.textContent = "Profile"
+
+                    } else {
+                        const profileLinkRedir = document.getElementById("profileLinkRedir");
+                        profileLinkRedir.setAttribute("href", "login.html");
+
+                        const profileLinkImg = document.getElementById("profileLinkImg");
+                        profileLinkImg.className = "fa fa-sign-in-alt";
+
+                        const profileLinkText = document.getElementById("profileLinkText");
+                        profileLinkText.textContent = "Login / Register"
+                    }
+                },
+                handleFileUpload(event) {
+                    this.announcement.imgFile = event.target.files[0];
+                },
+                handleUpdateFileUpload(event) {
+                    this.announcement.imgFile = event.target.files[0];
+                },
+                async handleCreateAnnouncement() {
+                    const { title, content, date, from, imgFile, location } = this.announcement;
+
+                    if (!title || !content || !date || !from || !imgFile || !location) {
+                        alert("Please fill in all fields.");
+                        return;
+                    }
+
+                    // Upload the image to Firebase Storage
+                    const imgRef = ref(storage, `announcements/${imgFile.name}`);
+                    await uploadBytes(imgRef, imgFile);
+                    const imgUrl = await getDownloadURL(imgRef).then(url => decodeURIComponent(url));
+
+                    const announcementData = { title, content, date, from, img: imgFile.name, location };
+                    try {
+                        const announcementId = await createAnnouncement(announcementData);
+                        alert(`Announcement created with ID: ${announcementId}`);
+                        // Add the new announcement to the announcements array without reloading
+                        let imgUrl = `https://firebasestorage.googleapis.com/v0/b/myblock-wad.appspot.com/o/announcements%2F${encodeURIComponent(announcementData.img)}?alt=media`;
+                        // Add the new announcement to the events array without reloading
+                        this.announcements.push({ id: announcementId, ...announcementData, img: imgUrl });
+                        // Clear fields after creation
+                        this.announcement = {
+                            title: '',
+                            content: '',
+                            date: '',
+                            from: '',
+                            imgFile: null,
+                            location: ''
+                        };
+                    } catch (error) {
+                        console.error("Error creating announcement:", error);
+                        alert("Failed to create announcement.");
+                    }
+                },
+                async handleSaveUpdate() {
+                    const { title, content, date, from, imgFile, location, id, img } = this.announcement;
+
+                    if (!title || !content || !date || !from || !location) {
+                        alert("Please fill in all required fields.");
+                        return;
+                    }
+
+                    let imgUrl = `https://firebasestorage.googleapis.com/v0/b/myblock-wad.appspot.com/o/announcements%2F${encodeURIComponent(this.announcement.imgName)}?alt=media`;
+                    if (imgFile) {
+                        // Upload the new image to Firebase Storage
+                        const imgRef = ref(storage, `announcements/${imgFile.name}`);
+                        await uploadBytes(imgRef, imgFile);
+                        imgUrl = await getDownloadURL(imgRef);
+                    }
+
+                    const updatedAnnouncement = { title, content, date, from, img: imgFile ? imgFile.name : this.announcement.imgName, location };
+                    try {
+                        console.log('Updating announcement with data:', updatedAnnouncement);
+                        await updateAnnouncement(id, updatedAnnouncement);
+                        alert('Announcement updated successfully');
+                        await this.loadAnnouncements();
+                    } catch (error) {
+                        console.error("Error updating announcement:", error);
+                        alert("Failed to update announcement.");
+                    }
+                },
+                async loadAnnouncements() {
+                    try {
+                        this.announcements = await readAnnouncements();
+                    } catch (error) {
+                        console.error("Error loading announcements:", error);
+                    }
+                }
+            },
+            async mounted() {
+                this.handleProfileLink();
+                window.addEventListener('scroll', this.handleScroll);
+                await this.loadAnnouncements();
+            }
+        }).mount('#app');
+    </script>
+</body>
+
+</html>

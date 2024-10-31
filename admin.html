@@ -33,7 +33,6 @@
         .dashboard-menu {
             width: 100%;
             background-color: #f8f9fa;
-            padding: 20px;
         }
 
         @media (min-width: 992px) {
@@ -60,10 +59,11 @@
 
         .dashboard-menu ul {
             list-style-type: none;
-            padding: 0;
+            padding: 0px;
         }
 
         .dashboard-menu ul li {
+            padding: 10px 20px;
             margin-bottom: 15px;
         }
 
@@ -301,7 +301,7 @@
 
 
             const y = d3.scaleLinear()
-                .domain([0, d3.max(data, d => d.count)])
+                .domain([0, d3.max(data, d => d.count)+1])
                 .nice()
                 .range([height, 0]);
 

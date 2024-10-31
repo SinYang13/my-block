@@ -4,9 +4,9 @@ import { collection, addDoc, getDocs, updateDoc, deleteDoc, doc } from "https://
 
 // Create function
 async function createEvent(eventData) {
-    if (!eventData || !eventData.name || !eventData.date || !eventData.desc || !eventData.link) {
-        throw new Error("Incomplete event data");
-    }
+    // if (!eventData || !eventData.name || !eventData.date || !eventData.description || !eventData.link) {
+    //     throw new Error("Incomplete event data");
+    // }
     const docRef = await addDoc(collection(db, "events"), eventData);
     return docRef.id;
 }
@@ -14,11 +14,17 @@ async function createEvent(eventData) {
 // Read function
 async function readEvents() {
     const querySnapshot = await getDocs(collection(db, "events"));
-    const data = {};
+    const events = [];
     querySnapshot.forEach((doc) => {
-        data[doc.id] = doc.data();
+        const data = { ...doc.data() }; // Create a new object to pass by value
+        // Update img path to Firebase Storage URL
+        if (data.image) {
+            data.imgName = String(data.image); // Create a distinct copy of the img value
+            data.image = `https://firebasestorage.googleapis.com/v0/b/myblock-wad.appspot.com/o/events%2F${encodeURIComponent(data.image)}?alt=media`;
+        }
+        events.push({ id: doc.id, ...data });
     });
-    return data;
+    return events;
 }
 
 // Update function
