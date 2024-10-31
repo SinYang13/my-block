@@ -207,3 +207,22 @@ const eventsApp = Vue.createApp({
 
 // Mount to the #app element
 eventsApp.mount("#app");
+
+var form = document.getElementById("contact-form");
+
+form.addEventListener("submit", function(event) {
+  event.preventDefault();
+
+  emailjs.send("service_yk1eg59", "template_d7z5v2j", {
+    from_name: document.getElementById("name").value,
+    email: document.getElementById("email").value,
+    subject: document.getElementById("subject").value,
+    message: document.getElementById("message").value
+  })
+  .then(function(response) {
+    alert("Email sent successfully!");
+  }, function(error) {
+    console.error("EmailJS error:", error); // log error to console for debugging
+    alert("There was an error sending the email.");
+  });
+});
