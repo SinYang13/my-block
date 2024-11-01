@@ -128,40 +128,6 @@ const app = Vue.createApp({
             return loanlist;
         },
 
-        filterLoans() {
-            const term = (this.searchTerm || "").toLowerCase();
-            console.log(term)
-            if (term != "") {
-                console.log(term)
-                this.filteredLoans = this.loanOwners.filter(loan =>
-                    loan.name.toLowerCase().includes(term)
-                );
-            }
-            else {
-                this.filteredLoans = this.loanOwners
-            }
-
-        },
-
-        // async getData() {
-        //     const rentalRef = collection(db, `loans/${this.itemName}/rental`);
-        //     const loansSnapshot = await getDocs(rentalRef);
-        //     const rental = [];
-        //         loansSnapshot.forEach((rentalDoc) => {
-        //             // var finish = new Date(loanDoc.data().endDate.seconds * 1000)
-        //             // var formate = formatDate(finish) 
-        //             rental.push({
-        //                 loanedto: rentalDoc.data().loanedTo,
-        //                 endDate: formatDate(rentalDoc.data().endDate),
-        //                 startDate: formatDate(rentalDoc.data().startDate),
-        //                 status: rentalDoc.data().status,
-        //                 id: rentalDoc.id,
-        //             });
-        //         });
-        //         // this.loanOwners = rental;
-        //         console.log(rental)
-
-        // },
         async getRentals(){
             const rentalList = [];
             const querySnapshot = await getDocs(collection(db, "loans"));
@@ -185,13 +151,13 @@ const app = Vue.createApp({
             console.log(rentalList);
             return rentalList;
         },
-        async updateRental(itemId){
+        async updateRental(itemId,curritemName){
             let statustype = ""
             let count = 0
 
             this.loans.forEach(element => {
                 console.log(element)
-                if (element.name == this.itemName) {
+                if (element.name == curritemName) {
                    let loanlist = element.loans
                    count = element.quantity
                    loanlist.forEach(loan =>{
@@ -205,8 +171,11 @@ const app = Vue.createApp({
             });
 
             // this.getNums;
-            const docUpdate = doc(db, `loans/${this.itemName}/rental/${itemId}`)
-            const docDelete = doc(db, `loans/${this.itemName}/rental`,itemId)
+            // const docUpdate = doc(db, `loans/${this.itemName}/rental`,itemId)
+            console.log(curritemName)
+            const docUpdate = doc(db, 'loans/' + curritemName +'/rental/'+ itemId)
+            const docDelete = doc(db, 'loans/' + curritemName +'/rental/'+ itemId)
+            // const docDelete = doc(db, `loans/${this.itemName}/rental`,itemId)
 
             console.log(count)
             console.log(statustype)

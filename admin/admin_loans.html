@@ -191,9 +191,9 @@ background:#eee;
                         <td v-if="each.status == 'Overdue'" style="color: red;">{{each.status}}</td>
                         <td v-else="each.status == 'Overdue'">{{each.status}}</td>
                         <td> 
-                          <button type="button" class="btn btn-Primary" @click="updateRental(each.id)" v-if="each.status == 'Loaned'">Return</button>
-                          <button type="button" class="btn btn-success" @click="updateRental(each.id)" v-if="each.status == 'Collection'">Collect</button>
-                          <button type="button" class="btn btn-danger" @click="updateRental(each.id)" v-if="each.status == 'Overdue'">Return</button>
+                          <button type="button" class="btn btn-Primary" @click="updateRental(each.id,each.itemName)" v-if="each.status == 'Loaned'">Return</button>
+                          <button type="button" class="btn btn-success" @click="updateRental(each.id,each.itemName)" v-if="each.status == 'Collection'">Collect</button>
+                          <button type="button" class="btn btn-danger" @click="updateRental(each.id,each.itemName)" v-if="each.status == 'Overdue'">Return</button>
                         </td>
                       </tr>
                     </tbody>
