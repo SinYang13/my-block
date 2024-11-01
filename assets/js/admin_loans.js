@@ -1,4 +1,4 @@
-import { db } from '../firebaseConfig.js';
+import { db } from './config.js';
 import {
     collection, getDocs, addDoc, query,
     Timestamp, orderBy, doc, updateDoc,deleteDoc
@@ -45,8 +45,8 @@ const app = Vue.createApp({
             return this.loanOwners.filter(loans => {
                 // Apply status filter
                 let statusMatch;
-                if (this.selectedStatus == '') {
-                    statusMatch = true; // Show all items if 'All' is selected
+                if (this.selectedStatus === '') {
+                    statusMatch = true;
                 } else if (this.selectedStatus === 'Collection') {
                     statusMatch = loans.status === this.selectedStatus;
                 } else {
@@ -56,8 +56,12 @@ const app = Vue.createApp({
                 // Apply item name filter
                 let itemMatch = this.itemName === "" || loans.itemName === this.itemName;
     
-                // Both conditions must be true for an item to be included
-                return statusMatch && itemMatch;
+                // console.log(loans.loanedto.toLowerCase())
+                // Apply search term filter
+                let searchMatch = this.searchTerm === "" || loans.loanedto.toLowerCase().includes(this.searchTerm.toLowerCase());
+    
+                // All conditions must be true
+                return statusMatch && itemMatch && searchMatch;
             });
         }
 
