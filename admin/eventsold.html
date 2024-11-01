@@ -22,9 +22,40 @@
             height: 80vh;
         }
 
+        @media (min-width: 992px) {
+            .dashboard-container {
+                flex-direction: row;
+            }
+        }
+
         .dashboard-menu {
+            width: 100%;
             background-color: #f8f9fa;
-            height: 100%
+        }
+
+        @media (min-width: 992px) {
+            .dashboard-menu {
+                width: 20%;
+            }
+        }
+
+        .dashboard-visualization {
+            width: 100%;
+            padding-left: 20px;
+            padding-right: 20px;
+            display: flex;
+            flex-direction: column;
+            gap: 20px;
+        }
+
+        @media (min-width: 992px) {
+            .dashboard-visualization {
+                width: 80%;
+                display: flex;
+                flex-direction: row;
+                flex-wrap: wrap;
+                gap: 20px;
+            }
         }
 
         .dashboard-menu ul {
@@ -54,19 +85,22 @@
         }
 
         .visualization-tile.small {
+            height: 40%;
+            padding: 10px;
             overflow: hidden;
-            padding: 20px;
-            /* margin-bottom: 20px; */
+            width: calc(50% - 10px);
         }
 
         .visualization-tile.large {
+            height: 60%;
+            width: 100%;
             overflow-x: hidden;
-            padding-top: 20px;
         }
 
         .visitor-count {
             font-size: 2em;
             font-weight: bold;
+            display: flex;
             align-items: center;
             justify-content: center;
         }
@@ -230,123 +264,95 @@
 
 
 
-
         <div class="dashboard-container">
-            <div class="row">
-                <div class="col-12 col-lg-3 p-4">
-                    <div class="dashboard-menu">
-                        <ul>
-                            <li><a href="announcements.html">Announcements</a></li>
-                            <li style="background-color: lightcoral"><a href="events.html">Events</a></li>
-                            <li><a href="forum.html">Forum</a></li>
-                            <li><a href="loans.html">Loans</a></li>
-                        </ul>
-                    </div>
-                </div>
-                <div class="col-12 col-lg-9 p-4">
-                    <div class="row" style="margin-bottom:20px">
-                        <!-- small tile form-->
-                        <div class="col-12 col-lg-9" style="padding:0px">
-                            <div class="dashboard-visualization">
-                                <div class="visualization-tile small">
-                                    <form id="createEventForm">
-                                        <div class="row">
-                                            <div class="mb-3 col-4">
-                                                <label for="eventTitle" class="form-label">Title</label>
-                                                <input type="text" class="form-control" id="eventTitle"
-                                                    v-model="event.title" required>
-                                            </div>
-                                            <div class="mb-3 col-4">
-                                                <label for="eventCategory" class="form-label">Category</label>
-                                                <input type="text" class="form-control" id="eventCategory"
-                                                    v-model="event.cat" required>
-                                            </div>
-                                            <div class="mb-3 col-4">
-                                                <label for="eventDate" class="form-label">Date</label>
-                                                <input type="datetime-local" class="form-control" id="eventDate"
-                                                    v-model="event.date" required>
-                                            </div>
-                                        </div>
-                                        <div class="row">
-                                            <div class="mb-3 col-4">
-                                                <label for="eventPlace" class="form-label">Place</label>
-                                                <input type="text" class="form-control" id="eventPlace"
-                                                    v-model="event.place" required>
-                                            </div>
-                                            <div class="mb-3 col-4">
-                                                <label for="eventPostal" class="form-label">Postal Code</label>
-                                                <input type="text" class="form-control" id="eventPostal"
-                                                    v-model="event.postal" required>
-                                            </div>
-                                            <div class="mb-3 col-4">
-                                                <label for="eventPrice" class="form-label">Price</label>
-                                                <input type="text" class="form-control" id="eventPrice"
-                                                    v-model="event.price" required>
-                                            </div>
-                                        </div>
-                                        <div class="row">
-                                            <div class="mb-3 col-6">
-                                                <label for="eventDescription" class="form-label">Description</label>
-                                                <textarea class="form-control" id="eventDescription"
-                                                    v-model="event.description" rows="1" required></textarea>
-                                            </div>
-                                            <div class="mb-3 col-6">
-                                                <label for="eventImg" class="form-label">Image</label>
-                                                <input type="file" class="form-control" id="eventImg"
-                                                    @change="handleFileUpload" required>
-                                            </div>
-                                        </div>
+            <div class="dashboard-menu">
+                <ul>
+                    <li><a href="announcements.html">Announcements</a></li>
+                    <li style="background-color: lightcoral"><a href="events.html">Events</a></li>
+                    <li><a href="forum.html">Forum</a></li>
+                    <li><a href="loans.html">Loans</a></li>
+                </ul>
+            </div>
+            <div class="dashboard-visualization">
+                <div class="visualization-tile small">
+                    <form id="createEventForm">
+                        <div class="row">
+                            <div class="mb-3 col-4">
+                                <label for="eventTitle" class="form-label">Title</label>
+                                <input type="text" class="form-control" id="eventTitle" v-model="event.title" required>
+                            </div>
+                            <div class="mb-3 col-4">
+                                <label for="eventCategory" class="form-label">Category</label>
+                                <input type="text" class="form-control" id="eventCategory" v-model="event.cat" required>
+                            </div>
+                            <div class="mb-3 col-4">
+                                <label for="eventDate" class="form-label">Date</label>
+                                <input type="datetime-local" class="form-control" id="eventDate" v-model="event.date"
+                                    required>
+                            </div>
+                        </div>
+                        <div class="row">
+                            <div class="mb-3 col-4">
+                                <label for="eventPlace" class="form-label">Place</label>
+                                <input type="text" class="form-control" id="eventPlace" v-model="event.place" required>
+                            </div>
+                            <div class="mb-3 col-4">
+                                <label for="eventPostal" class="form-label">Postal Code</label>
+                                <input type="text" class="form-control" id="eventPostal" v-model="event.postal"
+                                    required>
+                            </div>
+                            <div class="mb-3 col-4">
+                                <label for="eventPrice" class="form-label">Price</label>
+                                <input type="text" class="form-control" id="eventPrice" v-model="event.price" required>
+                            </div>
+                        </div>
+                        <div class="row">
+                            <div class="mb-3 col-6">
+                                <label for="eventDescription" class="form-label">Description</label>
+                                <textarea class="form-control" id="eventDescription" v-model="event.description"
+                                    rows="1" required></textarea>
+                            </div>
+                            <div class="mb-3 col-6">
+                                <label for="eventImg" class="form-label">Image</label>
+                                <input type="file" class="form-control" id="eventImg" @change="handleFileUpload"
+                                    required>
+                            </div>
+                        </div>
 
-                                        <button type="button" class="btn btn-primary" @click="handleCreateEvent">Create
-                                            Event</button>
-                                    </form>
-                                </div>
-                            </div>
-                        </div>
-                        <!-- small tile count -->
-                        <div class="col-12 col-lg-3">
-                            <div class="visualization-tile small h-100 container"
-                                style="padding: 0px; display: flex; flex-direction: column; align-items: center; max-width:1200px">
-                                <span>Events Count:</span>
-                                <div class="visitor-count" style="font-size: 1.5em;">
-                                    {{ events.length }}
-                                </div>
-                            </div>
-                        </div>
+                        <button type="button" class="btn btn-primary" @click="handleCreateEvent">Create Event</button>
+                    </form>
+                </div>
+                <div class="visualization-tile small">
+                    <div class="visitor-count">
+                        Events Count: {{ events.length }}
                     </div>
-                    <div class="row">
-                        <div class="visualization-tile large" style="padding-left: 0px; padding-right: 0px;">
-                            <div class="row" style="height:100%; margin:5px;">
-                                <div v-for="event in events" :key="event.id" class="col-12 mb-5 mb-xxl-3">
-                                    <div class="card" style="padding-right:10px">
-                                        <div class="row g-0" style="height:100px">
-                                            <div class="col-2">
-                                                <img :src="event.image" class="img-fluid rounded-start"
-                                                    alt="Announcement Image" style="height:100px">
-                                            </div>
-                                            <div class="col-10 col-lg-8">
-                                                <div class="" style="height:100px; padding: 10px">
-                                                    <div class="" style="height:100px; padding: 10px">
-                                                        <h5 class="">{{ event.title }}</h5>
-                                                        <p class="">{{ event.description }}</p>
-                                                        <p class=""><small class="text-muted">Category: {{ event.cat }}
-                                                                |
-                                                                Price: {{
-                                                                event.price }}
-                                                                | Date: {{ new Date(event.date.seconds *
-                                                                1000).toLocaleString() }} |
-                                                                Place: {{ event.place }} | Postal: {{ event.postal
-                                                                }}</small></p>
-                                                    </div>
-                                                </div>
-                                            </div>
-                                            <div class="col-12 col-lg-2 d-flex align-items-center justify-content-end">
-                                                <button type="button" class="btn btn-warning me-2"
-                                                    @click="handleUpdateEvent(event)">Update</button>
-                                                <button type="button" class="btn btn-danger"
-                                                    @click="showDeleteModal(event.id)">Delete</button>
-                                            </div>
+                </div> <!-- New smaller tile added -->
+                <div class="visualization-tile large" style="padding-top: 20px;">
+                    <div class="row" style="height:100%; margin:5px">
+                        <div v-for="event in events" :key="event.id" class="col-12 mb-3">
+                            <div class="card">
+                                <div class="row g-0" style="height:100px">
+                                    <div class="col-2">
+                                        <img :src="event.image" class="img-fluid rounded-start" alt="Event Image"
+                                            style="height:100px">
+                                    </div>
+                                    <div class="col-8">
+                                        <div class="" style="height:100px; padding: 10px">
+                                            <h5 class="">{{ event.title }}</h5>
+                                            <p class="">{{ event.description }}</p>
+                                            <p class=""><small class="text-muted">Category: {{ event.cat }} | Price: {{
+                                                    event.price }}
+                                                    | Date: {{ new Date(event.date.seconds * 1000).toLocaleString() }} |
+                                                    Place: {{ event.place }} | Postal: {{ event.postal }}</small></p>
                                         </div>
+                                    </div>
+                                    <div class="col-md-2 d-flex align-items-center justify-content-end">
+                                        <button type="button" class="btn btn-warning me-2"
+                                            @click="handleUpdateEvent(event)">Update</button>
+
+                                        <!-- Delete Button triggers the modal and sets the selectedEventId -->
+                                        <button type="button" class="btn btn-danger"
+                                            @click="showDeleteModal(event.id)">Delete</button>
                                     </div>
                                 </div>
                             </div>
@@ -355,6 +361,7 @@
                 </div>
             </div>
         </div>
+    </div>
     </div>
 
 
