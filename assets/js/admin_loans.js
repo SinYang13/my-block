@@ -23,24 +23,12 @@ const app = Vue.createApp({
             itemName: '',
             status:'',
             selectedCategory: "All",
-            selectedStatus:''
+            selectedStatus:'',
+            selectedOption:true,
         };
         
     },
     computed: {
-        filterType() {
-            console.log(this.selectedStatus)
-            if (this.selectedStatus ==  '') {
-                return this.loanOwners; // Show all posts if 'All' is selected
-            } 
-            else if(this.selectedStatus === 'Collection'){
-                return this.loanOwners.filter(loans => loans.status === this.selectedCategory);
-
-            }
-            else {
-                return this.loanOwners.filter(loans => loans.status === "Loaned" || loans.status === "Overdue");
-            }
-        },
         filterItems() {
             return this.loanOwners.filter(loans => {
                 // Apply status filter
@@ -230,8 +218,12 @@ const app = Vue.createApp({
                 this.itemName = '';
             }
             // console.log(this.itemName)
-        }
+        },
+        
+        resetFilters(){
+            window.location.reload();
 
+        }
        
     }
 });

@@ -106,7 +106,7 @@ background:#eee;
             <h4>By Status:</h4>
             <div class="checkbox">
                 <label>
-                    <input type="radio" name="loanStatus" @click="selectedStatus = 'Collection'"> 
+                    <input type="radio" name="loanStatus" @click="selectedStatus = 'Collection'" > 
                     To Collect
                 </label>
             </div>
@@ -117,6 +117,8 @@ background:#eee;
                 </label>
             </div>
             <a class="btn btn-link" @click="selectedStatus = ''">Clear</a> 
+            <hr>
+            <button type="button" class="btn btn-outline-primary" @click="resetFilters">Clear All Filters</button>
             
            
             <!-- END FILTER BY Status -->
@@ -131,14 +133,14 @@ background:#eee;
             <hr>
             <!-- BEGIN SEARCH INPUT -->
             <div class="input-group">
-              <!-- <input type="text" class="form-control" placeholder="Search resident's name"> -->
-              <input type="text" v-model="searchTerm" placeholder="Search resident's name" @input="filterItems" />
+              <input type="text" class="form-control" v-model="searchTerm" @input="filterItems" placeholder="Search resident's name">
+              <!-- <input type="text" v-model="searchTerm" placeholder="Search resident's name" @input="filterItems" /> -->
               <span class="input-group-btn">
                 <button class="btn btn-primary" type="button"><i class="fa fa-search"></i></button>
               </span>
             </div>
             <!-- END SEARCH INPUT -->
-            <p>Showing all results matching "web development"</p> 
+            <p v-if="searchTerm != ''">Showing all results matching {{searchTerm}}</p> 
             <!-- Not sure if we want this?? -->
             
             <div class="padding"></div>
@@ -198,64 +200,7 @@ background:#eee;
                       </tr>
                     </tbody>
                   </table>
-              <!-- <table class="table table-hover">
-                <tbody><tr>
-                  <td class="number text-center">1</td>
-                  <td class="image"><img src="https://www.bootdey.com/image/400x300/FF8C00" alt=""></td>
-                  <td class="product"><strong>Product 1</strong><br>This is the product description.</td>
-                  <td class="rate text-right"><span><i class="fa fa-star"></i><i class="fa fa-star"></i><i class="fa fa-star"></i><i class="fa fa-star"></i><i class="fa fa-star-half-o"></i></span></td>
-                  <td class="price text-right">$350</td>
-                </tr>
-                <tr>
-                  <td class="number text-center">2</td>
-                  <td class="image"><img src="https://www.bootdey.com/image/400x300/5F9EA0" alt=""></td>
-                  <td class="product"><strong>Product 2</strong><br>This is the product description.</td>
-                  <td class="rate text-right"><span><i class="fa fa-star"></i><i class="fa fa-star"></i><i class="fa fa-star"></i><i class="fa fa-star-o"></i><i class="fa fa-star-o"></i></span></td>
-                  <td class="price text-right">$1,050</td>
-                </tr>
-                <tr>
-                  <td class="number text-center">3</td>
-                  <td class="image"><img src="https://www.bootdey.com/image/400x300" alt=""></td>
-                  <td class="product"><strong>Product 3</strong><br>This is the product description.</td>
-                  <td class="rate text-right"><span><i class="fa fa-star"></i><i class="fa fa-star"></i><i class="fa fa-star"></i><i class="fa fa-star-half-o"></i><i class="fa fa-star-o"></i></span></td>
-                  <td class="price text-right">$550</td>
-                </tr>
-                <tr>
-                  <td class="number text-center">4</td>
-                  <td class="image"><img src="https://www.bootdey.com/image/400x300/8A2BE2" alt=""></td>
-                  <td class="product"><strong>Product 4</strong><br>This is the product description.</td>
-                  <td class="rate text-right"><span><i class="fa fa-star"></i><i class="fa fa-star"></i><i class="fa fa-star"></i><i class="fa fa-star"></i><i class="fa fa-star-o"></i></span></td>
-                  <td class="price text-right">$330</td>
-                </tr>
-                <tr>
-                  <td class="number text-center">5</td>
-                  <td class="image"><img src="https://www.bootdey.com/image/400x300" alt=""></td>
-                  <td class="product"><strong>Product 5</strong><br>This is the product description.</td>
-                  <td class="rate text-right"><span><i class="fa fa-star"></i><i class="fa fa-star"></i><i class="fa fa-star"></i><i class="fa fa-star"></i><i class="fa fa-star"></i></span></td>
-                  <td class="price text-right">$540</td>
-                </tr>
-                <tr>
-                  <td class="number text-center">6</td>
-                  <td class="image"><img src="https://www.bootdey.com/image/400x300/6495ED" alt=""></td>
-                  <td class="product"><strong>Product 6</strong><br>This is the product description.</td>
-                  <td class="rate text-right"><span><i class="fa fa-star"></i><i class="fa fa-star"></i><i class="fa fa-star"></i><i class="fa fa-star"></i><i class="fa fa-star-half-o"></i></span></td>
-                  <td class="price text-right">$870</td>
-                </tr>
-                <tr>
-                  <td class="number text-center">7</td>
-                  <td class="image"><img src="https://www.bootdey.com/image/400x300/DC143C" alt=""></td>
-                  <td class="product"><strong>Product 7</strong><br>This is the product description.</td>
-                  <td class="rate text-right"><span><i class="fa fa-star"></i><i class="fa fa-star"></i><i class="fa fa-star-o"></i><i class="fa fa-star-o"></i><i class="fa fa-star-o"></i></span></td>
-                  <td class="price text-right">$620</td>
-                </tr>
-                <tr>
-                  <td class="number text-center">8</td>
-                  <td class="image"><img src="https://www.bootdey.com/image/400x300/9932CC" alt=""></td>
-                  <td class="product"><strong>Product 8</strong><br>This is the product description.</td>
-                  <td class="rate text-right"><span><i class="fa fa-star"></i><i class="fa fa-star"></i><i class="fa fa-star"></i><i class="fa fa-star"></i><i class="fa fa-star-half-o"></i></span></td>
-                  <td class="price text-right">$1,550</td>
-                </tr>
-              </tbody></table> -->
+             </table>
             </div>
             <!-- END TABLE RESULT -->
             
