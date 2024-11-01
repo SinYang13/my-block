@@ -18,10 +18,83 @@
   <link rel="stylesheet" href="assets/css/owl.css">
   <link rel="stylesheet" href="assets/css/animate.css">
   <link rel="stylesheet" href="https://unpkg.com/swiper@7/swiper-bundle.min.css" />
+  <style>
+  .category-button {
+  background-color: #ffffff;
+  border: 1px solid #ddd;
+  color: #333;
+  padding: 12px;
+  width: 100%;
+  text-align: left;
+  font-weight: 500;
+  border-radius: 8px;
+  margin-bottom: 8px;
+  transition: all 0.3s ease;
+  box-shadow: 0px 2px 5px rgba(0, 0, 0, 0.1);
+}
+
+.category-button:hover {
+  background-color: #0056b3;
+  color: white;
+  box-shadow: 0px 4px 10px rgba(0, 86, 179, 0.2);
+}
+
+.category-button.active {
+  background-color: #007bff;
+  color: white;
+  border-color: #007bff;
+  box-shadow: 0px 4px 10px rgba(0, 123, 255, 0.3);
+}
+
+/* Add top margin to the category button container */
+.category-container {
+  margin-top: 100px; /* Adjust this value to control spacing */
+}
+
+/* Adjust the alignment of the card container */
+.services-section {
+  display: flex;
+  align-items: flex-start;
+}
+
+.category-buttons {
+  flex: 0 0 200px; /* Adjust width if needed */
+}
+
+.cards-container {
+  flex: 1;
+  margin-left: 20px; /* Space between buttons and cards */
+  margin-top: -20px; /* Align cards with the first button */
+}
+
+
+    
+  </style>
 </head>
 
 <body>
 
+  
+<div class="sub-header">
+  <div class="container">
+    <div class="row">
+      <div class="col-lg-8 col-md-8">
+        <ul class="info">
+          <li><i class="fa fa-envelope"></i> my-block.com</li>
+          <li><i class="fa fa-map"></i> Singapore</li>
+        </ul>
+      </div>
+      <div class="col-lg-4 col-md-4">
+        <ul class="social-links">
+          <li><a href="#"><i class="fab fa-facebook"></i></a></li>
+          <li><a href="https://x.com/minthu" target="_blank"><i class="fab fa-twitter"></i></a></li>
+          <li><a href="#"><i class="fab fa-linkedin"></i></a></li>
+          <li><a href="#"><i class="fab fa-instagram"></i></a></li>
+        </ul>
+      </div>
+    </div>
+  </div>
+</div>
   <!-- Header (Kept from existing structure) -->
   <header class="header-area header-sticky">
     <div class="container">
@@ -62,9 +135,74 @@
     </div>
   </div>
 
-  <!-- Vue Mounting Point (This is where Vue will mount) -->
   <div id="app">
-    <!-- Search Bar -->
+    <div class="container">
+      <div class="row">
+        <!-- Left Sidebar for Categories -->
+        <div class="col-md-3 category-container">
+          <div class="category-buttons">
+            <button v-for="category in uniqueCategories" :key="category" 
+                    :class="['category-button', { 'active': category === selectedCategory }]" 
+                    @click="showProviders(category)">
+              {{ category }}
+            </button>
+          </div>
+        </div>
+
+        <!-- Main Content for Service Providers -->
+        <div class="col-md-9 cards-container">
+          <div class="properties section">
+            <div class="container">
+              <div class="row row-cols-1 row-cols-md-2 g-4" v-if="filteredProviders.length">
+                <div class="col" v-for="service in filteredProviders" :key="service.id">
+                  <div class="item card h-100">
+                    <a :href="service.link">
+                      <img :src="service.imageURL" class="card-img-top" alt="Service Image" />
+                    </a>
+                    <div class="card-body">
+                      <h6>{{ service.price }}</h6>
+                      <h4 class="card-title">{{ service.serviceName }}</h4>
+                      <p class="card-text">{{ service.description }}</p>
+                    </div>
+                    <div class="main-button text-center">
+                      <a class="btn btn-primary" @click="openServiceModal(service)" data-bs-toggle="modal" data-bs-target="#serviceModal">See more!</a>
+                    </div>
+                  </div>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <!-- Modal for Detailed View -->
+    <div class="modal" id="serviceModal" tabindex="-1" aria-labelledby="serviceModalLabel" aria-hidden="true">
+      <div class="modal-dialog modal-md">
+        <div class="modal-content" v-if="selectedService">
+          <div class="modal-header">
+            <h5 class="modal-title" id="serviceModalLabel">{{ selectedService.serviceName }}</h5>
+            <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+          </div>
+          <div class="modal-body">
+            <img :src="selectedService.imageURL" class="img-fluid w-100 mb-3" alt="Service Image">
+            <p><strong>Price:</strong> {{ selectedService.price }}</p>
+            <p><strong>Description:</strong> {{ selectedService.detailedServiceDescription }}</p>
+            <p><strong>Rating:</strong> {{ selectedService.rating }}</p>
+            <p><strong>Provider:</strong> {{ selectedService.serviceProviderInformation }}</p>
+            <p><strong>Duration:</strong> {{ selectedService.serviceDuration }}</p>
+          </div>
+          <div class="modal-footer">
+            <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Close</button>
+          </div>
+        </div>
+      </div>
+    </div>
+</div>
+<br>
+<br>
+
+  <!-- <div id="app">
     <div class="section-heading text-center">
       <div class="search-bar">
         <input type="text" v-model="searchTerm" placeholder="Search services..." class="search-input" @input="filterServices">
@@ -74,18 +212,15 @@
       </div>
     </div>
 
-    <!-- Services Section -->
     <div class="properties section">
       <div class="container">
         <div class="row row-cols-1 row-cols-md-3 g-4">
           <div class="col" v-for="service in filteredServices" :key="service.id">
             <div class="item card h-100">
               <a :href="service.link">
-                <!-- Use 'serviceImage' instead of 'imageURL' -->
                 <img :src="service.imageURL" class="card-img-top" alt="Event Image" />
               </a>
               <div class="card-body">
-                <!-- Use 'serviceName' instead of 'name' -->
                 <h6>{{ service.price }}</h6>
                 <h4 class="card-title">{{ service.serviceName }}</h4>
                 <p class="card-text">{{ service.description }}</p>
@@ -100,8 +235,6 @@
     </div>
 
 
-
-  <!-- Modal for Detailed View -->
 <div class="modal" id="serviceModal" tabindex="-1" aria-labelledby="serviceModalLabel" aria-hidden="true">
   <div class="modal-dialog modal-md">
     <div class="modal-content" v-if="selectedService">
@@ -110,7 +243,6 @@
         <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
       </div>
       <div class="modal-body">
-        <!-- Here we're using the correct imageURL from Firebase -->
         <img :src="selectedService.imageURL" class="img-fluid w-100 mb-3" alt="Service Image">
         <p><strong>Price:</strong> {{ selectedService.price }}</p>
         <p><strong>Description:</strong> {{ selectedService.detailedServiceDescription }}</p>
@@ -124,7 +256,7 @@
     </div>
   </div>
 </div>
-  </div>
+  </div> -->
 
 
   <!-- Scripts -->
