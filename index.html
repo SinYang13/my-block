@@ -124,7 +124,7 @@
               <p>{{announcements[0].content}}</p>
             </div>
         </div>
-        <div class="carousel-item" v-for="announcement in announcements">
+        <div class="carousel-item" v-for="announcement in announcements.slice(1)">
           <img :src="announcement.img" class="d-block"
             style="max-height:50%; max-width: 100%; margin:auto" alt="...">
             <div class="carousel-caption d-none d-md-block">

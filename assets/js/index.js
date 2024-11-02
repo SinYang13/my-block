@@ -56,8 +56,10 @@ const eventsApp = Vue.createApp({
     async fetchAnnouncements() {
       try {
         let announcements = await readAnnouncements();
-        announcements.sort((a, b) => new Date(b.date) - new Date(a.date));
-        this.announcements = announcements;
+        let filteredAnnouncements = announcements.filter(announcement => announcement.pinned === true);
+        
+        filteredAnnouncements.sort((a, b) => new Date(b.expiry) - new Date(a.expiry));
+        this.announcements = filteredAnnouncements;
         console.log(this.announcements);
       } catch (err) {
         console.error("Error fetching announcements:", err);
