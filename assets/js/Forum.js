@@ -10,7 +10,9 @@ const app = Vue.createApp({
         return {
             // key: value
             displayForumForm: true,
-            displayButton: true,
+            displayForumButton: true,
+            displayCommentForm: true,
+            displayCommentButton: true,
             title: "",
             category: "General",
             content: "",
@@ -80,12 +82,12 @@ const app = Vue.createApp({
         openForm() {
             console.log("opening form...")
             this.displayForumForm = false
-            this.displayButton = false
+            this.displayForumButton = false
         },
         closeForm() {
             // console.log("sup")
             this.displayForumForm = true
-            this.displayButton = true
+            this.displayForumButton = true
         },
         createPost() {
             if (!this.userName || !this.category || !this.content || !this.title) {
@@ -161,15 +163,23 @@ const app = Vue.createApp({
             console.log(categoryCount)
             return forumList; // Return the forumList array
         },
-
-        postComments() {
-            if (!this.content) {
+        openComment() {
+            console.log("Opening form...");
+            this.displayCommentForm = false;   
+            this.displayCommentButton = true;       
+        },
+        closeComment() {
+            console.log("Closing form...");
+            this.displayCommentForm = true;  
+            this.displayCommentButton = true;       
+        },
+        postComment() {
+            if (!this.commentDetails) {
                 alert("Please fill in all required fields before submitting.");
                 return; // Stop the function from proceeding further
             }
 
             const commentRef = collection(db, "forum/" + this.parentID + "/comments")
-
 
             addDoc(commentRef, {
                 author: this.userName,
@@ -185,9 +195,9 @@ const app = Vue.createApp({
                     console.error("Error adding loan: ", error);
                 });
 
-
+            this.closeComment();
             console.log(); // This is your Firestore timestamp
         }
-    } // methods
+    }// methods
 });
 const vm = app.mount('#app'); 

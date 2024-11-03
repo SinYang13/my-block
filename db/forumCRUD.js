@@ -47,7 +47,7 @@ export async function deletePost(postId) {
 }
 
 // Add comment
-export async function addComment(postId, commentData) {
+export async function postComment(postId, commentData) {
     const commentsRef = collection(db, `forum/${postId}/comments`);
     await addDoc(commentsRef, commentData);
 }
