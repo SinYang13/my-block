@@ -13,6 +13,9 @@
     <link rel="stylesheet" href="assets/css/owl.css">
     <link rel="stylesheet" href="assets/css/animate.css">
     <link rel="stylesheet" href="https://unpkg.com/swiper@7/swiper-bundle.min.css"/>
+    <!-- Include Material Icons from Google -->
+    <link href="https://fonts.googleapis.com/icon?family=Material+Icons" rel="stylesheet">
+
 
     
     <script type="module" src="./assets/js/Forum.js"></script>
@@ -161,12 +164,11 @@
         <!-- Forum Header -->
         <!-- <h1 class="text-center">Forum</h1> -->
         <br>
-        <div style="display: flex; justify-content: center;">
-            <button type="button" id ="postforumbtn" class="btn btn-primary buttonDisplay topright" v-show="displayForumButton" @click="openForm">
+        <div style="display: flex; justify-content: right; padding-right: 20px;" >
+            <button type="button" id ="postforumbtn" class="btn btn-primary buttonDisplay topright" v-show="displayForumButton" @click="openForm" style="font-size: 17px; padding: 15px 15px;">
               Add Post
             </button>
         </div>
-        <br><br>
         <h2 style="color: orangered; text-align: center;">View Posts on Forum</h2>
         <!-- Category Filter Buttons -->
         <div class="category-buttons mt-4 text-center">
@@ -236,7 +238,14 @@
 
         <!-- Forum Posts -->
         <div class="forum-post" v-for="post in filteredPosts" :key="post.id">
-            <h3>{{ post.title }}</h3>
+            <div style="display: flex; align-items: center;">
+                <h3 style="margin: 0; flex-grow: 1;">{{ post.title }}</h3>
+                <!-- Thumbs Up Button -->
+                <button type="button" class="btn" :class="{'btn-primary': isLiked, 'btn-light': !isLiked}" style="font-size: 15px; margin-left: 10px;" @click="toggleLike">
+                    <span class="material-icons" :class="isLiked ? 'text-white' : 'text-black'">thumb_up</span>
+                    {{ isLiked ? '' : '' }}
+                </button>
+            </div>                        
             <!-- <p><strong>Category:</strong> {{ post.category }}</p> -->
             <p style="font-style: italic;"><strong>Author:</strong> {{ post.author }}</p>
             <p style="color: black; font-size: 18px;">{{ post.content }}</p>
@@ -244,7 +253,8 @@
             <!-- Comments Section -->
             <div class="comments-section">
                 <h5>Comments</h5>
-                <button type="button" id="postcommentbtn" class="btn btn-primary buttonDisplay topright" style="font-size: 15px;" v-show="displayCommentButton" @click="openComment">
+                <!-- Add comment button-->
+                <button type="button" id="postcommentbtn" class="btn btn-primary buttonDisplay topright" style="font-size: 15px; background-color: orangered; border-color: white;" v-show="displayCommentButton" @click="openComment">
                     Add Comment
                 </button>
                 <!-- Check if comments exist -->

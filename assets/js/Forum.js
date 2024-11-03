@@ -21,6 +21,7 @@ const app = Vue.createApp({
             commentDetails: "",
             parentID: "jgse9dsngNJ2p1iAdTwm",            
             selectedCategory: 'All', // Default category filter
+            isLiked: false // New property to track like status
         };
         
     }, // data
@@ -197,6 +198,16 @@ const app = Vue.createApp({
 
             this.closeComment();
             console.log(); // This is your Firestore timestamp
+        },
+        toggleLike() {
+            this.isLiked = !this.isLiked; // Toggle the like status
+            if (this.isLiked) {
+                console.log("Post liked!");
+                // Here you might want to add logic to record the like in your database
+            } else {
+                console.log("Post unliked!");
+                // Here you might want to add logic to remove the like from your database
+            }
         }
     }// methods
 });
