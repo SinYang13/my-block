@@ -153,7 +153,9 @@ const app = Vue.createApp({
         closeForm() {
             // console.log("sup")
             this.formdisplayActive = false
+            this.successDisplay = false
             this.curritemName = '';
+            window.location.reload()
         },
 
         submitLoan() {
@@ -351,7 +353,8 @@ const app = Vue.createApp({
               if (event.error) {
                   console.error("Error creating event", event.error);
               } else {
-                  console.info("Event created: " + event.htmlLink);
+                  window.alert("Event created: ");
+                  window.location.reload();
               }
             });
         },
