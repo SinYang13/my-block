@@ -22,6 +22,7 @@ const app = Vue.createApp({
             loans: [], 
             itemName: '',
             status:'',
+            selectedLoan: '',
             selectedCategory: "All",
             selectedStatus:'',
             selectedOption:true,
@@ -63,10 +64,23 @@ const app = Vue.createApp({
 
         // this.getData();
         this.getRentals();
+        this.handleProfileLink();
+        window.addEventListener('scroll', this.handleScroll);
         
 
     },
     methods: {
+        clearSelection() {
+            this.selectedLoan = '';  // Clear radio selection
+            this.itemName = '';      // Clear the item name
+        },
+        clearStatus() {
+            this.selectedStatus = '';  // Clear the radio selection
+        },
+        resetFilters() {
+            this.selectedStatus = '';  // Clear all filters, including radio selection
+            // Add any additional filters you want to reset here
+        },
         async readLoan() {
             const loanlist = [];
             const querySnapshot = await getDocs(collection(db, "loans"));
@@ -161,6 +175,8 @@ const app = Vue.createApp({
             // this.getNums;
             // const docUpdate = doc(db, `loans/${this.itemName}/rental`,itemId)
             console.log(curritemName)
+            console.log(itemId);
+            console.log('loans/' + curritemName +'/rental/'+ itemId);
             const docUpdate = doc(db, 'loans/' + curritemName +'/rental/'+ itemId)
             const docDelete = doc(db, 'loans/' + curritemName +'/rental/'+ itemId)
             // const docDelete = doc(db, `loans/${this.itemName}/rental`,itemId)
@@ -172,8 +188,10 @@ const app = Vue.createApp({
                 //delete item
                 try {
                     await deleteDoc(docDelete); // Deletes the document
-                    // console.log(`Document with ID ${itemId} deleted successfully`);
-                    const docUpdate2 = doc(db, `loans/${this.itemName}`)
+                    console.log(`Document with ID ${itemId} deleted successfully`);
+                    console.log(`loans/${curritemName}`);
+                    const docUpdate2 = doc(db, `loans/${curritemName}`)
+                   
                     try {
                         await updateDoc(docUpdate2, {
                             availableQuantity: count + 1
@@ -223,6 +241,43 @@ const app = Vue.createApp({
         resetFilters(){
             window.location.reload();
 
+        },
+
+        handleScroll() {
+            const scrollPosition = window.scrollY;
+            const headerHeight = document.querySelector('header').offsetHeight;
+            const headerElement = document.querySelector('header');
+            if (scrollPosition >= headerHeight) {
+                headerElement.classList.add('background-header');
+            } else {
+                headerElement.classList.remove('background-header');
+            }
+        },
+        handleProfileLink() {
+            const email = sessionStorage.getItem('loggedInUserEmail');
+            const userName = sessionStorage.getItem('loggedInUserName');
+            const userType = sessionStorage.getItem('loggedInUserType');
+            const profileLink = document.getElementById('profileLink');
+            
+            if (email && userType && userName) {
+                const profileLinkRedir = document.getElementById("profileLinkRedir");
+                profileLinkRedir.setAttribute("href", "../profile.html");
+
+                const profileLinkImg = document.getElementById("profileLinkImg");
+                profileLinkImg.className = "fa fa-calendar";
+
+                const profileLinkText = document.getElementById("profileLinkText");
+                profileLinkText.textContent = "Profile"
+            } else {
+                const profileLinkRedir = document.getElementById("profileLinkRedir");
+                profileLinkRedir.setAttribute("href", "../login.html");
+
+                const profileLinkImg = document.getElementById("profileLinkImg");
+                profileLinkImg.className = "fa fa-sign-in-alt";
+
+                const profileLinkText = document.getElementById("profileLinkText");
+                profileLinkText.textContent = "Login / Register"
+            }
         }
        
     }

@@ -1,178 +1,182 @@
 <!DOCTYPE html>
 <html lang="en">
+
 <head>
-    <meta charset="utf-8">
-    <!--  This file has been downloaded from bootdey.com @bootdey on twitter -->
-    <!--  All snippets are MIT license http://bootdey.com/license -->
-    <title>Filter search result page - Bootdey.com</title>
-    <meta name="viewport" content="width=device-width, initial-scale=1">
-    <link href="https://netdna.bootstrapcdn.com/bootstrap/3.3.6/css/bootstrap.min.css" rel="stylesheet">
-    <!-- Vue 3 -->
-    <script src="https://unpkg.com/vue@3/dist/vue.global.js"></script>
-    
-    <script type="module" src="../assets/js/admin_loans.js"></script>
-    <style type="text/css">
-    	body{margin-top:20px;
-background:#eee;
-}
+  <meta charset="utf-8">
+  <!--  This file has been downloaded from bootdey.com @bootdey on twitter -->
+  <!--  All snippets are MIT license http://bootdey.com/license -->
+  <title>Filter search result page - Bootdey.com</title>
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <link href="https://netdna.bootstrapcdn.com/bootstrap/3.3.6/css/bootstrap.min.css" rel="stylesheet">
+  <!-- Vue 3 -->
+  <script src="https://unpkg.com/vue@3/dist/vue.global.js"></script>
 
-.btn {
-    margin-bottom: 5px;
-}
+  <script type="module" src="../assets/js/admin_loans.js"></script>
+  <style type="text/css">
+    body {
+      margin-top: 20px;
+      background: #eee;
+    }
 
-.grid {
-    position: relative;
-    width: 100%;
-    background: #fff;
-    color: #666666;
-    border-radius: 2px;
-    margin-bottom: 25px;
-    box-shadow: 0px 1px 4px rgba(0, 0, 0, 0.1);
-}
+    .btn {
+      margin-bottom: 5px;
+    }
 
-.grid .grid-body {
-    padding: 15px 20px 15px 20px;
-    font-size: 0.9em;
-    line-height: 1.9em;
-}
+    .grid {
+      position: relative;
+      width: 100%;
+      background: #fff;
+      color: #666666;
+      border-radius: 2px;
+      margin-bottom: 25px;
+      box-shadow: 0px 1px 4px rgba(0, 0, 0, 0.1);
+    }
 
-.search table tr td.rate {
-    color: #f39c12;
-    line-height: 50px;
-}
+    .grid .grid-body {
+      padding: 15px 20px 15px 20px;
+      font-size: 0.9em;
+      line-height: 1.9em;
+    }
 
-.search table tr:hover {
-    cursor: pointer;
-}
+    .search table tr td.rate {
+      color: #f39c12;
+      line-height: 50px;
+    }
 
-.search table tr td.image {
-	width: 50px;
-}
+    .search table tr:hover {
+      cursor: pointer;
+    }
 
-.search table tr td img {
-	width: 50px;
-	height: 50px;
-}
+    .search table tr td.image {
+      width: 50px;
+    }
 
-.search table tr td.rate {
-	color: #f39c12;
-	line-height: 50px;
-}
+    .search table tr td img {
+      width: 50px;
+      height: 50px;
+    }
 
-.search table tr td.price {
-	font-size: 1.5em;
-	line-height: 50px;
-}
+    .search table tr td.rate {
+      color: #f39c12;
+      line-height: 50px;
+    }
 
-.search #price1,
-.search #price2 {
-	display: inline;
-	font-weight: 600;
-}
-    </style>
+    .search table tr td.price {
+      font-size: 1.5em;
+      line-height: 50px;
+    }
+
+    .search #price1,
+    .search #price2 {
+      display: inline;
+      font-weight: 600;
+    }
+  </style>
 </head>
+
 <body>
-<link href="https://maxcdn.bootstrapcdn.com/font-awesome/4.3.0/css/font-awesome.min.css" rel="stylesheet">
-<div class="container" id="app">
-<div class="row">
-  <!-- BEGIN SEARCH RESULT -->
-  <div class="col-md-12">
-    <div class="grid search">
-      <div class="grid-body">
-        <div class="row">
-          <!-- BEGIN FILTERS -->
-          <div class="col-md-3">
-            <h2 class="grid-title"><i class="fa fa-filter"></i> Filters</h2>
-            <hr>
-            
-            <!-- BEGIN FILTER BY CATEGORY -->
-            <h4>By Loan Item Name:</h4>
-            <div class="checkbox" v-for="each in filteredLoans" v-show="each.loans != 0">
-                <label>
-                    <input type="radio" name="loanItem" @click="itemName = each.name"> 
-                    {{ each.name }}
-                </label>
-            </div>
-            <a class="btn btn-link" @click="itemName = ''">Clear</a> 
-            <!--Need to figure out how to reset radio button...  -->
-            
-            
-            
-            <!-- END FILTER BY CATEGORY -->
-            
-            <div class="padding"></div>
-            
-            <!-- BEGIN FILTER BY Status -->
-            <h4>By Status:</h4>
-            <div class="checkbox">
-                <label>
-                    <input type="radio" name="loanStatus" @click="selectedStatus = 'Collection'" > 
-                    To Collect
-                </label>
-            </div>
-            <div class="checkbox">
-                <label>
-                    <input type="radio" name="loanStatus" @click="selectedStatus = 'Return'"> 
-                    To Return
-                </label>
-            </div>
-            <a class="btn btn-link" @click="selectedStatus = ''">Clear</a> 
-            <hr>
-            <button type="button" class="btn btn-outline-primary" @click="resetFilters">Clear All Filters</button>
-            
-           
-            <!-- END FILTER BY Status -->
-            
-            <div class="padding"></div>
-            
-          </div>
-          <!-- END FILTERS -->
-          <!-- BEGIN RESULT -->
-          <div class="col-md-9">
-            <h2><i class="fa fa-file-o"></i> Loans</h2>
-            <hr>
-            <!-- BEGIN SEARCH INPUT -->
-            <div class="input-group">
-              <input type="text" class="form-control" v-model="searchTerm" @input="filterItems" placeholder="Search resident's name">
-              <!-- <input type="text" v-model="searchTerm" placeholder="Search resident's name" @input="filterItems" /> -->
-              <span class="input-group-btn">
-                <button class="btn btn-primary" type="button"><i class="fa fa-search"></i></button>
-              </span>
-            </div>
-            <!-- END SEARCH INPUT -->
-            <p v-if="searchTerm != ''">Showing all results matching {{searchTerm}}</p> 
-            <!-- Not sure if we want this?? -->
-            
-            <div class="padding"></div>
-            
+  <link href="https://maxcdn.bootstrapcdn.com/font-awesome/4.3.0/css/font-awesome.min.css" rel="stylesheet">
+  <div class="container" id="app">
+    <div class="row">
+      <!-- BEGIN SEARCH RESULT -->
+      <div class="col-md-12">
+        <div class="grid search">
+          <div class="grid-body">
             <div class="row">
-              <!-- BEGIN ORDER RESULT -->
-              <div class="col-sm-6">
-                <div class="btn-group">
-                  <button type="button" class="btn btn-default dropdown-toggle" data-toggle="dropdown">
-                    Order by <span class="caret"></span>
-                  </button>
-                  <ul class="dropdown-menu" role="menu">
-                    <li><a href="#">Name</a></li>
-                    <li><a href="#">Date</a></li>
-                    <li><a href="#">View</a></li>
-                    <li><a href="#">Rating</a></li>
-                  </ul>
+              <!-- BEGIN FILTERS -->
+              <div class="col-md-3">
+                <h2 class="grid-title"><i class="fa fa-filter"></i> Filters</h2>
+                <hr>
+
+                <!-- BEGIN FILTER BY CATEGORY -->
+                <h4>By Loan Item Name:</h4>
+                <div class="checkbox" v-for="each in filteredLoans" v-show="each.loans != 0">
+                  <label>
+                    <input type="radio" name="loanItem" @click="itemName = each.name">
+                    {{ each.name }}
+                  </label>
                 </div>
-              </div>
-              <!-- END ORDER RESULT -->
-              
-              <div class="col-md-6 text-right">
-                <div class="btn-group">
-                  <button type="button" class="btn btn-default active"><i class="fa fa-list"></i></button>
-                  <button type="button" class="btn btn-default"><i class="fa fa-th"></i></button>
+                <a class="btn btn-link" @click="itemName = ''">Clear</a>
+                <!--Need to figure out how to reset radio button...  -->
+
+
+
+                <!-- END FILTER BY CATEGORY -->
+
+                <div class="padding"></div>
+
+                <!-- BEGIN FILTER BY Status -->
+                <h4>By Status:</h4>
+                <div class="checkbox">
+                  <label>
+                    <input type="radio" name="loanStatus" @click="selectedStatus = 'Collection'">
+                    To Collect
+                  </label>
                 </div>
+                <div class="checkbox">
+                  <label>
+                    <input type="radio" name="loanStatus" @click="selectedStatus = 'Return'">
+                    To Return
+                  </label>
+                </div>
+                <a class="btn btn-link" @click="selectedStatus = ''">Clear</a>
+                <hr>
+                <button type="button" class="btn btn-outline-primary" @click="resetFilters">Clear All Filters</button>
+
+
+                <!-- END FILTER BY Status -->
+
+                <div class="padding"></div>
+
               </div>
-            </div>
-            
-            <!-- BEGIN TABLE RESULT -->
-            <div class="table-responsive">
-                <table class="table table-hover">
+              <!-- END FILTERS -->
+              <!-- BEGIN RESULT -->
+              <div class="col-md-9">
+                <h2><i class="fa fa-file-o"></i> Loans</h2>
+                <hr>
+                <!-- BEGIN SEARCH INPUT -->
+                <div class="input-group">
+                  <input type="text" class="form-control" v-model="searchTerm" @input="filterItems"
+                    placeholder="Search resident's name">
+                  <!-- <input type="text" v-model="searchTerm" placeholder="Search resident's name" @input="filterItems" /> -->
+                  <span class="input-group-btn">
+                    <button class="btn btn-primary" type="button"><i class="fa fa-search"></i></button>
+                  </span>
+                </div>
+                <!-- END SEARCH INPUT -->
+                <p v-if="searchTerm != ''">Showing all results matching {{searchTerm}}</p>
+                <!-- Not sure if we want this?? -->
+
+                <div class="padding"></div>
+
+                <div class="row">
+                  <!-- BEGIN ORDER RESULT -->
+                  <div class="col-sm-6">
+                    <div class="btn-group">
+                      <button type="button" class="btn btn-default dropdown-toggle" data-toggle="dropdown">
+                        Order by <span class="caret"></span>
+                      </button>
+                      <ul class="dropdown-menu" role="menu">
+                        <li><a href="#">Name</a></li>
+                        <li><a href="#">Date</a></li>
+                        <li><a href="#">View</a></li>
+                        <li><a href="#">Rating</a></li>
+                      </ul>
+                    </div>
+                  </div>
+                  <!-- END ORDER RESULT -->
+
+                  <div class="col-md-6 text-right">
+                    <div class="btn-group">
+                      <button type="button" class="btn btn-default active"><i class="fa fa-list"></i></button>
+                      <button type="button" class="btn btn-default"><i class="fa fa-th"></i></button>
+                    </div>
+                  </div>
+                </div>
+
+                <!-- BEGIN TABLE RESULT -->
+                <div class="table-responsive">
+                  <table class="table table-hover">
                     <thead>
                       <tr>
                         <th scope="col">Name</th>
@@ -183,7 +187,7 @@ background:#eee;
                         <th scope="col"></th>
                       </tr>
                     </thead>
-                    <tbody> 
+                    <tbody>
                       <tr v-for="each in filterItems" :key="each.id">
                         <th scope="row">{{each.loanedto}}</th>
 
@@ -192,42 +196,46 @@ background:#eee;
                         <td>{{each.endDate}}</td>
                         <td v-if="each.status == 'Overdue'" style="color: red;">{{each.status}}</td>
                         <td v-else="each.status == 'Overdue'">{{each.status}}</td>
-                        <td> 
-                          <button type="button" class="btn btn-Primary" @click="updateRental(each.id,each.itemName)" v-if="each.status == 'Loaned'">Return</button>
-                          <button type="button" class="btn btn-success" @click="updateRental(each.id,each.itemName)" v-if="each.status == 'Collection'">Collect</button>
-                          <button type="button" class="btn btn-danger" @click="updateRental(each.id,each.itemName)" v-if="each.status == 'Overdue'">Return</button>
+                        <td>
+                          <button type="button" class="btn btn-Primary" @click="updateRental(each.id,each.itemName)"
+                            v-if="each.status == 'Loaned'">Return</button>
+                          <button type="button" class="btn btn-success" @click="updateRental(each.id,each.itemName)"
+                            v-if="each.status == 'Collection'">Collect</button>
+                          <button type="button" class="btn btn-danger" @click="updateRental(each.id,each.itemName)"
+                            v-if="each.status == 'Overdue'">Return</button>
                         </td>
                       </tr>
                     </tbody>
                   </table>
-             </table>
+                  </table>
+                </div>
+                <!-- END TABLE RESULT -->
+
+                <!-- BEGIN PAGINATION -->
+                <ul class="pagination">
+                  <li class="disabled"><a href="#">«</a></li>
+                  <li class="active"><a href="#">1</a></li>
+                  <li><a href="#">2</a></li>
+                  <li><a href="#">3</a></li>
+                  <li><a href="#">4</a></li>
+                  <li><a href="#">5</a></li>
+                  <li><a href="#">»</a></li>
+                </ul>
+                <!-- END PAGINATION -->
+              </div>
+              <!-- END RESULT -->
             </div>
-            <!-- END TABLE RESULT -->
-            
-            <!-- BEGIN PAGINATION -->
-            <ul class="pagination">
-              <li class="disabled"><a href="#">«</a></li>
-              <li class="active"><a href="#">1</a></li>
-              <li><a href="#">2</a></li>
-              <li><a href="#">3</a></li>
-              <li><a href="#">4</a></li>
-              <li><a href="#">5</a></li>
-              <li><a href="#">»</a></li>
-            </ul>
-            <!-- END PAGINATION -->
           </div>
-          <!-- END RESULT -->
         </div>
       </div>
+      <!-- END SEARCH RESULT -->
     </div>
   </div>
-  <!-- END SEARCH RESULT -->
-</div>
-</div>
-<script src="https://code.jquery.com/jquery-1.10.2.min.js"></script>
-<script src="https://netdna.bootstrapcdn.com/bootstrap/3.3.6/js/bootstrap.min.js"></script>
-<script type="text/javascript">
-	
-</script>
+  <script src="https://code.jquery.com/jquery-1.10.2.min.js"></script>
+  <script src="https://netdna.bootstrapcdn.com/bootstrap/3.3.6/js/bootstrap.min.js"></script>
+  <script type="text/javascript">
+
+  </script>
 </body>
+
 </html>

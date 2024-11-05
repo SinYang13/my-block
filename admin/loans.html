@@ -9,12 +9,12 @@
     <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3/dist/css/bootstrap.min.css" rel="stylesheet">
     <!-- Vue 3 -->
     <script src="https://unpkg.com/vue@3/dist/vue.global.js"></script>
-    <script type="module" src="../db/announcementsCRUD.js"></script>
     <link rel="stylesheet" href="../assets/css/fontawesome.css">
     <link rel="stylesheet" href="../assets/css/templatemo-villa-agency.css">
     <link rel="stylesheet" href="../assets/css/owl.css">
     <link rel="stylesheet" href="../assets/css/animate.css">
     <link rel="stylesheet" href="https://unpkg.com/swiper@7/swiper-bundle.min.css" />
+    <script type="module" src="../assets/js/admin_loans.js"></script>
     <style>
         .dashboard-container {
             display: flex;
@@ -22,46 +22,18 @@
             height: 80vh;
         }
 
-        @media (min-width: 992px) {
-            .dashboard-container {
-                flex-direction: row;
-            }
-        }
-
         .dashboard-menu {
-            width: 100%;
             background-color: #f8f9fa;
-            padding: 20px;
-        }
-
-        @media (min-width: 992px) {
-            .dashboard-menu {
-                width: 20%;
-            }
-        }
-
-        .dashboard-visualization {
-            width: 100%;
-            padding-left: 20px;
-            padding-right: 20px;
-            display: grid;
-            grid-template-columns: 1fr;
-            gap: 20px;
-        }
-
-        @media (min-width: 992px) {
-            .dashboard-visualization {
-                width: 80%;
-                grid-template-columns: repeat(2, 1fr);
-            }
+            height: 100%
         }
 
         .dashboard-menu ul {
             list-style-type: none;
-            padding: 0;
+            padding: 0px;
         }
 
         .dashboard-menu ul li {
+            padding: 10px 20px;
             margin-bottom: 15px;
         }
 
@@ -75,16 +47,31 @@
             background-color: #e9ecef;
             border-radius: 8px;
             display: flex;
+            padding-top: 10px;
             align-items: center;
             justify-content: center;
             position: relative;
-            height: 39vh;
+            overflow-y: auto;
+            overflow-x: hidden;
+        }
+
+        .visualization-tile.small {
+            overflow: hidden;
+            padding: 20px;
+            /* margin-bottom: 20px; */
+        }
+
+        .visualization-tile.large {
+            overflow-x: hidden;
+            overflow-y: auto;
+            min-height: 200px;
+            max-height: calc(45vh - 20px);
+            padding-top: 20px;
         }
 
         .visitor-count {
             font-size: 2em;
             font-weight: bold;
-            display: flex;
             align-items: center;
             justify-content: center;
         }
@@ -93,7 +80,6 @@
             display: flex;
             align-items: center;
             justify-content: center;
-            height: 100%;
             width: 100%;
         }
 
@@ -106,7 +92,77 @@
             height: 100%;
         }
 
+        #createEventForm {
+            width: 100%;
+        }
+
+        .btn {
+            margin-bottom: 5px;
+        }
+
+        .grid {
+            position: relative;
+            width: 100%;
+            background: #fff;
+            color: #666666;
+            border-radius: 2px;
+            margin-bottom: 25px;
+            box-shadow: 0px 1px 4px rgba(0, 0, 0, 0.1);
+        }
+
+        .grid .grid-body {
+            padding: 15px 20px 15px 20px;
+            font-size: 0.9em;
+            line-height: 1.9em;
+        }
+
+        .search table tr td.rate {
+            color: #f39c12;
+            line-height: 50px;
+        }
+
+        .search table tr:hover {
+            cursor: pointer;
+        }
+
+        .search table tr td.image {
+            width: 50px;
+        }
+
+        .search table tr td img {
+            width: 50px;
+            height: 50px;
+        }
+
+        .search table tr td.rate {
+            color: #f39c12;
+            line-height: 50px;
+        }
+
+        .search table tr td.price {
+            font-size: 1.5em;
+            line-height: 50px;
+        }
+
+        .search #price1,
+        .search #price2 {
+            display: inline;
+            font-weight: 600;
+        }
     </style>
+    <!-- Firebase App (compatibility version) -->
+    <script src="https://www.gstatic.com/firebasejs/9.15.0/firebase-app-compat.js"></script>
+
+    <!-- Firebase Firestore (compatibility version) -->
+    <script src="https://www.gstatic.com/firebasejs/9.15.0/firebase-firestore-compat.js"></script>
+
+    <!-- Firebase Authentication (compatibility version) -->
+    <script src="https://www.gstatic.com/firebasejs/9.15.0/firebase-auth-compat.js"></script>
+
+    <!-- Firebase Storage (compatibility version) -->
+    <script src="https://www.gstatic.com/firebasejs/9.15.0/firebase-storage-compat.js"></script>
+
+
 </head>
 
 <body>
@@ -154,19 +210,221 @@
 
     <div id="app">
         <div class="dashboard-container">
-            <div class="dashboard-menu">
-                <ul>
-                    <li><a href="announcements.html">Announcements</a></li>
-                    <li><a href="events.html">Events</a></li>
-                    <li><a href="forum.html">Forum</a></li>
-                    <li><a href="loans.html">Loans</a></li>
-                </ul>
+            <div class="row">
+                <div class="col-12 col-lg-3 p-4">
+                    <div class="dashboard-menu">
+                        <ul>
+                            <li><a href="announcements.html">Announcements</a></li>
+                            <li><a href="events.html">Events</a></li>
+                            <li><a href="forum.html">Forum</a></li>
+                            <li style="background-color: lightcoral"><a href="loans.html">Loans</a></li>
+                            <li><a href="users.html">Users</a></li>
+                        </ul>
+                    </div>
+                </div>
+                <div class="col-12 col-lg-9">
+                    <div class="row mb-3">
+                        <div class="col-6 pl-0">
+                            <div class="visualization-tile">
+                                abc
+                            </div>
+                        </div>
+                        <div class="col-6">
+                            <div class="visualization-tile">
+                                abc
+                            </div>
+                        </div>
+                    </div>
+
+                    <div class="row">
+                        <div class="col-12">
+                            <div class="visualization-tile"  style="padding:20px">
+                                <!-- BEGIN SEARCH RESULT -->
+                                <div class="col-md-12">
+                                    <div class="grid search">
+                                        <div class="grid-body">
+                                            <div class="row">
+                                                <!-- BEGIN FILTERS -->
+                                                <div class="col-md-3">
+                                                    <h2 class="grid-title"><i class="fa fa-filter"></i> Filters</h2>
+                                                    <hr>
+
+                                                    <!-- BEGIN FILTER BY CATEGORY -->
+                                                    <h4>By Loan Item Name:</h4>
+                                                    <div class="checkbox" v-for="each in filteredLoans"
+                                                        v-show="each.loans != 0">
+                                                        <label>
+                                                            <input type="radio" name="loanItem" v-model="selectedLoan"
+                                                                :value="each.name" @click="itemName = each.name">
+                                                            {{ each.name }}
+                                                        </label>
+                                                    </div>
+                                                    <a class="btn btn-link" @click="clearSelection">Clear</a>
+
+                                                    <!--Need to figure out how to reset radio button...  -->
+
+
+
+                                                    <!-- END FILTER BY CATEGORY -->
+
+                                                    <div class="padding"></div>
+
+                                                    <!-- BEGIN FILTER BY Status -->
+                                                    <h4>By Status:</h4>
+                                                    <div class="checkbox">
+                                                        <label>
+                                                            <input type="radio" name="loanStatus"
+                                                                v-model="selectedStatus" value="Collection">
+                                                            To Loan Out
+                                                        </label>
+                                                    </div>
+                                                    <div class="checkbox">
+                                                        <label>
+                                                            <input type="radio" name="loanStatus"
+                                                                v-model="selectedStatus" value="Return">
+                                                            To Return
+                                                        </label>
+                                                    </div>
+                                                    <a class="btn btn-link" @click="clearStatus">Clear</a>
+                                                    <hr>
+                                                    <button type="button" class="btn btn-outline-primary"
+                                                        @click="resetFilters">Clear All Filters</button>
+
+
+
+                                                    <!-- END FILTER BY Status -->
+
+                                                    <div class="padding"></div>
+
+                                                </div>
+                                                <!-- END FILTERS -->
+                                                <!-- BEGIN RESULT -->
+                                                <div class="col-md-9">
+                                                    <h2><i class="fa fa-file-o"></i> Loans</h2>
+                                                    <hr>
+                                                    <!-- BEGIN SEARCH INPUT -->
+                                                    <div class="input-group">
+                                                        <input type="text" class="form-control" v-model="searchTerm"
+                                                            @input="filterItems" placeholder="Search resident's name">
+                                                        <!-- <input type="text" v-model="searchTerm" placeholder="Search resident's name" @input="filterItems" /> -->
+                                                        <span class="input-group-btn">
+                                                            <button class="btn btn-primary" type="button"><i
+                                                                    class="fa fa-search"></i></button>
+                                                        </span>
+                                                    </div>
+                                                    <!-- END SEARCH INPUT -->
+                                                    <p v-if="searchTerm != ''">Showing all results matching
+                                                        {{searchTerm}}
+                                                    </p>
+                                                    <!-- Not sure if we want this?? -->
+
+                                                    <div class="padding"></div>
+
+                                                    <div class="row">
+                                                        <!-- BEGIN ORDER RESULT -->
+                                                        <div class="col-sm-6">
+                                                            <div class="btn-group">
+                                                                <button type="button"
+                                                                    class="btn btn-default dropdown-toggle"
+                                                                    data-toggle="dropdown">
+                                                                    Order by <span class="caret"></span>
+                                                                </button>
+                                                                <ul class="dropdown-menu" role="menu">
+                                                                    <li><a href="#">Name</a></li>
+                                                                    <li><a href="#">Date</a></li>
+                                                                    <li><a href="#">View</a></li>
+                                                                    <li><a href="#">Rating</a></li>
+                                                                </ul>
+                                                            </div>
+                                                        </div>
+                                                        <!-- END ORDER RESULT -->
+
+                                                        <div class="col-md-6 text-right">
+                                                            <div class="btn-group">
+                                                                <button type="button" class="btn btn-default active"><i
+                                                                        class="fa fa-list"></i></button>
+                                                                <button type="button" class="btn btn-default"><i
+                                                                        class="fa fa-th"></i></button>
+                                                            </div>
+                                                        </div>
+                                                    </div>
+
+                                                    <!-- BEGIN TABLE RESULT -->
+                                                    <div class="table-responsive">
+                                                        <table class="table table-hover">
+                                                            <thead>
+                                                                <tr>
+                                                                    <th scope="col">Name</th>
+                                                                    <th scope="col">Item</th>
+                                                                    <th scope="col">Start Date</th>
+                                                                    <th scope="col">End Date</th>
+                                                                    <th scope="col">Status</th>
+                                                                    <th scope="col"></th>
+                                                                </tr>
+                                                            </thead>
+                                                            <tbody>
+                                                                <tr v-for="each in filterItems" :key="each.id">
+                                                                    <th scope="row">{{each.loanedto}}</th>
+
+                                                                    <td>{{each.itemName}}</td>
+                                                                    <td>{{each.startDate}}</td>
+                                                                    <td>{{each.endDate}}</td>
+                                                                    <td v-if="each.status == 'Overdue'"
+                                                                        style="color: red;">
+                                                                        {{each.status}}</td>
+                                                                    <td v-else="each.status == 'Overdue'">
+                                                                        {{each.status}}
+                                                                    </td>
+                                                                    <td>
+                                                                        <button type="button" class="btn btn-warning"
+                                                                            @click="updateRental(each.id,each.itemName)"
+                                                                            v-if="each.status == 'Loaned'">Return</button>
+                                                                        <button type="button" class="btn btn-success"
+                                                                            @click="updateRental(each.id,each.itemName)"
+                                                                            v-if="each.status == 'Collection'">Loan
+                                                                            Out</button>
+                                                                        <button type="button" class="btn btn-danger"
+                                                                            @click="updateRental(each.id,each.itemName)"
+                                                                            v-if="each.status == 'Overdue'">Return</button>
+                                                                    </td>
+                                                                </tr>
+                                                            </tbody>
+                                                        </table>
+                                                        </table>
+                                                    </div>
+                                                    <!-- END TABLE RESULT -->
+
+                                                    <!-- BEGIN PAGINATION -->
+                                                    <ul class="pagination">
+                                                        <li class="disabled"><a href="#">«</a></li>
+                                                        <li class="active"><a href="#">1</a></li>
+                                                        <li><a href="#">2</a></li>
+                                                        <li><a href="#">3</a></li>
+                                                        <li><a href="#">4</a></li>
+                                                        <li><a href="#">5</a></li>
+                                                        <li><a href="#">»</a></li>
+                                                    </ul>
+                                                    <!-- END PAGINATION -->
+                                                </div>
+                                                <!-- END RESULT -->
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                                <!-- END SEARCH RESULT -->
+                            </div>
+                        </div>
+                    </div>
+                </div>
             </div>
         </div>
 
-    </div>
 
-    <script type="module">
+    </div>
+    <script src="https://code.jquery.com/jquery-1.10.2.min.js"></script>
+    <script src="https://netdna.bootstrapcdn.com/bootstrap/3.3.6/js/bootstrap.min.js"></script>
+    <script type="text/javascript"></script>
+    <!-- <script type="module">
         import { readAnnouncements } from '../db/announcementsCRUD.js';
 
         const { createApp } = Vue;
@@ -224,7 +482,7 @@
                 window.addEventListener('scroll', this.handleScroll);
             }
         }).mount('#app');
-    </script>
+    </script> -->
 </body>
 
 </html>
