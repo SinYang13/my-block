@@ -13,6 +13,8 @@
   <!-- Bootstrap core CSS -->
   <link href="vendor/bootstrap/css/bootstrap.min.css" rel="stylesheet">
 
+  <script src="https://apis.google.com/js/api.js" async defer></script>
+  <script src="https://accounts.google.com/gsi/client" async defer></script>
 
   <!-- Additional CSS Files -->
   <link rel="stylesheet" href="assets/css/fontawesome.css">
@@ -162,7 +164,7 @@
             <p><strong>Location:</strong> {{ selectedEvent.place }} (Postal Code: {{ selectedEvent.postal }})</p>
           </div>
           <div class="modal-footer">
-            <button type="button" class="btn btn-primary">Add to Calendar</button>
+            <button type="button" class="btn btn-primary" @click="googleCreateEvent">Add to Calendar</button>
             <button type="button" class="btn btn-secondary">Organizer Page</button>
             <button type="button" class="btn btn-danger" data-bs-dismiss="modal">Close</button>
           </div>
