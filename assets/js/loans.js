@@ -19,14 +19,21 @@ const app = Vue.createApp({
             searchTerm: "",
             filteredLoans: [],
             loans: [], // Initialize as an empty array
-            // formnodisplayActive: true,
             formdisplayActive: false,
             userName: sessionStorage.getItem("loggedInUserName"),
             startdate: new Date(),
             currItemName: '',
-            // totalQuantity:0,
-            currNo: 0
-            // newloanNo:
+            currNo: 0,
+
+            successDisplay: false,
+            CLIENT_ID:"815388161577-1q8k35ihr9mtr8cvhis048ljdod8v7f8.apps.googleusercontent.com",
+            API_KEY : "AIzaSyCp8RabRDvoSbfNgDqzy14fqxj-5ePsOBI",
+            DISCOVERY_DOC: "https://www.googleapis.com/discovery/v1/apis/calendar/v3/rest",
+            SCOPES : "https://www.googleapis.com/auth/calendar",
+
+            tokenClient: null,
+            gapiInited: false,
+            gisInited: false,
         };
     },
     computed: {
@@ -62,6 +69,11 @@ const app = Vue.createApp({
 
     },
     async mounted() {
+        window.addEventListener("load", () => {
+            this.gapiLoaded();
+            this.gisLoaded();
+        });
+
         // Fetch the loans when the component is mounted
         const loanlist = await this.readLoan();
         this.loans = loanlist; // Update the reactive property
@@ -198,12 +210,12 @@ const app = Vue.createApp({
                 await updateDoc(don, {
                     availableQuantity: newTotal
                 });
-
-                window.alert("Loan was successful. Please head down to the CC to collect your item on " + niceDate.toDateString())
-                window.location.reload();
+                this.formdisplayActive = false
+                this.successDisplay = true
             }
             catch (error) {
                 console.error("Error updating loans: " + error)
+                window.alert("Loan was unsuccessful. Please contact the RC instead")
             }
         },
 
@@ -247,7 +259,102 @@ const app = Vue.createApp({
               // profileLink.innerHTML = `<a href="login.html"><i class="fa fa-sign-in-alt"></i> Login / Register</a>`;
             }
           },
+          gapiLoaded() {
+            console.log("Running gapiLoaded...")
+            gapi.load("client", this.initializeGapiClient);
+        },
+        async initializeGapiClient() {
+            console.log("Running initializeGapiClient...")
 
+            await gapi.client.init({
+                apiKey: this.API_KEY,
+                discoveryDocs: [this.DISCOVERY_DOC],
+            });
+            this.gapiInited = true;
+            console.log("Google API client initialized.");
+        },
+         gisLoaded() {
+            console.log("Running gisLoaded...")
+
+            this.tokenClient = google.accounts.oauth2.initTokenClient({
+              client_id: this.CLIENT_ID,
+              scope: this.SCOPES,
+              callback: this.handleTokenResponse, // Assign a callback function
+            });
+            this.gisInited = true;
+            console.log("Google Identity Services initialized.");
+        },
+        handleTokenResponse(resp) {
+            console.log("Running handleTokenResponse...")
+
+            if (resp.error !== undefined) {
+                console.error("Error during token response", resp.error);
+                return;
+            }
+            // Assuming you want to create an event with some event details
+            const eventDetails = {
+                email: "example@example.com" // Replace with actual email or event data
+            };
+            this.scheduleEvent();
+        },
+        googleCreateEvent() {
+            console.log("Running googleCreateEvent...")
+
+            if (!this.gapiInited || !this.gisInited) {
+                console.error("gapi or gis not initialized.");
+                return;
+            }
+
+            if (gapi.client.getToken() === null) {
+                this.tokenClient.requestAccessToken({ prompt: "consent" });
+            } else {
+                this.tokenClient.requestAccessToken({ prompt: "" });
+            }
+        },
+        scheduleEvent() {
+            let start = new Date(this.startdate).toISOString()
+            console.log(start)
+            let end = new Date(this.endDate).toISOString()
+            console.log(end)
+
+
+
+            console.log("Running scheduleEvent...")
+
+            const event = {
+              summary: "Loaned " + this.currItemName,
+              location: "4B Boon Tiong Rd, #01-35 Boon Tiong Arcadia, Singapore 165004",
+              description: "Your deadline is on friday regardless of when u collect it:)",
+              start: {
+                dateTime: start,
+                timeZone: "Asia/Singapore",
+              },
+              end: {
+                dateTime: end,
+                timeZone: "Asia/Singapore",
+              },
+              reminders: {
+                useDefault: false,
+                overrides: [
+                  { method: "email", minutes: 24 * 60 },
+                  { method: "popup", minutes: 10 },
+                ],
+              },
+            };
+            
+            const request = gapi.client.calendar.events.insert({
+              calendarId: "primary",
+              resource: event,
+            });
+            
+            request.execute(function (event) {
+              if (event.error) {
+                  console.error("Error creating event", event.error);
+              } else {
+                  console.info("Event created: " + event.htmlLink);
+              }
+            });
+        },
     }
 });
 const vm = app.mount('#app');
