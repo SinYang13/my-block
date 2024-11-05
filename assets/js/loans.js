@@ -353,7 +353,7 @@ const app = Vue.createApp({
               if (event.error) {
                   console.error("Error creating event", event.error);
               } else {
-                  window.alert("Event created: ");
+                  window.alert("Event has been added to your google calendar");
                   window.location.reload();
               }
             });
