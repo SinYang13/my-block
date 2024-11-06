@@ -21,7 +21,9 @@ const eventsApp = Vue.createApp({
       categories: [], // Store unique categories for filtering
       filter: "all", // Set the default filter to show all events
       isLoading: true, // Track whether data is being loaded
-      selectedEvent: null, // Track the event to show in the modal
+      selectedEvent: {}, // Track the event to show in the modal
+      showSignupModal: false, // Track visibility of the signup modal
+      attendeeForms: [], // Initialize attendee forms array
 
       CLIENT_ID: "815388161577-1q8k35ihr9mtr8cvhis048ljdod8v7f8.apps.googleusercontent.com",
       API_KEY: "AIzaSyCp8RabRDvoSbfNgDqzy14fqxj-5ePsOBI",
@@ -82,12 +84,64 @@ const eventsApp = Vue.createApp({
       this.filter = category;
     },
 
+    closeEventModal() {
+      console.log("close");
+      this.selectedEvent = {};
+      console.log("close");
+    },
+  
+    addAttendeeForm() {
+      // Logic to add an attendee form
+      const attendeeForm = {
+        name: '',
+        email: '',
+        phone: '',
+        dietaryRestrictions: '',
+        specialRequests: ''
+      };
+      this.attendeeForms.push(attendeeForm);
+    },
+    removeAttendeeForm(index) {
+      this.attendeeForms.splice(index, 1);
+    },
+    
     openEventModal(event) {
       this.selectedEvent = {
         ...event,
         date: event.date.toDate().toLocaleString(), // Convert Firestore timestamp to readable date
       };
+      console.log( {
+        ...event,
+        date: event.date.toDate().toLocaleString(), // Convert Firestore timestamp to readable date
+      })
+      this.showSignupModal = false;
     },
+  
+    openSignupModal() {
+      console.log("Opening signup modal"); // Debugging line
+      this.showSignupModal = true;
+
+      if (this.attendeeForms.length === 0) {
+        this.addAttendeeForm(); // Ensure at least one form is available initially
+      }
+   
+      // Manually show the modal using Bootstrap's JavaScript API
+      this.$nextTick(() => {
+         const signupModalInstance = new bootstrap.Modal(document.getElementById('signupModal'));
+         signupModalInstance.show();
+      });
+   },
+   
+   closeSignupModal() {
+      console.log("Closing signup modal"); // Debugging line
+      this.showSignupModal = false;
+      this.attendeeForms = [{ name: '', email: '', phone: '', dietaryRestrictions: '', specialRequests: '' }];
+   
+      const signupModalInstance = bootstrap.Modal.getInstance(document.getElementById('signupModal'));
+      if (signupModalInstance) {
+         signupModalInstance.hide();
+      }
+   },
     handleScroll() {
       const scrollPosition = window.scrollY;
       const headerHeight = document.querySelector("header").offsetHeight;
@@ -121,7 +175,7 @@ const eventsApp = Vue.createApp({
         profileLinkImg.className = "fa fa-sign-in-alt";
 
         const profileLinkText = document.getElementById("profileLinkText");
-        profileLinkText.textContent = "Login / Register";
+        profileLinkText.textContent = "Login";
       }
     },
 

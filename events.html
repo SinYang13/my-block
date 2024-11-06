@@ -27,6 +27,23 @@
   <!-- Import your JavaScript file -->
   <script type="module" src="assets/js/events.js"></script>
 </head>
+<style>
+  .event-details-container {
+  background-color: #f8f9fa; /* Light background to make it stand out */
+  padding: 15px;             /* Increased padding for spaciousness */
+  border-radius: 8px;        /* Rounded corners for a polished look */
+}
+
+.event-details-container h6 {
+  font-size: 1.4rem;         /* Increase font size for the heading */
+}
+
+.event-details-container p {
+  font-size: 1.1rem;        /* Slightly increase font size for details */
+  margin-bottom: 0.5rem;
+}
+
+</style>
 
 <body>
   <!-- Preloader -->
@@ -153,7 +170,7 @@
         <div class="modal-content" v-if="selectedEvent">
           <div class="modal-header">
             <h5 class="modal-title" id="eventModalLabel">{{ selectedEvent.title }}</h5>
-            <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+            <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close" @click="closeEventModal"></button>
           </div>
           <div class="modal-body">
             <!-- Make the image take the full width of the modal -->
@@ -165,12 +182,77 @@
           </div>
           <div class="modal-footer">
             <button type="button" class="btn btn-primary" @click="googleCreateEvent">Add to Calendar</button>
-            <button type="button" class="btn btn-secondary">Organizer Page</button>
-            <button type="button" class="btn btn-danger" data-bs-dismiss="modal">Close</button>
+            <button type="button" class="btn btn-success" @click="openSignupModal">Sign up</button>
+            <button type="button" class="btn btn-danger" data-bs-dismiss="modal" @click="closeEventModal">Close</button>
           </div>
         </div>
       </div>
     </div>
+
+    <!-- Signup Modal -->
+<div class="modal" id="signupModal" tabindex="-1" aria-labelledby="signupModalLabel" aria-hidden="true" 
+v-if="showSignupModal" style="background: rgba(0,0,0,0.5);">
+<div class="modal-dialog modal-lg">
+<div class="modal-content">
+ <div class="modal-header">
+   <h5 class="modal-title" id="signupModalLabel">Sign Up for {{ selectedEvent.title }}</h5>
+   <button type="button" class="btn-close" @click="closeSignupModal"></button>
+ </div>
+ <div class="modal-body">
+   <!-- Event Details Summary -->
+   <div class="event-details-container row mb-4 p-3 bg-light rounded">
+     <div class="col-md-4">
+       <img :src="selectedEvent.imageURL" class="img-fluid rounded" alt="Event Image">
+     </div>
+     <div class="col-md-8">
+       <h6>Event Details</h6>
+       <p class="mb-1"><small><strong>Event:</strong> {{ selectedEvent.title }}</small></p>
+       <p class="mb-1"><small><strong>Date:</strong> {{ selectedEvent.date }}</small></p>
+       <p class="mb-1"><small><strong>Location:</strong> {{ selectedEvent.place }}</small></p>
+       <p class="mb-1"><small><strong>Price:</strong> {{ selectedEvent.price }}</small></p>
+     </div>
+   </div>
+
+   <!-- Attendee Forms Container -->
+   <div id="attendeeForms">
+     <div v-for="(form, index) in attendeeForms" :key="index" class="attendee-form mb-4">
+       <h6>Attendee {{ index + 1 }} Details</h6>
+       <div class="row g-3">
+         <div class="col-md-6">
+           <input type="text" class="form-control" v-model="form.name" placeholder="Full Name">
+         </div>
+         <div class="col-md-6">
+           <input type="email" class="form-control" v-model="form.email" placeholder="Email">
+         </div>
+         <div class="col-md-6">
+           <input type="tel" class="form-control" v-model="form.phone" placeholder="Phone Number">
+         </div>
+         <div class="col-md-6">
+           <input type="text" class="form-control" v-model="form.dietaryRestrictions" placeholder="Dietary Restrictions">
+         </div>
+         <div class="col-12">
+           <textarea class="form-control" v-model="form.specialRequests" rows="2" placeholder="Special Requests or Notes"></textarea>
+         </div>
+         <div class="col-12 text-end mt-2">
+          <button type="button" class="btn btn-danger btn-sm" @click="removeAttendeeForm(index)">Remove Attendee</button>
+        </div>
+       </div>
+     </div>
+     
+   </div>
+
+   <!-- Add Another Attendee Button -->
+   <button class="btn btn-outline-primary mb-3" @click="addAttendeeForm">
+     <i class="fas fa-user-plus"></i> Add Another Attendee
+   </button>
+ </div>
+ <div class="modal-footer">
+   <button type="button" class="btn btn-secondary" @click="closeSignupModal">Cancel</button>
+   <button type="button" class="btn btn-primary">Submit Registration</button>
+ </div>
+</div>
+</div>
+</div>
 
 
   </div>

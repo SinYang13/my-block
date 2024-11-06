@@ -256,7 +256,7 @@ const app = Vue.createApp({
               profileLinkImg.className = "fa fa-sign-in-alt";
       
               const profileLinkText = document.getElementById("profileLinkText");
-              profileLinkText.textContent = "Login / Register";
+              profileLinkText.textContent = "Login";
       
               // profileLink.innerHTML = `<a href="login.html"><i class="fa fa-sign-in-alt"></i> Login / Register</a>`;
             }

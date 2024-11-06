@@ -110,7 +110,7 @@ const servicesApp = Vue.createApp({
           profileLinkImg.className = "fa fa-sign-in-alt";
 
           const profileLinkText = document.getElementById("profileLinkText");
-          profileLinkText.textContent = "Login / Register"
+          profileLinkText.textContent = "Login"
       }
   }
   },
