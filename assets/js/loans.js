@@ -144,10 +144,18 @@ const app = Vue.createApp({
         },
 
         openForm(itemName) {
-            // console.log("sup")
-            this.formdisplayActive = true
+            const userId = sessionStorage.getItem("loggedInUserEmail");
+        
+            if (!userId) {
+                // Show the login prompt modal instead of alert
+                const loginModal = new bootstrap.Modal(document.getElementById('loginPromptModal'));
+                loginModal.show();
+                return;
+            }
+        
+            // If logged in, proceed with opening the form
+            this.formdisplayActive = true;
             this.currItemName = itemName;
-            // this.getNums
         },
 
         closeForm() {

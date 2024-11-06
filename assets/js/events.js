@@ -9,6 +9,7 @@ import {
   getDocs,
   query,
   orderBy,
+  addDoc,
 } from "https://www.gstatic.com/firebasejs/10.14.0/firebase-firestore.js";
 
 // Initialize Firebase storage
@@ -79,6 +80,38 @@ const eventsApp = Vue.createApp({
         this.isLoading = false;
       }
     },
+    async submitRegistration() {
+      const userId = sessionStorage.getItem("loggedInUserEmail");
+    
+      if (!userId) {
+        alert("Please log in to register for events.");
+        return;
+      }
+    
+      const registrationData = {
+        eventId: this.selectedEvent.id,
+        eventTitle: this.selectedEvent.title,
+        eventDate: this.selectedEvent.date,
+        eventLocation: this.selectedEvent.place,
+        attendees: this.attendeeForms.map(form => ({
+          name: form.name,
+          email: form.email,
+          phone: form.phone,
+          dietaryRestrictions: form.dietaryRestrictions,
+          specialRequests: form.specialRequests,
+        }))
+      };
+    
+      try {
+        await addDoc(collection(db, "users", userId, "registrations"), registrationData);
+        alert("Registration successful! Payment will be collected on site (If Any)");
+        this.closeSignupModal(); // Close the modal after successful submission
+      } catch (error) {
+        console.error("Error adding registration:", error);
+        alert("Failed to register. Please try again.");
+      }
+    },
+    
     // Update the filter when a button is clicked
     setFilter(category) {
       this.filter = category;
@@ -118,19 +151,32 @@ const eventsApp = Vue.createApp({
     },
   
     openSignupModal() {
-      console.log("Opening signup modal"); // Debugging line
-      this.showSignupModal = true;
-
-      if (this.attendeeForms.length === 0) {
-        this.addAttendeeForm(); // Ensure at least one form is available initially
+      console.log("Opening signup modal");
+  
+      // Check if the user is logged in
+      const userId = sessionStorage.getItem("loggedInUserEmail");
+  
+      if (!userId) {
+          // Show the login prompt modal for events instead of alert
+          const loginModal = new bootstrap.Modal(document.getElementById('loginPromptModalEvents'));
+          loginModal.show();
+          return;
       }
-   
-      // Manually show the modal using Bootstrap's JavaScript API
+  
+      // If logged in, proceed to show the signup modal
+      this.showSignupModal = true;
+  
+      if (this.attendeeForms.length === 0) {
+          this.addAttendeeForm(); // Ensure at least one form is available initially
+      }
+  
+      // Manually show the signup modal using Bootstrap's JavaScript API
       this.$nextTick(() => {
-         const signupModalInstance = new bootstrap.Modal(document.getElementById('signupModal'));
-         signupModalInstance.show();
+          const signupModalInstance = new bootstrap.Modal(document.getElementById('signupModal'));
+          signupModalInstance.show();
       });
-   },
+  },
+  
    
    closeSignupModal() {
       console.log("Closing signup modal"); // Debugging line
