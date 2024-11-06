@@ -1,10 +1,12 @@
-import { db } from './config.js';
 import {
-    collection, getDocs, addDoc, query,
-    Timestamp, orderBy, doc, updateDoc,deleteDoc
+    collection, getDocs, addDoc, query, setDoc,
+    Timestamp, orderBy, doc, updateDoc, deleteDoc
 } from "https://www.gstatic.com/firebasejs/10.14.0/firebase-firestore.js";
-import { getStorage, ref, getDownloadURL } from "https://www.gstatic.com/firebasejs/10.14.0/firebase-storage.js";
 
+import { getStorage, ref, uploadBytes, getDownloadURL } from "https://www.gstatic.com/firebasejs/10.14.0/firebase-storage.js";
+import { db } from '../../db/firebaseConfig.js';
+
+const storage = getStorage();
 
 function formatDate(date) {
     const d = new Date(date.seconds * 1000);
@@ -26,8 +28,35 @@ const app = Vue.createApp({
             selectedCategory: "All",
             selectedStatus:'',
             selectedOption:true,
+
+            item: {
+                name: "",
+                availableQuantity: "",
+                imgFile: null
+            },
+
+            updateItem: {
+                name: "",
+                availableQuantity: "",
+                imgFile: null,
+            },
+
+            items: []
+
+
         };
         
+    },
+    watch: {
+        'updateItem.name'(newName) {
+            const selectedItem = this.items.find(item => item.name === newName);
+            if (selectedItem) {
+                this.updateItem.availableQuantity = selectedItem.availableQuantity;
+                console.log(this.updateItem);
+            } else {
+                this.updateItem.availableQuantity = '';
+            }
+        }
     },
     computed: {
         filterItems() {
@@ -56,6 +85,10 @@ const app = Vue.createApp({
 
     },
     async mounted() {
+        this.items = await this.getNumbers();
+        console.log("ITEMS")
+        console.log(this.items)
+        
    
         //  NEED TO CHANGE
         const loanlist = await this.readLoan();
@@ -70,6 +103,158 @@ const app = Vue.createApp({
 
     },
     methods: {
+        showDeleteModal(name) {
+            // Set the `name` of the item to delete in `updateItem`
+            this.updateItem.name = name;
+    
+            // Show the delete confirmation modal
+            const deleteModal = new bootstrap.Modal(document.getElementById('deleteConfirmationModal'));
+            deleteModal.show();
+        },
+        confirmDelete() {
+            // Call handleDeleteEvent with `updateItem.name`
+            console.log("Confirm delete triggered");
+            if (this.updateItem.name) {
+                this.handleDeleteItem(this.updateItem.name);
+            }
+    
+            // Close the modal
+            const deleteModal = bootstrap.Modal.getInstance(document.getElementById('deleteConfirmationModal'));
+            deleteModal.hide();
+        },
+        async handleDeleteItem(name) {
+            console.log('Deleting item with name:', name);
+    
+            try {
+                // Reference the document in the "loans" collection by its `name`
+                const itemDocRef = doc(db, "loans", name);
+                
+                // Delete the document from Firestore
+                await deleteDoc(itemDocRef);
+                alert('Item deleted successfully');
+        
+                // Remove the item from the local `this.items` array
+                this.items = this.items.filter(item => item.name !== name);
+
+                this.updateItem = {
+                    name: "",
+                    availableQuantity: "",
+                    imgFile: null,
+                }
+                
+            } catch (error) {
+                console.error('Error deleting item:', error);
+                alert('Failed to delete item.');
+            }
+        },
+        async getNumbers() {
+            const querySnapshot = await getDocs(collection(db, "loans"));
+            const items = [];
+            querySnapshot.forEach((doc) => {
+                const data = { ...doc.data() };
+                
+                items.push({name: doc.id, ...data });
+            });
+            return items;
+        },
+        handleFileUpload(item) {
+            this.item.imgFile = item.target.files[0];
+        },
+        handleUpdateFileUpload(event) {
+            this.updateItem.imgFile = event.target.files[0];
+        },
+        async handleCreateItem() {
+            const { name, availableQuantity, imgFile } = this.item;
+            console.log(this.item);
+        
+            if (!name || !availableQuantity || !imgFile) {
+                alert("Please fill in all fields.");
+                return;
+            }
+        
+            // Upload the image to Firebase Storage
+            const imgRef = ref(storage, `donations/${imgFile.name}`);
+            await uploadBytes(imgRef, imgFile);
+            const imgUrl = await getDownloadURL(imgRef).then(url => decodeURIComponent(url));
+        
+            const itemData = { name, availableQuantity, image: imgFile.name };
+            try {
+                // Create the main document in the "loans" collection
+                const itemDocRef = doc(db, "loans", name); // Use the document ID as the item name
+                await setDoc(itemDocRef, itemData);
+        
+                // Create a "rentals" subcollection within this document
+                const rentalsRef = collection(itemDocRef, "rentals");
+                
+                // Optionally, add an initial rental document
+                await setDoc(doc(rentalsRef, "sampleRental"), {
+                    rentalDate: new Date(),
+                    renterName: "John Doe",
+                    returnDate: null,
+                    status: "active"
+                });
+        
+                alert(`Item created with ID: ${name}`);
+                console.log("Document and rentals subcollection created successfully");
+        
+                // Clear fields after creation
+                this.item = {
+                    name: "",
+                    availableQuantity: "",
+                    imgFile: null
+                };
+            } catch (error) {
+                console.error("Error creating item:", error);
+                alert("Failed to create item.");
+            }
+        },
+        async handleSaveUpdate() {
+            const { name, availableQuantity, imgFile } = this.updateItem;
+            console.log(this.updateItem);
+        
+            if (!name || !availableQuantity) {
+                alert("Please fill in all fields.");
+                return;
+            }
+
+            let imgUrl = `https://firebasestorage.googleapis.com/v0/b/myblock-wad.appspot.com/o/donations%2F${encodeURIComponent(this.updateItem.imgName)}?alt=media`;
+            if (imgFile) {
+                // Upload the new image to Firebase Storage
+                const imgRef = ref(storage, `donations/${imgFile.name}`);
+                await uploadBytes(imgRef, imgFile);
+                imgUrl = await getDownloadURL(imgRef);
+            }
+
+            const itemData = {
+                name,
+                availableQuantity
+            };
+            
+            // Conditionally add the image URL to itemData only if a new image was uploaded
+            if (imgFile) {
+                itemData.image = imgFile.name;
+            }
+
+            try {
+                console.log('Updating item with data:', itemData);
+                const itemDocRef = doc(db, "loans", name);
+                await updateDoc(itemDocRef, itemData);
+                alert('Item updated successfully');
+
+                const itemIndex = this.items.findIndex(item => item.name === name);
+                if (itemIndex !== -1) {
+                    // Update the item fields in the array
+                    this.items[itemIndex].availableQuantity = availableQuantity;
+                    if (imgFile) {
+                        this.items[itemIndex].image = imgFile.name;
+                    }
+                }
+            
+            } catch (error) {
+                console.error("Error updating item:", error);
+                alert("Failed to update item.");
+            }
+        },
         clearSelection() {
             this.selectedLoan = '';  // Clear radio selection
             this.itemName = '';      // Clear the item name
