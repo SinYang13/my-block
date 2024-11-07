@@ -144,10 +144,18 @@ const app = Vue.createApp({
         },
 
         openForm(itemName) {
-            // console.log("sup")
-            this.formdisplayActive = true
+            const userId = sessionStorage.getItem("loggedInUserEmail");
+        
+            if (!userId) {
+                // Show the login prompt modal instead of alert
+                const loginModal = new bootstrap.Modal(document.getElementById('loginPromptModal'));
+                loginModal.show();
+                return;
+            }
+        
+            // If logged in, proceed with opening the form
+            this.formdisplayActive = true;
             this.currItemName = itemName;
-            // this.getNums
         },
 
         closeForm() {
@@ -256,7 +264,7 @@ const app = Vue.createApp({
               profileLinkImg.className = "fa fa-sign-in-alt";
       
               const profileLinkText = document.getElementById("profileLinkText");
-              profileLinkText.textContent = "Login / Register";
+              profileLinkText.textContent = "Login";
       
               // profileLink.innerHTML = `<a href="login.html"><i class="fa fa-sign-in-alt"></i> Login / Register</a>`;
             }

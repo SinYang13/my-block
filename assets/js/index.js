@@ -139,7 +139,7 @@ const eventsApp = Vue.createApp({
         profileLinkImg.className = "fa fa-sign-in-alt";
 
         const profileLinkText = document.getElementById("profileLinkText");
-        profileLinkText.textContent = "Login / Register";
+        profileLinkText.textContent = "Login";
 
         // profileLink.innerHTML = `<a href="login.html"><i class="fa fa-sign-in-alt"></i> Login / Register</a>`;
       }
@@ -223,6 +223,10 @@ form.addEventListener("submit", function(event) {
   })
   .then(function(response) {
     alert("Email sent successfully!");
+    document.getElementById("name").value = '';
+    document.getElementById("email").value = '';
+    document.getElementById("subject").value = '';
+    document.getElementById("message").value = '';
   }, function(error) {
     console.error("EmailJS error:", error); // log error to console for debugging
     alert("There was an error sending the email.");
