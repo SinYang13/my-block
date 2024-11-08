@@ -8,23 +8,24 @@ import {
 const app = Vue.createApp({
     data() {
         return {
-            // key: value
+            // Control variables for displaying forms and buttons
             displayForumForm: true,
             displayForumButton: true,
             displayCommentForm: true,
             displayCommentButton: true,
-            title: "",
-            category: "General",
-            content: "",
-            userName: "Kelly",
-            forums: [],
-            commentDetails: "",
-            parentID: "jgse9dsngNJ2p1iAdTwm",            
+
+            // Initialize data properties for forum posts and comments
+            title: null,
+            category: 'General', // by default, it will be general
+            content: null,
+            userName: 'Kelly', // need to retrieve username based on profile
+            forums: [], // Will be populated with forum posts and comments from getposts()
+            commentDetails: null,
+            parentID: null, // Initialize as null; will be set when selecting a specific forum post
             selectedCategory: 'All', // Default category filter
-            isLiked: false // New property to track like status
+            isLiked: false // Track like status
         };
-        
-    }, // data
+    },
     computed: { 
         filteredPosts() {
             if (this.selectedCategory === 'All') {
@@ -90,41 +91,51 @@ const app = Vue.createApp({
             this.displayForumForm = true
             this.displayForumButton = true
         },
-        createPost() {
-            if (!this.userName || !this.category || !this.content || !this.title) {
+
+        // Forum.js
+
+        async createPost() {
+            // Debugging: Log each field to check if they are populated
+            console.log("Category:", this.category);
+            console.log("Title:", this.title);
+            console.log("Content:", this.content);
+
+            if (!this.category || !this.content || !this.title) {
                 alert("Please fill in all required fields before submitting.");
-                return; // Stop the function from proceeding further
+                return;  // Stop further execution if any field is missing
             }
 
-
-            //need to connect to firebase and include all the random stuff
-            const postRef = collection(db, 'forum')
-            console.log("creating Post")
-
-            addDoc(postRef, {
-                author: this.userName,
-                category: this.category,
-                content: this.content,
-                title: this.title,
-                createdAt: Timestamp.fromDate(new Date())
-            })
-                .then((docRef) => { // docRef contains the reference to the newly created document
-                    console.log("Post added successfully with ID: ", docRef.id); // Log the document ID
-                    // return docRef.id; // You can return the ID if needed
-                    window.location.reload();
-                })
-                .catch((error) => {
-                    console.error("Error adding loan: ", error);
+            try {
+                const postRef = await addDoc(collection(db, 'forum'), {
+                    author: this.userName || "Anonymous",
+                    category: this.category,
+                    content: this.content,
+                    title: this.title,
+                    createdAt: Timestamp.fromDate(new Date())
                 });
+                console.log("Post added successfully with ID:", postRef.id);
 
-            this.closeForm()
-            console.log(); // This is your Firestore timestamp
+                // Add post to forums immediately without reloading the page
+                this.forums.push({
+                    id: postRef.id,
+                    author: this.userName || "Anonymous",
+                    category: this.category,
+                    content: this.content,
+                    title: this.title,
+                    createdAt: new Date(),
+                    showComments: false,
+                    comments: [],
+                    isLiked: false
+                });
+                this.closeForm();
+            } catch (error) {
+                console.error("Error adding post:", error);
+                alert("Failed to add post.");
+            }
         },
 
         async getposts() {
             const forumList = [];
-            const categoryCount = {};
-
             const querySnapshot = await getDocs(collection(db, "forum"));
             for (const doc of querySnapshot.docs) {
                 const docId = doc.id;
@@ -132,15 +143,16 @@ const app = Vue.createApp({
                 const orderedQuery = query(commentRef, orderBy("createdAt", "desc"));
                 const commentSnapshot = await getDocs(orderedQuery);
                 const comments = [];
-
+        
                 commentSnapshot.forEach((commentDoc) => {
                     comments.push({
+                        id: commentDoc.id,
                         author: commentDoc.data().author,
                         content: commentDoc.data().content,
                         createdAt: commentDoc.data().createdAt.toDate(),
                     });
                 });
-
+        
                 forumList.push({
                     id: docId,
                     author: doc.data().author,
@@ -148,67 +160,68 @@ const app = Vue.createApp({
                     content: doc.data().content,
                     title: doc.data().title,
                     createdAt: doc.data().createdAt.toDate(),
-                    showComments: false,
-                    comments: comments
+                    showComments: false, // Initialize toggle
+                    comments: comments,
+                    isLiked: doc.data().isLiked || false
                 });
-
-                // Update the category count
-                const category = doc.data().category;
-                if (categoryCount[category]) {
-                    categoryCount[category]++;
-                } else {
-                    categoryCount[category] = 1;
-                }
             }
-            console.log(forumList)
-            console.log(categoryCount)
-            return forumList; // Return the forumList array
+            console.log("Forums and comments:", forumList);
+            this.forums = forumList;
         },
-        openComment() {
-            console.log("Opening form...");
+        
+        
+        openComment(postId) {
+            this.parentID = postId; // Set parentID to the post ID
             this.displayCommentForm = false;   
-            this.displayCommentButton = true;       
         },
+
         closeComment() {
             console.log("Closing form...");
             this.displayCommentForm = true;  
             this.displayCommentButton = true;       
         },
-        postComment() {
+
+        async postComment(postId) {
             if (!this.commentDetails) {
                 alert("Please fill in all required fields before submitting.");
-                return; // Stop the function from proceeding further
+                return;
             }
 
-            const commentRef = collection(db, "forum/" + this.parentID + "/comments")
-
-            addDoc(commentRef, {
-                author: this.userName,
-                content: this.commentDetails,
-                createdAt: Timestamp.fromDate(new Date())
-            })
-                .then((docRef) => { // docRef contains the reference to the newly created document
-                    console.log("Comment added successfully with ID: ", docRef.id); // Log the document ID
-                    // return docRef.id; // You can return the ID if needed
-                    // window.location.reload();
-                })
-                .catch((error) => {
-                    console.error("Error adding loan: ", error);
+            try {
+                const commentRef = collection(db, `forum/${postId}/comments`);
+                await addDoc(commentRef, {
+                    author: this.userName,
+                    content: this.commentDetails,
+                    createdAt: Timestamp.fromDate(new Date())
                 });
+                console.log("Comment added successfully!");
 
-            this.closeComment();
-            console.log(); // This is your Firestore timestamp
-        },
-        toggleLike() {
-            this.isLiked = !this.isLiked; // Toggle the like status
-            if (this.isLiked) {
-                console.log("Post liked!");
-                // Here you might want to add logic to record the like in your database
-            } else {
-                console.log("Post unliked!");
-                // Here you might want to add logic to remove the like from your database
+                // Update comments for post in forums
+                this.forums.find(post => post.id === postId).comments.push({
+                    author: this.userName,
+                    content: this.commentDetails,
+                    createdAt: new Date()
+                });
+                this.closeComment();
+            } catch (error) {
+                console.error("Error adding comment:", error);
+                alert("Failed to add comment.");
             }
-        }
+        }, 
+
+        async toggleLike(postId) {
+            const post = this.forums.find(post => post.id === postId);
+            if (post) {
+                post.isLiked = !post.isLiked;  // Toggle the like status
+                try {
+                    const postRef = doc(db, 'forum', postId);
+                    await updateDoc(postRef, { isLiked: post.isLiked });
+                    console.log("Like status updated in Firebase:", post.isLiked);
+                } catch (error) {
+                    console.error("Error updating like:", error);
+                }
+            }
+        }       
     }// methods
 });
 const vm = app.mount('#app'); 

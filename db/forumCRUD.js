@@ -51,3 +51,9 @@ export async function postComment(postId, commentData) {
     const commentsRef = collection(db, `forum/${postId}/comments`);
     await addDoc(commentsRef, commentData);
 }
+
+// Update like status in Firestore
+export async function toggleLike(postId, isLiked) {
+    const postRef = doc(db, "forum", postId);
+    await updateDoc(postRef, { isLiked: isLiked });
+}

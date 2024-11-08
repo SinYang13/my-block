@@ -166,7 +166,11 @@
         <br>
         <div style="display: flex; justify-content: right; padding-right: 20px;" >
             <button type="button" id ="postforumbtn" class="btn btn-primary buttonDisplay topright" v-show="displayForumButton" @click="openForm" style="font-size: 17px; padding: 15px 15px;">
-              Add Post
+                <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="feather feather-plus mr-2">
+                    <line x1="12" y1="5" x2="12" y2="19"></line>
+                    <line x1="5" y1="12" x2="19" y2="12"></line>
+                </svg>
+                Add Post
             </button>
         </div>
         <h2 style="color: orangered; text-align: center;">View Posts on Forum</h2>
@@ -230,7 +234,11 @@
                             <label for="content" class="form-label">Content</label>
                             <textarea class="form-control" id="content" name="content" rows="4" v-model="content" required></textarea>
                         </div>
-                        <a style="margin-top: 25px; display: flex; justify-content: center; align-items: center;" class="btn btn-primary" @click="createPost">Submit Post</a>
+                        <a style="display: flex; justify-content: center; align-items: center; margin-top: 25px;" 
+                        class="btn btn-primary" 
+                        @click="createPost">
+                            Submit Post
+                        </a>
                     </form>
                 </div>
             </div>
@@ -241,9 +249,16 @@
             <div style="display: flex; align-items: center;">
                 <h3 style="margin: 0; flex-grow: 1;">{{ post.title }}</h3>
                 <!-- Thumbs Up Button -->
-                <button type="button" class="btn" :class="{'btn-primary': isLiked, 'btn-light': !isLiked}" style="font-size: 15px; margin-left: 10px;" @click="toggleLike">
+                <!-- <button type="button" class="btn" :class="{'btn-primary': isLiked, 'btn-light': !isLiked}" style="font-size: 15px; margin-left: 10px;" @click="toggleLike(post.id)">
                     <span class="material-icons" :class="isLiked ? 'text-white' : 'text-black'">thumb_up</span>
                     {{ isLiked ? '' : '' }}
+                </button> -->
+                <button 
+                    @click="toggleLike(post.id)" 
+                    :class="post.isLiked ? 'btn-primary' : 'btn-light'" 
+                    class="btn" 
+                    style="font-size: 15px; margin-left: 10px;">
+                    <span class="material-icons" :class="post.isLiked ? 'text-white' : 'text-black'">thumb_up</span>
                 </button>
             </div>                        
             <!-- <p><strong>Category:</strong> {{ post.category }}</p> -->
@@ -252,21 +267,25 @@
             <br>
             <!-- Comments Section -->
             <div class="comments-section">
-                <h5>Comments</h5>
-                <!-- Add comment button-->
-                <button type="button" id="postcommentbtn" class="btn btn-primary buttonDisplay topright" style="font-size: 15px; background-color: orangered; border-color: white;" v-show="displayCommentButton" @click="openComment">
-                    Add Comment
-                </button>
+                <!-- Heading and Add Comment button side by side -->
+                <div style="display: flex; align-items: center;">
+                    <h5>Comments</h5>
+                    <button type="button" class="btn btn-primary buttonDisplay" style="font-size: 15px; background-color: orangered; border-color: white; margin-left: 10px;" 
+                    @click="openComment(post.id)">
+                        Add Comment
+                    </button>
+                </div>
+                
                 <!-- Check if comments exist -->
                 <div v-if="post.comments.length > 0">
                     <!-- Toggle Comments Button -->
                     <button class="btn btn-link" @click="post.showComments = !post.showComments">
                         {{ post.showComments ? 'Hide Comments' : 'Show Comments' }}
                     </button>
-
+            
                     <!-- Display Comments if toggle is active -->
                     <div v-if="post.showComments">
-                        <div class="comment" v-for="comment in post.comment" :key="comment.id">
+                        <div class="comment" v-for="comment in post.comments" :key="comment.id">
                             <p><strong>Commenter:</strong> {{ comment.author }}</p>
                             <p>{{ comment.content }}</p>
                         </div>
@@ -276,7 +295,7 @@
                 <div v-else>
                     <p>No comments</p>
                 </div>
-            </div>
+            </div>            
         </div>
     </div>
 
@@ -298,7 +317,10 @@
                         <label for="commentDetails" class="form-label">Content</label>
                         <textarea class="form-control" id="commentDetails" name="commentDetails" rows="4" v-model="commentDetails" required></textarea>
                     </div>
-                    <a style="margin-top: 25px; display: flex; justify-content: center; align-items: center;" class="btn btn-primary" @click="postComment">Submit Comment</a>
+                    <a class="btn btn-primary" style="display: flex; justify-content: center; align-items: center; margin-top: 25px;" 
+                    @click="postComment(parentID)">
+                        Submit Comment
+                    </a>
                 </form>
             </div>
         </div>

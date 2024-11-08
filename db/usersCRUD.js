@@ -16,6 +16,7 @@ export async function createUser(email, userData, fname, lname, telNo) {
         userData.lastName = lname;
         userData.phoneNumber = telNo;
         await setDoc(userDocRef, userData);
+        
     } catch (error) {
         console.error('Error creating user:', error);
         throw error;
