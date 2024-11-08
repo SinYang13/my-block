@@ -223,6 +223,10 @@ form.addEventListener("submit", function(event) {
   })
   .then(function(response) {
     alert("Email sent successfully!");
+    document.getElementById("name").value = '';
+    document.getElementById("email").value = '';
+    document.getElementById("subject").value = '';
+    document.getElementById("message").value = '';
   }, function(error) {
     console.error("EmailJS error:", error); // log error to console for debugging
     alert("There was an error sending the email.");

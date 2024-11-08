@@ -28,6 +28,66 @@
     .carousel-caption{
       background-color: white;
     }
+    
+   /* Main section container */
+   .sector {
+      position: relative;
+      width: 100vw;
+      /* background-color: #f0f0f0; */
+      overflow: hidden; /* Prevents overflow */
+    }
+
+    /* Full-width background image */
+    .sector-left {
+      width: 100vw;
+      height: 500px; /* Adjust height as needed */
+      background-image: url("assets/images/video-bg.jpg"); /* Replace with your image path */
+      background-size: cover;
+      background-position: center;
+      position: relative;
+      z-index: 0;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      text-align: center;
+      /* color: white; Text color for readability */
+    }
+
+    /* Centered text container with upward adjustment */
+    .sector-left .text-overlay {
+      font-size: 24px;
+      font-weight: bold;
+      padding: 20px;
+      max-width: 80%;
+      line-height: 1.5;
+      margin-top: -200px; /* Adjust this value to move the text up or down */
+    }
+
+    /* Centered content container */
+    .sector-content {
+      width: 100%;
+      max-width: 90%;
+      /* background-color: #2f3d3c; */
+      /* color: white; */
+      padding: 20px;
+      border-radius: 8px;
+      /* box-shadow: 0px 4px 8px rgba(0, 0, 0, 0.2); */
+      position: relative;
+      z-index: 1;
+      margin: -250px auto 0 auto; /* Moves content up slightly for overlap */
+      /* text-align: center; */
+    }
+
+    .sector-content h1 {
+      font-size: 24px;
+      font-weight: lighter;
+    }
+
+    .sector-content p {
+      margin: 10px 0;
+      font-weight: 500;
+      line-height: 1.6;
+    }
   </style>
 
 <script type="text/javascript" src="https://cdn.jsdelivr.net/npm/@emailjs/browser@4/dist/email.min.js"></script>
@@ -97,7 +157,7 @@
   </header>
 
   <!-- ***** Header Area End ***** -->
-  <div class="container">
+  <!-- <div class="container">
     <div class="row">
       <div class="col-12">
         <div class="section-heading text-center">
@@ -106,78 +166,98 @@
         </div>
       </div>
     </div>
-  </div>
-
-
-
-
-
+  </div> -->
 
   <div id="app">
     <!-- BS carousel: start -->
-    <div id="carouselExampleControls" class="carousel slide" data-bs-ride="carousel" v-if="announcements.length > 0">
-      <div class="carousel-inner">
-        <div class="carousel-item active">
-          <img :src="announcements[0].img" class="d-block" style="max-height:50%; max-width: 100%; margin:auto" alt="...">
-            <div class="carousel-caption d-none d-md-block">
-              <h3>{{announcements[0].title}}</h3>
-              <p>{{announcements[0].content}}</p>
-            </div>
-        </div>
-        <div class="carousel-item" v-for="announcement in announcements.slice(1)">
-          <img :src="announcement.img" class="d-block"
-            style="max-height:50%; max-width: 100%; margin:auto" alt="...">
-            <div class="carousel-caption d-none d-md-block">
-              <h3>{{announcement.title}}</h3>
-              <p>{{announcement.content}}</p>
-            </div>
+    <section class="sector">
+      <div class="sector-left">
+        <div class="text-overlay">
+            <h6 style=" color: #ee626b;
+            font-size: 15px;
+            text-transform: uppercase;
+            font-weight: 700;">Announcements</h6>
+            <h2 style="  font-size: 40px; color: white;
+            font-weight: 700;
+            text-transform: capitalize;
+            margin-top: 20px;
+            line-height: 56px;">Do not miss out on the latest news!</h2>
         </div>
       </div>
-      <button class="carousel-control-prev" type="button" data-bs-target="#carouselExampleControls"
-        data-bs-slide="prev">
-        <span class="carousel-control-prev-icon" aria-hidden="true"></span>
-        <span class="visually-hidden">Previous</span>
-      </button>
-      <button class="carousel-control-next" type="button" data-bs-target="#carouselExampleControls"
-        data-bs-slide="next">
-        <span class="carousel-control-next-icon" aria-hidden="true"></span>
-        <span class="visually-hidden">Next</span>
-      </button>
-    </div>
+      <div class="sector-content">
+        <div id="carouselExampleControls" class="carousel slide" data-bs-ride="carousel" v-if="announcements.length > 0">
+          <div class="carousel-inner">
+            <div class="carousel-item active">
+              <img :src="announcements[0].img" class="d-block" style="max-height:50%; max-width: 100%; margin:auto" alt="...">
+                <div class="carousel-caption d-none d-md-block">
+                  <h3>{{announcements[0].title}}</h3>
+                  <p>{{announcements[0].content}}</p>
+                </div>
+            </div>
+            <div class="carousel-item" v-for="announcement in announcements.slice(1)">
+              <img :src="announcement.img" class="d-block"
+                style="max-height:50%; max-width: 100%; margin:auto" alt="...">
+                <div class="carousel-caption d-none d-md-block">
+                  <h3>{{announcement.title}}</h3>
+                  <p>{{announcement.content}}</p>
+                </div>
+            </div>
+          </div>
+          <button class="carousel-control-prev" type="button" data-bs-target="#carouselExampleControls"
+            data-bs-slide="prev">
+            <span class="carousel-control-prev-icon" aria-hidden="true"></span>
+            <span class="visually-hidden">Previous</span>
+          </button>
+          <button class="carousel-control-next" type="button" data-bs-target="#carouselExampleControls"
+            data-bs-slide="next">
+            <span class="carousel-control-next-icon" aria-hidden="true"></span>
+            <span class="visually-hidden">Next</span>
+          </button>
+        </div>
+      </div>
+    </section>
+  
 
     
 
     <div class="properties section ">
-      <div class="container">
-        <div class="row">
-          <div class="col-lg-4 offset-lg-4">
-            <div class="section-heading text-center">
-              <h6>Events</h6>
-              <h2>Join us for a fun time!</h2>
-            </div>
-          </div>
-        </div>
+      <section class="sector">
+        <div class="sector-left">
+          <div class="text-overlay">
+            <h6 style=" color: #ee626b;
+            font-size: 15px;
+            text-transform: uppercase;
+            font-weight: 700;">Events</h6>
+            <h2 style="  font-size: 40px; color: white;
+            font-weight: 700;
+            text-transform: capitalize;
+            margin-top: 20px;
+            line-height: 56px;">Come Join Us for some events</h2>
 
-        <div class="row row-cols-1 row-cols-md-3 g-4">
-          <div class="col" v-for="event in events" :key="event.id">
-            <div class="item card h-100">
-              <a :href="event.link">
-                <img :src="event.imageURL" class="card-img-top" alt="Event Image" />
-              </a>
-              <div class="card-body">
-                <span class="category">{{ event.cat }}</span>
-                <h6>{{ event.price }}</h6>
-                <h4 class="card-title">{{ event.place }}</h4>
-                <p class="card-text">{{ event.description }}</p>
-              </div>
-              <div class="main-button text-center">
-                <a :href="event.link" class="btn btn-primary">See more!</a>
+          </div>
+        </div>
+        <div class="sector-content">
+          <div class="row row-cols-1 row-cols-md-3 g-4">
+            <div class="col" v-for="event in events" :key="event.id">
+              <div class="item card h-100">
+                <a :href="event.link">
+                  <img :src="event.imageURL" class="card-img-top" alt="Event Image" />
+                </a>
+                <div class="card-body">
+                  <span class="category">{{ event.cat }}</span>
+                  <h6>{{ event.price }}</h6>
+                  <h4 class="card-title">{{ event.place }}</h4>
+                  <p class="card-text">{{ event.description }}</p>
+                </div>
+                <div class="main-button text-center">
+                  <a :href="event.link" class="btn btn-primary">See more!</a>
+                </div>
               </div>
             </div>
           </div>
         </div>
+      </section>
       </div>
-    </div>
   </div>
 
   <div class="video section">

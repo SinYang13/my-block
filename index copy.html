@@ -1,0 +1,123 @@
+background-image: url("assets/images/video-bg.jpg"); /* Replace with your background image */
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Overlapping Containers Example</title>
+  <link href="vendor/bootstrap/css/bootstrap.min.css" rel="stylesheet">
+
+
+  <!-- Additional CSS Files -->
+  <link rel="stylesheet" href="assets/css/fontawesome.css">
+  <link rel="stylesheet" href="assets/css/templatemo-villa-agency.css">
+  <link rel="stylesheet" href="assets/css/owl.css">
+  <link rel="stylesheet" href="assets/css/animate.css">
+  <link rel="stylesheet" href="https://unpkg.com/swiper@7/swiper-bundle.min.css" />
+  <script src="https://unpkg.com/vue@3/dist/vue.global.js"></script>
+  <style>
+  
+    /* Reset body and html margins to avoid white space */
+
+
+   /* Main section container */
+   .sector {
+      position: relative;
+      width: 100vw;
+      /* background-color: #f0f0f0; */
+      overflow: hidden; /* Prevents overflow */
+    }
+
+    /* Full-width background image */
+    .sector-left {
+      width: 100vw;
+      height: 500px; /* Adjust height as needed */
+      background-image: url("assets/images/video-bg.jpg"); /* Replace with your image path */
+      background-size: cover;
+      background-position: center;
+      position: relative;
+      z-index: 0;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      text-align: center;
+      /* color: white; Text color for readability */
+    }
+
+    /* Centered text container with upward adjustment */
+    .sector-left .text-overlay {
+      font-size: 24px;
+      font-weight: bold;
+      padding: 20px;
+      max-width: 80%;
+      line-height: 1.5;
+      margin-top: -200px; /* Adjust this value to move the text up or down */
+    }
+
+    /* Centered content container */
+    .sector-content {
+      width: 100%;
+      max-width: 80%;
+      /* background-color: #2f3d3c; */
+      /* color: white; */
+      padding: 20px;
+      border-radius: 8px;
+      /* box-shadow: 0px 4px 8px rgba(0, 0, 0, 0.2); */
+      position: relative;
+      z-index: 1;
+      margin: -200px auto 0 auto; /* Moves content up slightly for overlap */
+      /* text-align: center; */
+    }
+
+    .sector-content h1 {
+      font-size: 24px;
+      font-weight: lighter;
+    }
+
+    .sector-content p {
+      margin: 10px 0;
+      font-weight: 500;
+      line-height: 1.6;
+    }
+    
+  </style>
+</head>
+<body>
+<div id="app">
+  <div class="properties section ">
+  <section class="sector">
+    <div class="sector-left">
+      <div class="text-overlay">Welcome to Our Last Event! See the Highlights Below</div>
+    </div>
+    <div class="sector-content">
+      <div class="row row-cols-1 row-cols-md-3 g-4">
+        <div class="col" v-for="event in events" :key="event.id">
+          <div class="item card h-100">
+            <a :href="event.link">
+              <img :src="event.imageURL" class="card-img-top" alt="Event Image" />
+            </a>
+            <div class="card-body">
+              <span class="category">{{ event.cat }}</span>
+              <h6>{{ event.price }}</h6>
+              <h4 class="card-title">{{ event.place }}</h4>
+              <p class="card-text">{{ event.description }}</p>
+            </div>
+            <div class="main-button text-center">
+              <a :href="event.link" class="btn btn-primary">See more!</a>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </section>
+  </div>
+</div>
+  <script src="vendor/jquery/jquery.min.js"></script>
+  <script src="vendor/bootstrap/js/bootstrap.min.js"></script>
+  <script src="assets/js/isotope.min.js"></script>
+  <script src="assets/js/owl-carousel.js"></script>
+  <script src="assets/js/counter.js"></script>
+  <script src="assets/js/custom.js"></script>
+  <script type="module" src="assets/js/index.js"></script>
+</body>
+</html>

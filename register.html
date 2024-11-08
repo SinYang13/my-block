@@ -16,11 +16,14 @@
     <link rel="stylesheet" href="https://unpkg.com/swiper@7/swiper-bundle.min.css"/>
     <style>
         .register-container {
-            max-width: 400px;
-            margin: 100px auto;
+            max-width: 600px;
+            margin: 70px auto;
             padding: 20px;
             box-shadow: 0px 0px 15px rgba(0, 0, 0, 0.1);
             border-radius: 8px;
+        }
+        .register-container label{
+            margin: 15px;
         }
     </style>
 </head>
@@ -79,16 +82,28 @@
     </header>
     
     <div id="app" class="register-container">
-        <h2 class="text-center">Register</h2>
+        <h2 class="text-center" style="margin-bottom: 20px;">Register</h2>
         <div v-if="error" class="alert alert-danger">{{ error }}</div>
         <form @submit.prevent="register">
-            <!-- <div class="mb-3">
-                <label for="name" class="form-label">Name</label>
-                <input type="text" id="name" v-model="name" class="form-control" required>
-            </div> -->
-            <div class="mb-3">
-                <label for="email" class="form-label">Email</label>
-                <input type="email" id="email" v-model="email" class="form-control" required>
+            <div class="row">
+                <div class="col col-md-6">
+                    <label for="fname" class="form-label">First Name</label>
+                    <input type="text" id="fname" v-model="fname" class="form-control" required>
+                </div>
+                <div class="col col-md-6">
+                    <label for="lname" class="form-label">Last Name</label>
+                    <input type="text" id="lname" v-model="lname" class="form-control" required>
+                </div>
+            </div>
+            <div class="row">
+                <div class="col col-md-4">
+                    <label for="telNo" class="form-label">Phone Number</label>
+                    <input type="tel" id="telNo" v-model="telNo" class="form-control" required>
+                </div>
+                <div class="col col-md-8">
+                    <label for="email" class="form-label">Email</label>
+                    <input type="email" id="email" v-model="email" class="form-control" required>
+                </div>
             </div>
             <div class="mb-3">
                 <label for="password" class="form-label">Password</label>
@@ -117,7 +132,9 @@
         createApp({
             data() {
                 return {
-                    name: '',
+                    fname: '',
+                    lname: '',
+                    telNo:'',
                     email: '',
                     password: '',
                     confirmPassword: '',
@@ -140,7 +157,7 @@
                         console.log(email)
                         console.log(userData)
 
-                        await createUser(email, userData);
+                        await createUser(email, userData, this.fname, this.lname, this.telNo);
                         window.location.href = 'login.html';
                     } catch (err) {
                         console.error('Error registering:', err);

@@ -4,13 +4,17 @@ import { db } from './firebaseConfig.js';
 import { collection, setDoc, getDocs, updateDoc, deleteDoc, doc, getDoc } from 'https://www.gstatic.com/firebasejs/10.14.0/firebase-firestore.js';
 
 // Create a user (using email as document ID)
-export async function createUser(email, userData) {
+export async function createUser(email, userData, fname, lname, telNo) {
     try {
         const userDocRef = doc(db, 'users', email);
         // Adding registerDate if not already provided
         if (!userData.registerDate) {
             userData.registerDate = new Date();
         }
+
+        userData.firstName = fname;
+        userData.lastName = lname;
+        userData.phoneNumber = telNo;
         await setDoc(userDocRef, userData);
         
     } catch (error) {
