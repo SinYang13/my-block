@@ -316,7 +316,7 @@
                         <div class="wizard">
                             <nav class="list-group list-group-flush">
 
-                                <a class="list-group-item active" href="profile.html"><i
+                                <a class="list-group-item" href="profile.html"><i
                                         class="fa fa-user text-muted"></i>Profile Settings</a>
                                 <a class="list-group-item" href="#"><i
                                         class="fa fa-map-marker text-muted"></i>Addresses</a>
@@ -332,17 +332,15 @@
                                         <div><i class="fa fa-file mr-1 text-muted"></i>
                                             <div class="d-inline-block font-weight-medium text-uppercase">Loans List
                                             </div>
-                                        <!-- </div><span class="badge badge-secondary"></span> -->
                                         </div><span class="badge bg-secondary">{{loanOwners.length}}</span>
                                     </div>
                                 </a>
-                                <a class="list-group-item" href="service_listing_profile.html">
+                                <a class="list-group-item active" href="service_listing_profile.html">
                                     <div class="d-flex justify-content-between align-items-center">
                                         <div><i class="fa fa-handshake-angle mr-1 text-muted"></i>
                                             <div class="d-inline-block font-weight-medium text-uppercase">Services List
                                             </div>
                                         </div><span class="badge badge-secondary"></span>
-                                        <!-- </div><span class="badge badge-secondary">{{loanOwners.length}}</span> -->
                                     </div>
                                 </a>
                             </nav>
@@ -350,56 +348,32 @@
                     </div>
                     <!-- Profile Settings-->
                     <div class="col-lg-8 pb-5" style="padding: 40px;">
-                        <form class="row">
-                            <div class="col-md-6">
-                                <div class="form-group">
-                                    <label for="account-fn">First Name</label>
-                                    <input class="form-control" type="text" id="account-fn"
-                                        :value="userDetails.firstName" required="" disabled>
-                                </div>
-                            </div>
-                            <div class="col-md-6">
-                                <div class="form-group">
-                                    <label for="account-ln">Last Name</label>
-                                    <input class="form-control" type="text" id="account-ln"
-                                        :value="userDetails.lastName" required="" disabled>
-                                </div>
-                            </div>
-                            <div class="col-md-6">
-                                <div class="form-group">
-                                    <label for="account-email">E-mail Address</label>
-                                    <input class="form-control" type="email" id="account-email" :value="userid">
-                                </div>
-                            </div>
-                            <div class="col-md-6">
-                                <div class="form-group">
-                                    <label for="account-phone">Phone Number</label>
-                                    <input class="form-control" type="text" id="account-phone"
-                                        :value="userDetails.phoneNumber" required="">
-                                </div>
-                            </div>
-                            <div class="col-md-6">
-                                <div class="form-group">
-                                    <label for="account-pass">New Password</label>
-                                    <input class="form-control" type="password" id="account-pass">
-                                </div>
-                            </div>
-                            <div class="col-md-6">
-                                <div class="form-group">
-                                    <label for="account-confirm-pass">Confirm Password</label>
-                                    <input class="form-control" type="password" id="account-confirm-pass">
-                                </div>
-                            </div>
-                            <div class="col-12">
-                                <hr class="mt-2 mb-3">
-                                <div class="d-flex flex-wrap justify-content-between align-items-center">
-                                    <button class="btn btn-style-1 btn-primary" type="button" data-toast=""
-                                        style="float: right;" data-toast-position="topRight" data-toast-type="success"
-                                        data-toast-icon="fe-icon-check-circle" data-toast-title="Success!"
-                                        data-toast-message="Your profile updated successfuly.">Update Profile</button>
-                                </div>
-                            </div>
-                        </form>
+                        <!-- insert table instead -->
+                        <table class="table table-hover mb-0">
+                            <thead>
+                                <tr>
+                                    <th>Item Name</th>
+                                    <th>Start Date</th>
+                                    <th>End Date</th>
+                                    <th>Status</th>
+                                </tr>
+                            </thead>
+                            <tbody>
+                                <tr>
+                                    <td>i.itemName</td>
+                                    <td>i.startDate</td>
+                                    <td>i.endDate</td>
+                                    <td><span class="badge badge-warning m-0">i.status</span></td>
+                                </tr>
+                                <!-- <tr v-for="i in loanOwners">
+                                    <td>{{i.itemName}}</td>
+                                    <td>{{i.startDate}}</td>
+                                    <td>{{i.endDate}}</td>
+                                    <td><span class="badge badge-warning m-0">{{i.status}}</span></td>
+                                </tr> -->
+                                
+                            </tbody>
+                        </table>
                     </div>
                 </div>
             </div>
@@ -412,8 +386,6 @@
                 onclick="window.location.href='./login.html';">Login</button>
         </div>
     </div>
-
-
 </body>
 
 </html>

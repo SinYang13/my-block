@@ -28,6 +28,7 @@ export async function readUser(email) {
         const userDocRef = doc(db, 'users', email);
         const userDoc = await getDoc(userDocRef);
         if (userDoc.exists()) {
+            console.log(userDoc.data())
             return userDoc.data();
         } else {
             throw new Error('User does not exist');
