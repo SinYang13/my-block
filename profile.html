@@ -307,11 +307,11 @@
                                 </div>
                                 <div class="author-card-details">
                                     <h5 class="author-card-name text-lg">{{this.userDetails.firstName}}
-                                        {{this.userDetails.lastName}}</h5><span class="author-card-position">Joined
-                                        {{this.createdDate}}</span>
+                                        {{this.userDetails.lastName}}</h5>
+                                        <span class="author-card-position">Joined{{this.createdDate}}</span>
                                 </div>
                             </div>
-                            <button type="button" class="btn btn-danger" @click="logout">Logout</button>
+                            <!-- <button type="button" style="margin-left: 30px;" class="btn btn-danger" @click="logout">Logout</button> -->
                         </div>
                         <div class="wizard">
                             <nav class="list-group list-group-flush">
@@ -345,6 +345,9 @@
                                         <!-- </div><span class="badge badge-secondary">{{loanOwners.length}}</span> -->
                                     </div>
                                 </a>
+                                <div class="d-flex justify-content-between align-items-center">
+                                    <button type="button" class="btn btn-danger" @click="logout" style="width: 100%; margin-top: 10px;">Logout</button>
+                                </div>
                             </nav>
                         </div>
                     </div>

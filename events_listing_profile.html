@@ -228,6 +228,180 @@
         .form-group {
             padding: 20px;
         }
+
+        /* @import url('https://fonts.googleapis.com/css?family=Oswald'); */
+
+        /* * {
+            margin: 0;
+            padding: 0;
+            border: 0;
+            box-sizing: border-box
+        } */
+
+        /* body {
+            background-color: #dadde6;
+            font-family: arial
+        } */
+
+        .fl-left {
+            float: left
+        }
+
+        .fl-right {
+            float: right
+        }
+
+        /* h1 {
+            text-transform: uppercase;
+            font-weight: 900;
+            border-left: 10px solid #fec500;
+            padding-left: 10px;
+            margin-bottom: 30px
+        } */
+
+        .row {
+            overflow: hidden
+        }
+
+        .card {
+            display: table-row;
+            width: 100%;
+            background-color: #fff;
+            color: #989898;
+            margin-bottom: 10px;
+            font-family: 'Oswald', sans-serif;
+            text-transform: uppercase;
+            border-radius: 10px;
+            position: relative
+        }
+
+        .card+.card {
+            margin-left: 2%
+        }
+
+        .date {
+            display: table-cell;
+            width: 25%;
+            position: relative;
+            text-align: center;
+            border-right: 2px dashed #dadde6;
+        }
+
+        /* .date:before,
+        .date:after {
+            content: "";
+            display: block;
+            width: 30px;
+            height: 30px;
+            background-color: #DADDE6;
+            position: absolute;
+            top: -15px;
+            right: -15px;
+            z-index: 1;
+            border-radius: 50%
+        }
+
+        
+
+        .date:after {
+            top: auto;
+            bottom: -15px
+        } */
+
+        .date time {
+            display: block;
+            position: absolute;
+            top: 50%;
+            left: 50%;
+            -webkit-transform: translate(-50%, -50%);
+            -ms-transform: translate(-50%, -50%);
+            transform: translate(-50%, -50%)
+        }
+
+        .date time span {
+            display: block
+        }
+
+        .date time span:first-child {
+            color: #2b2b2b;
+            font-weight: 600;
+            font-size: 250%
+        }
+
+        .date time span:last-child {
+            text-transform: uppercase;
+            font-weight: 600;
+            margin-top: -10px
+        }
+
+        .card-cont {
+            display: table-cell;
+            width: 75%;
+            font-size: 85%;
+            padding: 10px 10px 30px 50px
+        }
+
+        .card-cont h3 {
+            color: #3C3C3C;
+            font-size: 130%
+        }
+
+        .card-cont>div {
+            display: table-row
+        }
+
+        .card-cont .even-date i,
+        .card-cont .even-info i,
+        .card-cont .even-date time,
+        .card-cont .even-info p {
+            display: table-cell
+        }
+
+        .card-cont .even-date i,
+        .card-cont .even-info i {
+            padding: 5% 5% 0 0
+        }
+
+        .card-cont .even-info p {
+            padding: 30px 50px 0 0
+        }
+
+        .card-cont .even-date time span {
+            display: block
+        }
+
+        .card-cont a {
+            display: block;
+            text-decoration: none;
+            width: 80px;
+            height: 30px;
+            background-color: #037FDD;
+            color: #fff;
+            text-align: center;
+            line-height: 30px;
+            border-radius: 2px;
+            position: absolute;
+            right: 10px;
+            bottom: 10px
+        }
+
+        @media screen and (max-width: 860px) {
+            .card {
+                display: block;
+                float: none;
+                width: 100%;
+                margin-bottom: 10px
+            }
+
+            .card+.card {
+                margin-left: 0
+            }
+
+            .card-cont .even-date,
+            .card-cont .even-info {
+                font-size: 75%
+            }
+        }
     </style>
 </head>
 
@@ -313,7 +487,6 @@
                                         {{this.createdDate}}</span>
                                 </div>
                             </div>
-                            <button type="button" class="btn btn-danger" @click="logout">Logout</button>
                         </div>
                         <div class="wizard">
                             <nav class="list-group list-group-flush">
@@ -326,7 +499,7 @@
                                     <div class="d-flex justify-content-between align-items-center">
                                         <div><i class="fa fa-ticket mr-1 text-muted"></i>
                                             <div class="d-inline-block font-weight-medium text-uppercase">Events</div>
-                                        </div><span class="badge badge-secondary">3</span>
+                                        </div><span class="badge bg-secondary">{{eventsList.length}}</span>
                                     </div>
                                 </a>
                                 <a class="list-group-item" href="loans_listing_profile.html">
@@ -334,7 +507,7 @@
                                         <div><i class="fa fa-file mr-1 text-muted"></i>
                                             <div class="d-inline-block font-weight-medium text-uppercase">Loans List
                                             </div>
-                                        <!-- </div><span class="badge badge-secondary"></span> -->
+                                            <!-- </div><span class="badge badge-secondary"></span> -->
                                         </div><span class="badge bg-secondary">{{loanOwners.length}}</span>
                                     </div>
                                 </a>
@@ -347,37 +520,45 @@
                                         <!-- </div><span class="badge badge-secondary">{{loanOwners.length}}</span> -->
                                     </div>
                                 </a>
+                                <div class="d-flex justify-content-between align-items-center">
+                                    <button type="button" class="btn btn-danger" @click="logout"
+                                        style="width: 100%; margin-top: 10px;">Logout</button>
+                                </div>
                             </nav>
                         </div>
                     </div>
                     <!-- Profile Settings-->
-                    <div class="col-lg-8 pb-5" style="padding: 40px;">
+                    <div class="col-lg-8 pb-5" v-if="eventsList.length !=0">
                         <!-- insert table instead -->
-                        <table class="table table-hover mb-0">
-                            <thead>
-                                <tr>
-                                    <th>Item Name</th>
-                                    <th>Start Date</th>
-                                    <th>End Date</th>
-                                    <th>Status</th>
-                                </tr>
-                            </thead>
-                            <tbody>
-                                <tr>
-                                    <td>i.itemName</td>
-                                    <td>i.startDate</td>
-                                    <td>i.endDate</td>
-                                    <td><span class="badge badge-warning m-0">i.status</span></td>
-                                </tr>
-                                <!-- <tr v-for="i in loanOwners">
-                                    <td>{{i.itemName}}</td>
-                                    <td>{{i.startDate}}</td>
-                                    <td>{{i.endDate}}</td>
-                                    <td><span class="badge badge-warning m-0">{{i.status}}</span></td>
-                                </tr> -->
-                                
-                            </tbody>
-                        </table>
+                         <div class="row" v-for="i in eventsList">
+                            <article class="card fl-left">
+                                <section class="date">
+                                    <time datetime="23th feb">
+                                        <span>{{i.date}}</span><span>{{i.shortmth}}</span>
+                                    </time>
+                                </section>
+                                <section class="card-cont">
+                                    <h3>{{i.eventTitle}}</h3>
+                                    <div class="even-date">
+                                        <i class="fa fa-calendar"></i>
+                                        <time>
+                                            <span>{{i.fulldate}}</span>
+                                            <span>{{i.time}}</span>
+                                        </time>
+                                    </div>
+                                    <div class="even-info">
+                                        <i class="fa fa-map-marker"></i>
+                                        <p>
+                                            {{i.eventLocation}}, Singapore
+                                        </p>
+                                    </div>
+                                    <a href="#">tickets</a>
+                                </section>
+                            </article>
+                         </div>
+                    </div>
+                    <div class="col-lg-8 pb-5" v-else>
+                        <h1>You have not signed up for any events</h1>
                     </div>
                 </div>
             </div>

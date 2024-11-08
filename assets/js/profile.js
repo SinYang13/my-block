@@ -20,7 +20,9 @@ const app = Vue.createApp({
             // userid: "Kelly",
             showProfile: false,
             userDetails: '',
-            createdDate: ''
+            createdDate: '',
+            eventsList: [],
+
         };
     }, // data
     // computed: { 
@@ -33,13 +35,14 @@ const app = Vue.createApp({
     async mounted() {
         this.getRentals();
         const app = this;
-                this.handleProfileLink();
-                window.addEventListener("scroll", this.handleScroll);
+        this.handleProfileLink();
+        window.addEventListener("scroll", this.handleScroll);
 
-                if (this.userid != null) {
-                    this.showProfile = true
-                };
-                this.getuser();
+        if (this.userid != null) {
+            this.showProfile = true
+        };
+        this.getuser();
+        this.getEvents();
     },
     methods: {
         async getRentals() {
@@ -67,6 +70,53 @@ const app = Vue.createApp({
 
             console.log(rentalList);
             return rentalList;
+        },
+
+        async getEvents() {
+            const weekday = ["Sunday", "Monday", "Tuesday", "Wednesday", "Thursday", "Friday", "Saturday"];
+            const month = ["January", "February", "March", "April", "May", "June", "July", "August", "September", "October", "November", "December"];
+            const shortmonth = ["Jan", "Feb", "Mar", "Apr", "MayJun", "Jul", "Aug", "Sep", "Oct", "Nov", "Dec"];
+            const colRef = collection(db, 'users/' + this.userid + '/registrations')
+
+            //get collection data
+            getDocs(colRef)
+                .then((snapshot) => {
+                    let event = []
+                    snapshot.docs.forEach((doc) => {
+                        let eventDate = doc.data().eventDate
+                        eventDate = new Date(eventDate)
+                        console.log(eventDate)
+
+                        // let date = eventDate.getDate();
+                        let longmth = month[eventDate.getMonth()];
+                        let shortmth = shortmonth[eventDate.getMonth()];
+                        let dd = eventDate.getDate();
+                        let day = weekday[eventDate.getDay()];
+                        let yyyy = eventDate.getFullYear();
+
+                        let fulldate = day + " " + dd + " " + longmth + " " + yyyy
+
+                        const time = eventDate.toLocaleTimeString('en-US', { hour: 'numeric', minute: 'numeric', second: 'numeric', hour12: true });
+                        console.log(time);
+
+                        event.push({
+                            ...doc.data(),
+                            id: doc.id,
+                            "fulldate": fulldate,
+                            "date": dd, "shortmth": shortmth, "time": time
+                        })
+
+                        // event.push({"fulldate":fulldate, "date":dd, "shortmth":shortmth})
+
+                    })
+                    console.log(event)
+                    this.eventsList = event
+                })
+                .catch(err => {
+                    console.log(err.message)
+                })
+
+
         },
 
         async getuser() {
