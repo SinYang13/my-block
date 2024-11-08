@@ -12,6 +12,7 @@ export async function createUser(email, userData) {
             userData.registerDate = new Date();
         }
         await setDoc(userDocRef, userData);
+        
     } catch (error) {
         console.error('Error creating user:', error);
         throw error;
