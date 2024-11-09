@@ -20,7 +20,7 @@ const app = Vue.createApp({
             filteredLoans: [],
             loans: [], // Initialize as an empty array
             formdisplayActive: false,
-            userName: sessionStorage.getItem("loggedInUserName"),
+            userName: sessionStorage.getItem("loggedInUserEmail"),
             startdate: new Date(),
             currItemName: '',
             currNo: 0,

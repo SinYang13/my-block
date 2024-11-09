@@ -187,12 +187,12 @@ const app = Vue.createApp({
                 const rentalsRef = collection(itemDocRef, "rentals");
                 
                 // Optionally, add an initial rental document
-                await setDoc(doc(rentalsRef, "sampleRental"), {
-                    rentalDate: new Date(),
-                    renterName: "John Doe",
-                    returnDate: null,
-                    status: "active"
-                });
+                // await setDoc(doc(rentalsRef, "sampleRental"), {
+                //     rentalDate: new Date(),
+                //     renterName: "John Doe",
+                //     returnDate: null,
+                //     status: "active"
+                // });
         
                 alert(`Item created with ID: ${name}`);
                 console.log("Document and rentals subcollection created successfully");

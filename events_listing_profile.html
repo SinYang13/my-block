@@ -12,7 +12,10 @@
     <link rel="stylesheet" href="assets/css/owl.css" />
     <link rel="stylesheet" href="assets/css/animate.css" />
     <link rel="stylesheet" href="https://unpkg.com/swiper@7/swiper-bundle.min.css" />
+    <script src="https://cdn.jsdelivr.net/npm/jsbarcode@3.11.6/dist/JsBarcode.all.min.js"></script>
     <script type="module" src="./assets/js/profile.js"></script>
+
+
     <style>
         .profile-container {
             max-width: 400px;
@@ -227,6 +230,201 @@
         .form-group {
             padding: 20px;
         }
+
+        /* @import url('https://fonts.googleapis.com/css?family=Oswald'); */
+
+        /* * {
+            margin: 0;
+            padding: 0;
+            border: 0;
+            box-sizing: border-box
+        } */
+
+        /* body {
+            background-color: #dadde6;
+            font-family: arial
+        } */
+
+        .fl-left {
+            float: left
+        }
+
+        .fl-right {
+            float: right
+        }
+
+        /* h1 {
+            text-transform: uppercase;
+            font-weight: 900;
+            border-left: 10px solid #fec500;
+            padding-left: 10px;
+            margin-bottom: 30px
+        } */
+
+        .row {
+            overflow: hidden
+        }
+
+        .card {
+            display: table-row;
+            width: 100%;
+            background-color: #fff;
+            color: #989898;
+            margin-bottom: 10px;
+            font-family: 'Oswald', sans-serif;
+            text-transform: uppercase;
+            border-radius: 10px;
+            position: relative
+        }
+
+        .card+.card {
+            margin-left: 2%
+        }
+
+        .date {
+            display: table-cell;
+            width: 25%;
+            position: relative;
+            text-align: center;
+            border-right: 2px dashed #dadde6;
+        }
+
+        /* .date:before,
+        .date:after {
+            content: "";
+            display: block;
+            width: 30px;
+            height: 30px;
+            background-color: #DADDE6;
+            position: absolute;
+            top: -15px;
+            right: -15px;
+            z-index: 1;
+            border-radius: 50%
+        }
+
+        
+
+        .date:after {
+            top: auto;
+            bottom: -15px
+        } */
+
+        .date time {
+            display: block;
+            position: absolute;
+            top: 50%;
+            left: 50%;
+            -webkit-transform: translate(-50%, -50%);
+            -ms-transform: translate(-50%, -50%);
+            transform: translate(-50%, -50%)
+        }
+
+        .date time span {
+            display: block
+        }
+
+        .date time span:first-child {
+            color: #2b2b2b;
+            font-weight: 600;
+            font-size: 250%
+        }
+
+        .date time span:last-child {
+            text-transform: uppercase;
+            font-weight: 600;
+            margin-top: -10px
+        }
+
+        .card-cont {
+            display: table-cell;
+            width: 75%;
+            font-size: 85%;
+            padding: 10px 10px 30px 50px
+        }
+
+        .card-cont h3 {
+            color: #3C3C3C;
+            font-size: 130%
+        }
+
+        .card-cont>div {
+            display: table-row
+        }
+
+        .card-cont .even-date i,
+        .card-cont .even-info i,
+        .card-cont .even-date time,
+        .card-cont .even-info p {
+            display: table-cell
+        }
+
+        .card-cont .even-date i,
+        .card-cont .even-info i {
+            padding: 5% 5% 0 0
+        }
+
+        .card-cont .even-info p {
+            padding: 30px 50px 0 0
+        }
+
+        .card-cont .even-date time span {
+            display: block
+        }
+
+        .card-cont a {
+            display: block;
+            text-decoration: none;
+            width: 80px;
+            height: 30px;
+            background-color: #037FDD;
+            color: #fff;
+            text-align: center;
+            line-height: 30px;
+            border-radius: 2px;
+            position: absolute;
+            right: 10px;
+            bottom: 10px
+        }
+
+        @media screen and (max-width: 860px) {
+            .card {
+                display: block;
+                float: none;
+                width: 100%;
+                margin-bottom: 10px
+            }
+
+            .card+.card {
+                margin-left: 0
+            }
+
+            .card-cont .even-date,
+            .card-cont .even-info {
+                font-size: 75%
+            }
+        }
+
+        .modal-overlay {
+            position: fixed;
+            top: 0;
+            left: 0;
+            right: 0;
+            bottom: 0;
+            background: rgba(0, 0, 0, 0.5);
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            z-index: 1000;
+        }
+
+        .modal-content {
+            background: #fff;
+            padding: 20px;
+            border-radius: 8px;
+            width: 300px;
+            box-shadow: 0 5px 15px rgba(0, 0, 0, 0.3);
+        }
     </style>
 </head>
 
@@ -303,24 +501,24 @@
                         <div class="author-card pb-3">
                             <div class="author-card-cover" style="background-color: #8c8c8c;"></div>
                             <div class="author-card-profile">
-                                <div class="author-card-avatar"><img src="./assets/images/img/person.jpg">
+                                <div class="author-card-avatar"><img src="./assets/images/img/person.jpg"
+                                        alt="Daniel Adams">
                                 </div>
                                 <div class="author-card-details">
                                     <h5 class="author-card-name text-lg">{{this.userDetails.firstName}}
-                                        {{this.userDetails.lastName}}</h5>
-                                        <span class="author-card-position">Joined{{this.createdDate}}</span>
+                                        {{this.userDetails.lastName}}</h5><span class="author-card-position">Joined
+                                        {{this.createdDate}}</span>
                                 </div>
                             </div>
-                            <!-- <button type="button" style="margin-left: 30px;" class="btn btn-danger" @click="logout">Logout</button> -->
                         </div>
                         <div class="wizard">
                             <nav class="list-group list-group-flush">
 
-                                <a class="list-group-item active" href="profile.html"><i
+                                <a class="list-group-item" href="profile.html"><i
                                         class="fa fa-user text-muted"></i>Profile Settings</a>
                                 <a class="list-group-item" href="#"><i
                                         class="fa fa-map-marker text-muted"></i>Addresses</a>
-                                <a class="list-group-item" href="events_listing_profile.html">
+                                <a class="list-group-item active" href="events_listing_profile.html">
                                     <div class="d-flex justify-content-between align-items-center">
                                         <div><i class="fa fa-ticket mr-1 text-muted"></i>
                                             <div class="d-inline-block font-weight-medium text-uppercase">Events</div>
@@ -332,7 +530,7 @@
                                         <div><i class="fa fa-file mr-1 text-muted"></i>
                                             <div class="d-inline-block font-weight-medium text-uppercase">Loans List
                                             </div>
-                                        <!-- </div><span class="badge badge-secondary"></span> -->
+                                            <!-- </div><span class="badge badge-secondary"></span> -->
                                         </div><span class="badge bg-secondary">{{loanOwners.length}}</span>
                                     </div>
                                 </a>
@@ -346,63 +544,56 @@
                                     </div>
                                 </a>
                                 <div class="d-flex justify-content-between align-items-center">
-                                    <button type="button" class="btn btn-danger" @click="logout" style="width: 100%; margin-top: 10px;">Logout</button>
+                                    <button type="button" class="btn btn-danger" @click="logout"
+                                        style="width: 100%; margin-top: 10px;">Logout</button>
                                 </div>
                             </nav>
                         </div>
                     </div>
                     <!-- Profile Settings-->
-                    <div class="col-lg-8 pb-5" style="padding: 40px;">
-                        <form class="row">
-                            <div class="col-md-6">
-                                <div class="form-group">
-                                    <label for="account-fn">First Name</label>
-                                    <input class="form-control" type="text" id="account-fn"
-                                        :value="userDetails.firstName" required="" disabled>
-                                </div>
+                    <div class="col-lg-8 pb-5" v-if="eventsList.length !=0">
+                        <!-- insert table instead -->
+                        <div class="row" v-for="i in eventsList">
+                            <article class="card fl-left">
+                                <section class="date">
+                                    <time datetime="23th feb">
+                                        <span>{{i.date}}</span><span>{{i.shortmth}}</span>
+                                    </time>
+                                </section>
+                                <section class="card-cont">
+                                    <h3>{{i.eventTitle}}</h3>
+                                    <div class="even-date">
+                                        <i class="fa fa-calendar"></i>
+                                        <time>
+                                            <span>{{i.fulldate}}</span>
+                                            <span>{{i.time}}</span>
+                                        </time>
+                                    </div>
+                                    <div class="even-info">
+                                        <i class="fa fa-map-marker"></i>
+                                        <p>
+                                            {{i.eventLocation}}, Singapore
+                                        </p>
+                                    </div>
+                                    <a style="color: #fff;" @click="openModal(i.eventId)">tickets</a>
+                                </section>
+                            </article>
+                        </div>
+                        <!-- Modal -->
+                        <div v-if="showModal" class="modal-overlay" @click.self="closeModal">
+                            <div class="modal-content">
+                                <h3 style="text-align: center;">Ticket</h3>
+                                <small>Name of Ticket Holder: {{attendees[0].name}}</small>
+                                <small>No. of Pax: {{attendees.length}}</small>
+                                <svg id="barcode"></svg>
+                                <button @click="closeModal">Close</button>
                             </div>
-                            <div class="col-md-6">
-                                <div class="form-group">
-                                    <label for="account-ln">Last Name</label>
-                                    <input class="form-control" type="text" id="account-ln"
-                                        :value="userDetails.lastName" required="" disabled>
-                                </div>
-                            </div>
-                            <div class="col-md-6">
-                                <div class="form-group">
-                                    <label for="account-email">E-mail Address</label>
-                                    <input class="form-control" type="email" id="account-email" :value="userid">
-                                </div>
-                            </div>
-                            <div class="col-md-6">
-                                <div class="form-group">
-                                    <label for="account-phone">Phone Number</label>
-                                    <input class="form-control" type="text" id="account-phone"
-                                        :value="userDetails.phoneNumber" required="">
-                                </div>
-                            </div>
-                            <div class="col-md-6">
-                                <div class="form-group">
-                                    <label for="account-pass">New Password</label>
-                                    <input class="form-control" type="password" id="account-pass">
-                                </div>
-                            </div>
-                            <div class="col-md-6">
-                                <div class="form-group">
-                                    <label for="account-confirm-pass">Confirm Password</label>
-                                    <input class="form-control" type="password" id="account-confirm-pass">
-                                </div>
-                            </div>
-                            <div class="col-12">
-                                <hr class="mt-2 mb-3">
-                                <div class="d-flex flex-wrap justify-content-between align-items-center">
-                                    <button class="btn btn-style-1 btn-primary" type="button" data-toast=""
-                                        style="float: right;" data-toast-position="topRight" data-toast-type="success"
-                                        data-toast-icon="fe-icon-check-circle" data-toast-title="Success!"
-                                        data-toast-message="Your profile updated successfuly.">Update Profile</button>
-                                </div>
-                            </div>
-                        </form>
+                        </div>
+
+
+                    </div>
+                    <div class="col-lg-8 pb-5" v-else>
+                        <h1>You have not signed up for any events</h1>
                     </div>
                 </div>
             </div>
@@ -415,8 +606,6 @@
                 onclick="window.location.href='./login.html';">Login</button>
         </div>
     </div>
-
-
 </body>
 
 </html>
