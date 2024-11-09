@@ -1,6 +1,6 @@
 import { db } from './config.js';
 import {
-    collection, getDocs,
+    collection, getDocs, addDoc, setDoc, doc, getDoc
 } from "https://www.gstatic.com/firebasejs/10.14.0/firebase-firestore.js";
 import { getStorage, ref, getDownloadURL } from "https://www.gstatic.com/firebasejs/10.14.0/firebase-storage.js";
 
@@ -76,7 +76,73 @@ const servicesApp = Vue.createApp({
     // Open modal with selected service details
     openServiceModal(service) {
       this.selectedService = service;
+      // console.log(this.selectedService);
     },
+    async bookmarkService() {
+      if (!this.selectedService) {
+        alert("No service selected.");
+        return;
+      }
+    
+      const userId = sessionStorage.getItem("loggedInUserEmail");
+      if (!userId) {
+        alert("Please log in to bookmark services.");
+        return;
+      }
+    
+      const bookmarkData = {
+        serviceName: this.selectedService.serviceName,
+        description: this.selectedService.description,
+        price: this.selectedService.price,
+        serviceProviderInformation: this.selectedService.serviceProviderInformation,
+        serviceDuration: this.selectedService.serviceDuration,
+        rating: this.selectedService.rating,
+        imageURL: this.selectedService.imageURL,
+        userId: userId,
+        timestamp: new Date(), // Optional: Add timestamp
+      };
+    
+      try {
+        // Generate a unique service ID based on the service name or other attributes
+        const uniqueServiceId = this.selectedService.id || this.selectedService.serviceName.replace(/\s+/g, "_");
+    
+        // Reference to the service document in the "services" collection using unique ID
+        const serviceRef = doc(db, "services", uniqueServiceId);
+    
+        // Check if the service document already exists
+        const serviceSnap = await getDoc(serviceRef);
+    
+        if (!serviceSnap.exists()) {
+          // If not, create a new service document with the unique ID
+          await setDoc(serviceRef, {
+            serviceName: this.selectedService.serviceName,
+            serviceProviderInformation: this.selectedService.serviceProviderInformation,
+            price: this.selectedService.price,
+            serviceDuration: this.selectedService.serviceDuration,
+            rating: this.selectedService.rating,
+            imageURL: this.selectedService.imageURL,
+          });
+        }
+    
+        // Add bookmark data to the "bookmarkedBy" subcollection within this service document
+        const bookmarkedByRef = collection(serviceRef, "bookmarkedBy");
+        await addDoc(bookmarkedByRef, {
+          ...bookmarkData,
+          userId: userId, // Adding the user ID for reference
+        });
+    
+        // Also add to user's "selectedServices" collection
+        const userRef = collection(db, "users", userId, "selectedServices");
+        await addDoc(userRef, bookmarkData);
+    
+        alert("Service bookmarked successfully!");
+      } catch (error) {
+        console.error("Error bookmarking service:", error.message);
+        alert("Failed to bookmark the service. Please try again.");
+      }
+    }
+    ,
+  
     handleScroll() {
       const scrollPosition = window.scrollY;
       const headerHeight = document.querySelector('header').offsetHeight;

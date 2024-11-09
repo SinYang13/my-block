@@ -10,6 +10,8 @@ import {
   query,
   orderBy,
   addDoc,
+  doc,
+  setDoc,
 } from "https://www.gstatic.com/firebasejs/10.14.0/firebase-firestore.js";
 
 // Initialize Firebase storage
@@ -99,11 +101,20 @@ const eventsApp = Vue.createApp({
           phone: form.phone,
           dietaryRestrictions: form.dietaryRestrictions,
           specialRequests: form.specialRequests,
-        }))
+        })),
+        userInfo: {
+          email: userId, // Include user information in the registration data
+        },
+        timestamp: new Date(), // Optional: add a timestamp
       };
     
       try {
+        // Add registration to user's "registrations" subcollection
         await addDoc(collection(db, "users", userId, "registrations"), registrationData);
+    
+        // Add registration to the event's "registrations" subcollection
+        await addDoc(collection(db, "events", this.selectedEvent.id, "registrations"), registrationData);
+    
         alert("Registration successful! Payment will be collected on site (If Any)");
         this.closeSignupModal(); // Close the modal after successful submission
       } catch (error) {
