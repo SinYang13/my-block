@@ -27,6 +27,8 @@ const eventsApp = Vue.createApp({
       selectedEvent: {}, // Track the event to show in the modal
       showSignupModal: false, // Track visibility of the signup modal
       attendeeForms: [], // Initialize attendee forms array
+      showPastEvents: false, // Toggle for past events view
+      pastEvents: [], // Filtered array for past events
 
       CLIENT_ID: "815388161577-1q8k35ihr9mtr8cvhis048ljdod8v7f8.apps.googleusercontent.com",
       API_KEY: "AIzaSyCp8RabRDvoSbfNgDqzy14fqxj-5ePsOBI",
@@ -43,45 +45,52 @@ const eventsApp = Vue.createApp({
     async fetchEvents() {
       try {
         const eventsRef = collection(db, "events");
-
-        // Use orderBy to order by the 'name' field in ascending order (A-Z)
-        const eventsQuery = query(eventsRef, orderBy("place", "asc")); // Replace 'name' with your actual field name
+        const eventsQuery = query(eventsRef, orderBy("place", "asc"));
         const querySnapshot = await getDocs(eventsQuery);
-
-        const eventsArray = []; // Store event data
-        const categoriesSet = new Set(); // Store unique categories
-
-        // Collect promises to fetch image URLs for each event
+  
+        const eventsArray = [];
+        const pastEventsArray = [];
+        const categoriesSet = new Set();
+        const currentDate = new Date();
+  
         const promises = querySnapshot.docs.map(async (doc) => {
           const eventData = doc.data();
+          const eventDate = eventData.date.toDate();
+  
           const imageRef = ref(storage, "events/" + eventData.image);
           const imageURL = await getDownloadURL(imageRef);
-
-          // Add the event to eventsArray with imageURL
-          eventsArray.push({
+  
+          const event = {
             ...eventData,
             id: doc.id,
             imageURL,
-            link: eventData.link || "#", // Set a default link if none is provided
-          });
-
-          // Add the event category to the Set
+            link: eventData.link || "#",
+          };
+  
+          if (eventDate >= currentDate) {
+            eventsArray.push(event);
+          } else {
+            pastEventsArray.push(event);
+          }
+  
           categoriesSet.add(eventData.cat);
         });
-
-        // Wait for all promises (image fetch) to resolve
+  
         await Promise.all(promises);
-
-        // Set the events and categories
+  
         this.events = eventsArray;
+        this.pastEvents = pastEventsArray;
         this.categories = Array.from(categoriesSet);
-        console.log(this.categories); // Debug to check categories
-        this.isLoading = false; // Data has finished loading
+        this.isLoading = false;
       } catch (error) {
         console.error("Error fetching events:", error);
         this.isLoading = false;
       }
     },
+    togglePastEvents() {
+      this.showPastEvents = !this.showPastEvents;
+    }
+    ,
     async submitRegistration() {
       const userId = sessionStorage.getItem("loggedInUserEmail");
     
@@ -350,6 +359,11 @@ const eventsApp = Vue.createApp({
       } else {
         return this.events.filter((event) => event.cat === this.filter); // Show only events that match the selected category
       }
+    },
+    pastFilteredEvents() {
+      return this.filter === "all"
+        ? this.pastEvents
+        : this.pastEvents.filter((event) => event.cat === this.filter);
     },
   },
   async mounted() {
