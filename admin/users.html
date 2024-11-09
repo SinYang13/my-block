@@ -15,83 +15,28 @@
     <link rel="stylesheet" href="../assets/css/owl.css">
     <link rel="stylesheet" href="../assets/css/animate.css">
     <link rel="stylesheet" href="https://unpkg.com/swiper@7/swiper-bundle.min.css" />
+    <link rel="stylesheet" href="styles.css">
     <style>
-        .dashboard-container {
-            display: flex;
-            flex-direction: column;
-            height: 80vh;
-        }
-
-        .dashboard-menu {
-            background-color: #f8f9fa;
-            height: 100%
-        }
-
-        .dashboard-menu ul {
-            list-style-type: none;
-            padding: 0px;
-        }
-
-        .dashboard-menu ul li {
-            padding: 10px 20px;
-            margin-bottom: 15px;
-        }
-
-        .dashboard-menu ul li a {
-            text-decoration: none;
-            color: #333;
-            font-weight: bold;
-        }
-
-        .visualization-tile {
-            background-color: #e9ecef;
-            border-radius: 8px;
-            display: flex;
-            align-items: center;
-            justify-content: center;
-            position: relative;
-            overflow-y: auto;
-        }
-
-        .visualization-tile.small {
-            overflow: hidden;
-            padding: 20px;
-            /* margin-bottom: 20px; */
-        }
-
-        .visualization-tile.large {
-            overflow-x: hidden;
-            overflow-y: auto;
-            min-height: 200px;
-            max-height: calc(45vh - 20px);
-            padding-top: 20px;
-        }
-
-        .visitor-count {
-            font-size: 2em;
-            font-weight: bold;
-            align-items: center;
-            justify-content: center;
-        }
-
-        .card-body {
-            display: flex;
-            align-items: center;
-            justify-content: center;
-            width: 100%;
-        }
-
-        .card-title {
-            margin-top: 20px;
-        }
-
-        .line-chart {
-            width: 100%;
-            height: 100%;
-        }
-
         #createEventForm {
-            width: 100%;
+            width: 100%
+        }
+
+        .spoiler {
+            cursor: pointer;
+            background-color: grey;
+            color: transparent;
+            /* Initially hides the text */
+            padding: 10px;
+            border-radius: 5px;
+            user-select: none;
+            /* Prevents text selection */
+            transition: color 0.3s ease, background-color 0.3s ease;
+        }
+
+        .spoiler.revealed {
+            color: black;
+            /* Reveals the text */
+            background-color: transparent;
         }
     </style>
     <!-- Firebase App (compatibility version) -->
@@ -153,6 +98,164 @@
 
 
     <div id="app">
+        <div class="modal fade" id="updateModal" tabindex="-1" aria-labelledby="updateModalLabel" aria-hidden="true">
+            <div class="modal-dialog">
+                <div class="modal-content">
+                    <div class="modal-header">
+                        <h5 class="modal-title" id="updateModalLabel">Update User Details</h5>
+                        <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"
+                            @click="clear"></button>
+                    </div>
+                    <div class="modal-body">
+                        <form id="updateUserForm">
+                            <div class="mb-3">
+                                <label for="updateUserEmail" class="form-label">Email</label>
+                                <input type="text" class="form-control" id="updateUserEmail" v-model="user.id"
+                                    required></input>
+                            </div>
+                            <div class="mb-3">
+                                <label for="updateUserFName" class="form-label">First Name</label>
+                                <input type="text" class="form-control" id="updateUserFName" v-model="user.firstName"
+                                    required></input>
+                            </div>
+                            <div class="mb-3">
+                                <label for="updateUserLName" class="form-label">Last Name</label>
+                                <input type="text" class="form-control" id="updateUserLName" v-model="user.lastName"
+                                    required>
+                            </div>
+                            <div class="mb-3">
+                                <label for="updateUserPassword" class="form-label">Password</label>
+                                <input type="text" class="form-control" id="updateUserPassword" v-model="user.password"
+                                    required>
+                            </div>
+                            <div class="mb-3">
+                                <label for="updateUserPhone" class="form-label">Phone Number</label>
+                                <input type="text" class="form-control" id="updateUserPhone" v-model="user.phoneNumber"
+                                    required>
+                            </div>
+                            <div class="mb-3">
+                                <label for="updateUserRegisterDate" class="form-label">Register Date</label>
+                                <input type="date" class="form-control" id="updateUserRegisterDate"
+                                    v-model="user.registerDate" required disabled>
+                            </div>
+                            <div class="mb-3">
+                                <label for="updateUserType" class="form-label">User Type</label>
+                                <select class="form-control" id="updateUserType" v-model="user.type">
+                                    <option value="user">User</option>
+                                    <option value="admin">Admin</option>
+                                </select>
+                            </div>
+                        </form>
+                    </div>
+                    <div class="modal-footer">
+                        <button type="button" class="btn btn-secondary" data-bs-dismiss="modal"
+                            @click="clear">Close</button>
+                        <button type="button" class="btn btn-primary" @click="handleSaveUpdate">Save changes</button>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!-- Delete Confirmation Modal -->
+        <div class="modal fade" id="deleteConfirmationModal" tabindex="-1"
+            aria-labelledby="deleteConfirmationModalLabel" aria-hidden="true">
+            <div class="modal-dialog">
+                <div class="modal-content">
+                    <div class="modal-header">
+                        <h5 class="modal-title" id="deleteConfirmationModalLabel">Confirm Deletion</h5>
+                        <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                    </div>
+                    <div class="modal-body">
+                        Are you sure you want to delete this user?
+                    </div>
+                    <div class="modal-footer">
+                        <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Cancel</button>
+                        <button type="button" class="btn btn-danger" @click="confirmDelete">Delete</button>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <div class="modal fade" id="deleteConfirmationModal" tabindex="-1"
+            aria-labelledby="deleteConfirmationModalLabel" aria-hidden="true">
+            <div class="modal-dialog">
+                <div class="modal-content">
+                    <div class="modal-header">
+                        <h5 class="modal-title" id="deleteConfirmationModalLabel">Confirm Deletion</h5>
+                        <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                    </div>
+                    <div class="modal-body">
+                        Are you sure you want to delete this user?
+                    </div>
+                    <div class="modal-footer">
+                        <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Cancel</button>
+                        <button type="button" class="btn btn-danger" @click="confirmDelete">Delete</button>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <div class="modal fade" id="registrationsModal" tabindex="-1" aria-labelledby="registrationsModal"
+            aria-hidden="true">
+            <div class="modal-dialog modal-lg">
+                <div class="modal-content">
+                    <div class="modal-header">
+                        <h5 class="modal-title" id="deleteConfirmationModalLabel">User Registrations</h5>
+                        <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                    </div>
+                    <div class="modal-body">
+                        <div id="accordion">
+                            <div class="card" v-for="(registration, index) in registrations" :key="registration.id">
+                                <div class="card-header" :id="'heading' + index">
+                                    <h5 class="mb-0">
+                                        <button class="btn" data-bs-toggle="collapse"
+                                            :data-bs-target="'#collapse' + index" aria-expanded="true"
+                                            :aria-controls="'collapse' + index">
+                                            {{ registration.eventTitle }}
+                                        </button>
+                                    </h5>
+                                </div>
+
+                                <div :id="'collapse' + index" class="collapse" :aria-labelledby="'heading' + index"
+                                    data-bs-parent="#accordion">
+                                    <div class="card-body d-flex flex-column gap-2 text-start">
+                                        <p><strong>Event ID:</strong> {{ registration.eventId }}</p>
+                                        <p><strong>Date:</strong> {{ registration.eventDate }}</p>
+                                        <p><strong>Location:</strong> {{ registration.eventLocation }}</p>
+                                        <hr>
+                                        <p><strong>Registration ID:</strong> {{ registration.id }}</p>
+                                        <p><strong>Attendees</strong></p>
+                                        <table class="table">
+                                            <thead>
+                                                <th scope="col">Name</th>
+                                                <th scope="col">Email</th>
+                                                <th scope="col">Phone</th>
+                                                <th scope="col">Dietary Restrictions</th>
+                                                <th scope="col">Special Requests</th>
+                                            </thead>
+                                            <tbody>
+                                                <tr v-for="attendee in registration.attendees" scope="row">
+                                                    <td>{{ attendee.name }}</td>
+                                                    <td>{{ attendee.email }}</td>
+                                                    <td>{{ attendee.phone }}</td>
+                                                    <td>{{ attendee.dietaryRestrictions }}</td>
+                                                    <td>{{ attendee.specialRequests }}</td>
+                                                </tr>
+                                            </tbody>
+                                        </table>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="modal-footer">
+                        <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Close</button>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+
         <div class="dashboard-container">
             <div class="row">
                 <div class="col-12 col-lg-3 p-4">
@@ -216,54 +319,72 @@
                             </div>
                         </div>
                         <!-- small tile count -->
-                        <!-- <div class="col-12 col-lg-3">
+                        <div class="col-12 col-lg-3">
                             <div class="visualization-tile small h-100 container"
                                 style="padding: 0px; display: flex; flex-direction: column; align-items: center; max-width:1200px">
-                                <span>Events Count:</span>
+                                <span>Users Count:</span>
                                 <div class="visitor-count" style="font-size: 1.5em;">
-                                    {{ events.length }}
+                                    {{ users.length }}
                                 </div>
                             </div>
                         </div>
                     </div>
                     <div class="row">
-                        <div class="visualization-tile large" style="padding-left: 0px; padding-right: 0px;">
-                            <div class="row" style="height:100%; margin:5px;">
-                                <div v-for="event in events" :key="event.id" class="col-12 mb-5 mb-xxl-3">
-                                    <div class="card" style="padding-right:10px">
-                                        <div class="row g-0" style="height:100px">
-                                            <div class="col-2">
-                                                <img :src="event.image" class="img-fluid rounded-start"
-                                                    alt="Announcement Image" style="height:100px">
-                                            </div>
-                                            <div class="col-10 col-lg-8">
-                                                <div class="" style="height:100px; padding: 10px">
-                                                    <div class="" style="height:100px; padding: 10px">
-                                                        <h5 class="">{{ event.title }}</h5>
-                                                        <p class="">{{ event.description }}</p>
-                                                        <p class=""><small class="text-muted">Category: {{ event.cat }}
-                                                                |
-                                                                Price: {{
-                                                                event.price }}
-                                                                | Date: {{ new Date(event.date.seconds *
-                                                                1000).toLocaleString() }} |
-                                                                Place: {{ event.place }} | Postal: {{ event.postal
-                                                                }}</small></p>
-                                                    </div>
-                                                </div>
-                                            </div>
-                                            <div class="col-12 col-lg-2 d-flex align-items-center justify-content-end">
-                                                <button type="button" class="btn btn-warning me-2"
-                                                    @click="handleUpdateEvent(event)">Update</button>
-                                                <button type="button" class="btn btn-danger"
-                                                    @click="showDeleteModal(event.id)">Delete</button>
-                                            </div>
-                                        </div>
-                                    </div>
-                                </div>
-                            </div>
+                        <div class="visualization-tile large">
+                            <table class="table">
+                                <thead>
+                                    <th scope="col">User Email</th>
+                                    <th scope="col">First Name</th>
+                                    <th scope="col">Last Name</th>
+                                    <th scope="col">Password</th>
+                                    <th scope="col">Phone Number</th>
+                                    <th scope="col">Register Date</th>
+                                    <th scope="col">User Type</th>
+                                    <th scope="col">Actions</th>
+                                </thead>
+                                <tbody>
+                                    <tr v-for="user in users">
+                                        <th scope="row">{{user.id}}</th>
+                                        <td>{{user.firstName}}</td>
+                                        <td>{{user.lastName}}</td>
+                                        <td class="spoiler" :class="{ revealed: spoilerVisibility[user.id] }"
+                                            @click="toggleSpoiler(user.id)">
+                                            {{ spoilerVisibility[user.id] ? user.password : '******' }}
+                                        </td>
+                                        <td>{{user.phoneNumber}}</td>
+                                        <td>{{ user.registerDate ? user.registerDate.toISOString().split('T')[0] : 'N/A'
+                                            }}</td>
+                                        <td>{{user.type}}</td>
+                                        <td class="text-end">
+                                            <button v-if="user.registrations" class="btn btn-outline-primary  me-2"
+                                                @click="showRegistrationsModal(user.registrations)">
+                                                <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16"
+                                                    fill="currentColor" class="bi bi-calendar" viewBox="0 0 16 16">
+                                                    <path
+                                                        d="M3.5 0a.5.5 0 0 1 .5.5V1h8V.5a.5.5 0 0 1 1 0V1h1a2 2 0 0 1 2 2v11a2 2 0 0 1-2 2H2a2 2 0 0 1-2-2V3a2 2 0 0 1 2-2h1V.5a.5.5 0 0 1 .5-.5M1 4v10a1 1 0 0 0 1 1h12a1 1 0 0 0 1-1V4z" />
+                                                </svg>
+                                            </button>
+                                            <button class="btn btn-outline-warning  me-2" @click="showUpdateModal(user)">
+                                                <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16"
+                                                    fill="currentColor" class="bi bi-pen" viewBox="0 0 16 16">
+                                                    <path
+                                                        d="m13.498.795.149-.149a1.207 1.207 0 1 1 1.707 1.708l-.149.148a1.5 1.5 0 0 1-.059 2.059L4.854 14.854a.5.5 0 0 1-.233.131l-4 1a.5.5 0 0 1-.606-.606l1-4a.5.5 0 0 1 .131-.232l9.642-9.642a.5.5 0 0 0-.642.056L6.854 4.854a.5.5 0 1 1-.708-.708L9.44.854A1.5 1.5 0 0 1 11.5.796a1.5 1.5 0 0 1 1.998-.001m-.644.766a.5.5 0 0 0-.707 0L1.95 11.756l-.764 3.057 3.057-.764L14.44 3.854a.5.5 0 0 0 0-.708z" />
+                                                </svg>
+                                            </button>
+                                            <button class="btn btn-outline-danger" @click="showDeleteModal(user.id)">
+                                                <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16"
+                                                    fill="currentColor" class="bi bi-trash" viewBox="0 0 16 16">
+                                                    <path
+                                                        d="M5.5 5.5A.5.5 0 0 1 6 6v6a.5.5 0 0 1-1 0V6a.5.5 0 0 1 .5-.5m2.5 0a.5.5 0 0 1 .5.5v6a.5.5 0 0 1-1 0V6a.5.5 0 0 1 .5-.5m3 .5a.5.5 0 0 0-1 0v6a.5.5 0 0 0 1 0z" />
+                                                    <path
+                                                        d="M14.5 3a1 1 0 0 1-1 1H13v9a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2V4h-.5a1 1 0 0 1-1-1V2a1 1 0 0 1 1-1H6a1 1 0 0 1 1-1h2a1 1 0 0 1 1 1h3.5a1 1 0 0 1 1 1zM4.118 4 4 4.059V13a1 1 0 0 0 1 1h6a1 1 0 0 0 1-1V4.059L11.882 4zM2.5 3h11V2h-11z" />
+                                                </svg>
+                                            </button>
+                                        </td>
+                                    </tr>
+                                </tbody>
+                            </table>
                         </div>
-                    </div> -->
                     </div>
                 </div>
             </div>
@@ -273,11 +394,15 @@
 
 
 
+
+
+
     <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3/dist/js/bootstrap.bundle.min.js"></script>
 
     <script type="module">
         import { createUser, readUser, readUsers, updateUser, deleteUser } from '../db/usersCRUD.js';
         import { getStorage, ref, uploadBytes, getDownloadURL } from "https://www.gstatic.com/firebasejs/10.14.0/firebase-storage.js";
+        import { collection, setDoc, getDocs, updateDoc, deleteDoc, doc, getDoc } from 'https://www.gstatic.com/firebasejs/10.14.0/firebase-firestore.js';
         const storage = getStorage();
 
         const { createApp } = Vue;
@@ -292,12 +417,131 @@
                         password: null,
                         phoneNumber: '',
                         type: '',
+                        registrations: [],
+                        registerDate: '',
                     },
+
+                    registrations: {},
                     users: [],
-                    selectedUser: null
+                    selectedUser: null,
+
+                    spoilerVisibility: {},
                 };
             },
             methods: {
+                showDeleteModal(userID) {
+                    // Set the selectedEventId and show the modal
+                    this.selectedUser = userID;
+                    const deleteModal = new bootstrap.Modal(document.getElementById('deleteConfirmationModal'));
+                    deleteModal.show();
+                },
+                confirmDelete() {
+                    // Use selectedEventId to delete the event
+                    this.handleDeleteUser(this.selectedUser);
+
+                    // Close the modal
+                    const deleteModal = bootstrap.Modal.getInstance(document.getElementById('deleteConfirmationModal'));
+                    deleteModal.hide();
+
+                    // Clear the selected event ID
+                    this.selectedUser = null;
+                },
+                async handleDeleteUser(id) {
+                    try {
+                        await deleteUser(id);
+                        alert('User deleted successfully');
+                        // await this.loadAnnouncements();
+                        for (let i in this.users) {
+                            if (this.users[i].id == id) {
+                                this.users.splice(i, 1);
+                            }
+                        }
+                    } catch (error) {
+                        console.error('Error deleting user:', error);
+                        alert('Failed to delete user.');
+                    }
+                },
+                showUpdateModal(user) {
+                    this.user = { ...user };
+                    console.log(this.user);
+                    if (this.user.registerDate instanceof Date) {
+                        this.user.registerDate = this.user.registerDate.toISOString().split('T')[0];
+                    } else {
+                        this.user.registerDate = ''; // Set empty string if `registerDate` is missing
+                    }
+                    const updateModal = new bootstrap.Modal(document.getElementById('updateModal'));
+                    updateModal.show();
+                },
+                async handleSaveUpdate() {
+                    const { id, firstName, lastName, password, phoneNumber, type, registrations, registerDate } = this.user;
+
+                    if (!id || !firstName || !lastName || !password || !phoneNumber || !type) {
+                        alert("Please fill in all required fields.");
+                        return;
+                    }
+
+                    const updatedUser = { firstName, lastName, password, phoneNumber, type };
+
+                    try {
+                        console.log('Updating user with data:', updatedUser);
+
+                        // Update both main user document and registrations subcollection
+                        await updateUser(id, updatedUser);
+
+                        alert("User updated successfully");
+
+                        // Update the local `users` array
+                        for (let i in this.users) {
+                            if (this.users[i].id === id) {
+                                // Ensure registerDate is a Date object
+                                const dateObj = new Date(registerDate);
+
+                                this.users[i] = {
+                                    id: id,
+                                    ...updatedUser,
+                                    registerDate: dateObj,
+                                    registrations
+                                };
+
+                                // Convert to ISO string and log the date
+                                console.log(dateObj.toISOString().split('T')[0]);
+                                break;
+                            }
+                        }
+
+
+                        this.clear();
+
+                    } catch (error) {
+                        console.error("Error updating user:", error);
+                        alert("Failed to update user.");
+                    }
+                },
+                clear() {
+                    this.user = {
+                        email: '',
+                        firstName: '',
+                        lastName: '',
+                        password: null,
+                        phoneNumber: '',
+                        type: '',
+                        registrations: [],
+                    }
+
+                    this.registrations = ''
+                },
+                showRegistrationsModal(registrations) {
+                    console.log(registrations);
+                    this.registrations = registrations;
+                    console.log(this.registrations);
+                    const registrationsModal = new bootstrap.Modal(document.getElementById('registrationsModal'));
+                    registrationsModal.show();
+                },
+
+                toggleSpoiler(userId) {
+                    // Toggle visibility for the specific user by ID
+                    this.spoilerVisibility[userId] = !this.spoilerVisibility[userId];
+                },
                 handleScroll() {
                     const scrollPosition = window.scrollY;
                     const headerHeight = document.querySelector('header').offsetHeight;
@@ -336,8 +580,19 @@
                     }
                 },
                 async loadUsers() {
-                    console.log("a")
+                    const users = await readUsers();
+                    // Convert Firestore Timestamp to Date only if `registerDate` exists
+                    this.users = users.map(user => {
+                        if (user.registerDate && typeof user.registerDate.toDate === 'function') {
+                            user.registerDate = user.registerDate.toDate();
+                        } else {
+                            user.registerDate = null; // Set to null if `registerDate` is missing
+                        }
+                        return user;
+                    });
+                    console.log(this.users);
                 },
+
                 async handleCreateUser() {
                     const userData = this.user;
 

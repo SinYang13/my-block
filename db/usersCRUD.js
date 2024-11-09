@@ -41,30 +41,58 @@ export async function readUser(email) {
 }
 
 // Read all users
+
 export async function readUsers() {
     try {
         const querySnapshot = await getDocs(collection(db, "users"));
         const users = [];
-        querySnapshot.forEach((doc) => {
-            users.push({ id: doc.id, ...doc.data() });
-        });
+
+        // Loop through each user document
+        for (const userDoc of querySnapshot.docs) {
+            const userData = { id: userDoc.id, ...userDoc.data() };
+
+            // Try to read the "registrations" subcollection if it exists
+            try {
+                const registrationsSnapshot = await getDocs(collection(db, `users/${userDoc.id}/registrations`));
+                
+                // Only add registrations data if it exists
+                if (!registrationsSnapshot.empty) {
+                    const registrations = [];
+                    registrationsSnapshot.forEach((regDoc) => {
+                        registrations.push({ id: regDoc.id, ...regDoc.data() });
+                    });
+                    userData.registrations = registrations;
+                }
+            } catch (subCollectionError) {
+                console.warn(`No registrations subcollection for user ${userDoc.id}`);
+            }
+
+            users.push(userData);
+        }
+
         return users;
     } catch (error) {
-        console.error('Error reading users:', error);
+        console.error("Error reading users:", error);
         throw error;
     }
 }
+
 
 // Update a user (using email as document ID)
 export async function updateUser(email, updatedData) {
     try {
         const userRef = doc(db, "users", email);
+
+        // Update the main user document
         await updateDoc(userRef, updatedData);
+
+        console.log('User and registrations updated successfully');
     } catch (error) {
-        console.error('Error updating user:', error);
+        console.error("Error updating user:", error);
         throw error;
     }
 }
+
 
 // Delete a user (using email as document ID)
 export async function deleteUser(email) {

@@ -1,0 +1,68 @@
+.dashboard-container {
+    display: flex;
+    flex-direction: column;
+    height: 80vh;
+}
+
+.dashboard-menu {
+    background-color: #f8f9fa;
+    height: 100%
+}
+
+.dashboard-menu ul {
+    list-style-type: none;
+    padding: 0px;
+}
+
+.dashboard-menu ul li {
+    padding: 10px 20px;
+    margin-bottom: 15px;
+}
+
+.dashboard-menu ul li a {
+    text-decoration: none;
+    color: #333;
+    font-weight: bold;
+}
+
+.visualization-tile {
+    background-color: #e9ecef;
+    border-radius: 8px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    position: relative;
+    overflow-y: auto;
+}
+
+.visualization-tile.small {
+    overflow: hidden;
+    padding: 20px;
+    /* margin-bottom: 20px; */
+}
+
+.visualization-tile.large {
+    overflow-x: hidden;
+    overflow-y: hidden;
+    min-height: 200px;
+    padding-top: 20px;
+}
+
+.visitor-count {
+    font-size: 2em;
+    font-weight: bold;
+    align-items: center;
+    justify-content: center;
+}
+
+.card-body {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    height: 100%;
+    width: 100%;
+}
+
+.card-title {
+    margin-top: 20px;
+}

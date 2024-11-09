@@ -13,18 +13,44 @@ async function createEvent(eventData) {
 
 // Read function
 async function readEvents() {
-    const querySnapshot = await getDocs(collection(db, "events"));
-    const events = [];
-    querySnapshot.forEach((doc) => {
-        const data = { ...doc.data() }; // Create a new object to pass by value
-        // Update img path to Firebase Storage URL
-        if (data.image) {
-            data.imgName = String(data.image); // Create a distinct copy of the img value
-            data.image = `https://firebasestorage.googleapis.com/v0/b/myblock-wad.appspot.com/o/events%2F${encodeURIComponent(data.image)}?alt=media`;
+    try {
+        const querySnapshot = await getDocs(collection(db, "events"));
+        const events = [];
+
+        for (const doc of querySnapshot.docs) {
+            const data = { ...doc.data() }; // Create a new object to pass by value
+
+            // Update img path to Firebase Storage URL
+            if (data.image) {
+                data.imgName = String(data.image); // Create a distinct copy of the img value
+                data.image = `https://firebasestorage.googleapis.com/v0/b/myblock-wad.appspot.com/o/events%2F${encodeURIComponent(data.image)}?alt=media`;
+            }
+
+            // Attempt to read the "registrations" subcollection if it exists
+            try {
+                const registrations = [];
+                const registrationsSnapshot = await getDocs(collection(db, `events/${doc.id}/registrations`));
+
+                registrationsSnapshot.forEach((registrationDoc) => {
+                    registrations.push({ id: registrationDoc.id, ...registrationDoc.data() });
+                });
+
+                // Add the registrations to the event data if there are any
+                if (registrations.length > 0) {
+                    data.registrations = registrations;
+                }
+            } catch (error) {
+                console.error(`Error reading registrations for event ${doc.id}:`, error);
+            }
+
+            events.push({ id: doc.id, ...data });
         }
-        events.push({ id: doc.id, ...data });
-    });
-    return events;
+
+        return events;
+    } catch (error) {
+        console.error("Error reading events:", error);
+        return [];
+    }
 }
 
 // Update function
