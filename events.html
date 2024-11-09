@@ -152,6 +152,7 @@
                 <span class="category">{{ event.cat }}</span>
                 <h6>{{ event.price }}</h6>
                 <h4 class="card-title">{{ event.title }}</h4>
+                <h4>{{event.date.toDate().toLocaleString()}}</h4>
                 <p class="card-text">{{ event.description }}</p>
               </div>
               <div class="main-button text-center">
@@ -268,6 +269,30 @@ v-if="showSignupModal" style="background: rgba(0,0,0,0.5);">
       <div class="modal-footer">
         <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Cancel</button>
         <a href="login.html" class="btn btn-primary">Log In</a> <!-- Redirect to login page -->
+      </div>
+    </div>
+  </div>
+</div>
+<div class="container text-center my-4">
+  <button @click="togglePastEvents" class="btn btn-secondary">
+    {{ showPastEvents ? 'Hide Past Events' : 'View Past Events' }}
+  </button>
+</div>
+<div class="properties section ">
+<div class="container">
+  <div class="row row-cols-1 row-cols-md-3 g-4">
+    <!-- Display past events if showPastEvents is true -->
+    <div class="col" v-for="event in pastFilteredEvents" :key="'past-' + event.id" v-if="showPastEvents">
+      <div class="item card h-100">
+        <a>
+          <img :src="event.imageURL" class="card-img-top" alt="Event Image" />
+        </a>
+        <div class="card-body">
+          <span class="category">{{ event.cat }}</span>
+          <h6>{{ event.price }}</h6>
+          <h4 class="card-title">{{ event.title }} (Past)</h4>
+          <p class="card-text">{{ event.description }}</p>
+        </div>
       </div>
     </div>
   </div>

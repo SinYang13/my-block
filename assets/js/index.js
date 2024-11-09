@@ -16,6 +16,7 @@ import {
   updateDoc,
   setDoc,
   addDoc,
+  orderBy,
 } from "https://www.gstatic.com/firebasejs/10.14.0/firebase-firestore.js";
 import { readAnnouncements } from "../../db/announcementsCRUD.js";
 
@@ -39,28 +40,45 @@ const eventsApp = Vue.createApp({
   },
   methods: {
     async fetchEvents() {
-      const eventsRef = collection(db, "events");
-      const q = query(eventsRef, limit(6)); // Limit to 6 events
-      const querySnapshot = await getDocs(q);
+      try {
+        const eventsRef = collection(db, "events");
+        const q = query(eventsRef, orderBy("date", "asc")); // Order events by date
+        const querySnapshot = await getDocs(q);
     
-      const eventsArray = []; // Temporary array to store event data
+        const eventsArray = [];
+        const currentDate = new Date(); // Get the current date
     
-      // Loop through the events and fetch images from Firebase Storage
-      const promises = querySnapshot.docs.map(async (doc) => {
-        const eventData = doc.data();
-        const imageRef = ref(storage, "events/" + eventData.image); // Assuming image path is under events/
-        const imageURL = await getDownloadURL(imageRef);
+        // Loop through the events and fetch images from Firebase Storage
+        const promises = querySnapshot.docs.map(async (doc) => {
+          const eventData = doc.data();
+          const eventDate = eventData.date.toDate(); // Convert Firestore timestamp to Date object
     
-        eventsArray.push({
-          ...eventData,
-          id: doc.id,
-          imageURL, // Image URL fetched from Firebase Storage
-          link: eventData.link || "#", // Assuming link field exists, if not default "#"
+          // Check and log the date comparison
+          console.log(`Event Date: ${eventDate}, Current Date: ${currentDate}`);
+          if (eventDate >= currentDate) {
+            // Fetch image URL if the event is upcoming
+            const imageRef = ref(storage, "events/" + eventData.image);
+            const imageURL = await getDownloadURL(imageRef);
+    
+            eventsArray.push({
+              ...eventData,
+              id: doc.id,
+              imageURL,
+              link: eventData.link || "#",
+            });
+          } else {
+            console.log(`Skipping expired event with date: ${eventDate}`);
+          }
         });
-      });
     
-      await Promise.all(promises); // Wait for all image URLs to be fetched
-      this.events = eventsArray; // Assign the array to `this.events` after all are fetched
+        await Promise.all(promises); // Wait for all image URLs to be fetched
+    
+        // Limit to 6 upcoming events
+        this.events = eventsArray.slice(0, 6);
+        console.log("Upcoming Events:", this.events); // Log to verify filtered events
+      } catch (error) {
+        console.error("Error fetching events:", error);
+      }
     }
     ,
     async submitRegistration() {
