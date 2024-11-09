@@ -1,4 +1,3 @@
-// forumCRUD.js
 import { db } from './firebaseConfig.js';
 import { collection, addDoc, getDocs, updateDoc, deleteDoc, doc } from "https://www.gstatic.com/firebasejs/10.14.0/firebase-firestore.js";
 
@@ -57,3 +56,4 @@ export async function toggleLike(postId, isLiked) {
     const postRef = doc(db, "forum", postId);
     await updateDoc(postRef, { isLiked: isLiked });
 }
+

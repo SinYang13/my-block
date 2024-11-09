@@ -6,10 +6,8 @@
     <title>Login</title>
     <!-- Bootstrap CSS -->
     <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3/dist/css/bootstrap.min.css" rel="stylesheet">
-    <!-- Bootstrap JS bundle -->
-    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3/dist/js/bootstrap.bundle.min.js"></script>
     <!-- Vue 3 -->
-    <!-- <script src="https://unpkg.com/vue@3/dist/vue.global.js"></script> -->
+    <script src="https://unpkg.com/vue@3/dist/vue.global.js"></script>
     <link rel="stylesheet" href="assets/css/fontawesome.css">
     <link rel="stylesheet" href="assets/css/templatemo-villa-agency.css">
     <link rel="stylesheet" href="assets/css/owl.css">
@@ -17,8 +15,9 @@
     <link rel="stylesheet" href="https://unpkg.com/swiper@7/swiper-bundle.min.css"/>
     <!-- Include Material Icons from Google -->
     <link href="https://fonts.googleapis.com/icon?family=Material+Icons" rel="stylesheet">
-    <!-- <script type="module" src="./assets/js/Forum.js"></script> -->
-   
+
+
+    <script type="module" src="./assets/js/Forum.js"></script>
     <style>
         /* #app {
             position: relative;
@@ -36,7 +35,7 @@
             border-bottom: 1px solid #ddd;
             padding: 20px;
             margin: 20px;
-            background-color: whitesmoke;
+            background-color: #ddd;
             border-radius: 10px;
         }
         .forum-post:last-child {
@@ -53,9 +52,6 @@
         .category-buttons button {
             margin-right: 10px;
         }
-
-
-
 
         .topright {
             position: relative;
@@ -95,118 +91,116 @@
             /* Set a maximum width for larger screens */
         }
     </style>
-   
 </head>
 <body id="app">
-    <div class="sub-header">
-        <div class="container">
-            <div class="row">
-                <div class="col-lg-8 col-md-8">
-                    <ul class="info">
-                        <li><i class="fa fa-envelope"></i> my-block.com</li>
-                        <li><i class="fa fa-map"></i> Singapore</li>
-                    </ul>
-                </div>
-                <div class="col-lg-4 col-md-4">
-                    <ul class="social-links">
-                        <li><a href="#"><i class="fab fa-facebook"></i></a></li>
-                        <li><a href="https://x.com/minthu" target="_blank"><i class="fab fa-twitter"></i></a></li>
-                        <li><a href="#"><i class="fab fa-linkedin"></i></a></li>
-                        <li><a href="#"><i class="fab fa-instagram"></i></a></li>
-                    </ul>
-                </div>
-            </div>
+    <!-- Subheader -->
+  <div class="sub-header">
+    <div class="container">
+      <div class="row">
+        <div class="col-lg-8 col-md-8">
+          <ul class="info">
+            <li><i class="fa fa-envelope"></i> my-block.com</li>
+            <li><i class="fa fa-map"></i> Singapore</li>
+          </ul>
         </div>
+        <div class="col-lg-4 col-md-4">
+          <ul class="social-links">
+            <li><a href="https://www.facebook.com/sgsmu/"><i class="fab fa-facebook"></i></a></li>
+            <li><a href="https://x.com/sgSMU" target="_blank"><i class="fab fa-twitter"></i></a></li>
+            <li><a href="https://www.linkedin.com/school/singapore-management-university/posts/?feedView=all"><i class="fab fa-linkedin"></i></a></li>
+            <li><a href="https://www.instagram.com/sgsmu/?hl=en"><i class="fab fa-instagram"></i></a></li>
+          </ul>
+        </div>
+      </div>
     </div>
- 
-    <!-- Header Area Start -->
-    <header class="header-area header-sticky">
-        <div class="container">
-            <div class="row">
-                <div class="col-12">
-                    <nav class="main-nav">
-                        <a href="index.html" class="logo">
-                            <h1>
-                                <span>
-                                    <inline>MyBlock</inline>
-                                </span>
-                            </h1>
-                        </a>
-                        <ul class="nav">
-                            <li><a href="announcements.html">Announcements</a></li>
-                            <li><a href="events.html">Events</a></li>
-                            <li><a href="forum.html" class="active">Forum</a></li>
-                            <li><a href="loans.html">Loans</a></li>
-                            <li><a href="services.html">Services</a></li>
-                           
-                            <li id="profileLink">
-                                <a href="profile.html" id="profileLinkRedir">
-                                    <i class="fa fa-calendar" id="profileLinkImg"></i>
-                                    <span id="profileLinkText">Profile</span>
-                                </a>
-                            </li>
-                        </ul>
-                        <a class="menu-trigger"><span>Menu</span></a>
-                    </nav>
-                </div>
-            </div>
-        </div>
-    </header>
+  </div>
 
+  <!-- Header Area Start -->
+  <header class="header-area header-sticky">
+    <div class="container">
+      <div class="row">
+        <div class="col-12">
+          <nav class="main-nav">
+            <a href="index.html" class="logo">
+              <h1>
+                <span>
+                  <inline>MyBlock</inline>
+                </span>
+              </h1>
+            </a>
+            <ul class="nav">
+              <li><a href="announcements.html">Announcements</a></li>
+              <li><a href="events.html" >Events</a></li>
+              <li><a href="forum.html" class="active">Forum</a></li>
+              <li><a href="loans.html">Loans</a></li>
+              <li><a href="services.html">Services</a></li>
+              <li id="profileLink">
+                <a href="profile.html" id="profileLinkRedir">
+                  <i class="fa fa-calendar" id="profileLinkImg"></i>
+                  <span id="profileLinkText">Profile</span>
+                </a>
+              </li>
+            </ul>
+            <a class="menu-trigger"><span>Menu</span></a>
+          </nav>
+        </div>
+      </div>
+    </div>
+  </header>
 
     <div class="page-heading header-text">
         <div class="container">
-          <div class="row">
-            <div class="col-lg-12">
-              <span class="breadcrumb"><a href="#">Home</a> / Forum</span>
-              <h3>Forum</h3>
+            <div class="row">
+                <div class="col-lg-12">
+                <span class="breadcrumb"><a href="#">Home</a> / Forum</span>
+                <h3>Forum</h3>
+                </div>
             </div>
-          </div>
         </div>
     </div>
-     
-    <div class="forum-container"> 
-       
+    
+    <div class="forum-container">
         <!-- Forum Header -->
         <br>
         <div style="display: flex; justify-content: right; padding-right: 20px;" >
             <button type="button" id ="postforumbtn" class="btn btn-primary buttonDisplay topright" v-show="displayForumButton" @click="openForm" style="font-size: 17px; padding: 15px 15px;">
                 <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="feather feather-plus mr-2">
-                    <line x1="12" y1="5" x2="12" y2="19"></line>
-                    <line x1="5" y1="12" x2="19" y2="12"></line>
+                <line x1="12" y1="5" x2="12" y2="19"></line>
+                <line x1="5" y1="12" x2="19" y2="12"></line>
                 </svg>
-                Add Post
+            Add Post
             </button>
         </div>
         <h2 style="color: orangered; text-align: center;">View Posts on Forum</h2>
         <!-- Category Filter Buttons -->
         <div class="category-buttons mt-4 text-center">
-            <button
-                class="btn btn-outline-primary"
-                :class="{ active: selectedCategory === 'All' }"
-                @click="selectedCategory = 'All'; console.log('Selected Category:', selectedCategory)">
+            <button 
+                class="btn btn-outline-primary" 
+                :class="{ active: selectedCategory === 'All' }" 
+                @click="selectedCategory = 'All'">
                 All
             </button>
-            <button
-                class="btn btn-outline-primary"
-                :class="{ active: selectedCategory === 'General' }"
-                @click="selectedCategory = 'General'; console.log('Selected Category:', selectedCategory)">
+            <button 
+                class="btn btn-outline-primary" 
+                :class="{ active: selectedCategory === 'General' }" 
+                @click="selectedCategory = 'General'">
                 General
             </button>
-            <button
-                class="btn btn-outline-primary"
-                :class="{ active: selectedCategory === 'Feedback' }"
-                @click="selectedCategory = 'Feedback'; console.log('Selected Category:', selectedCategory)">
+            <button 
+                class="btn btn-outline-primary" 
+                :class="{ active: selectedCategory === 'Feedback' }" 
+                @click="selectedCategory = 'Feedback'">
                 Feedback
             </button>
-            <button
-                class="btn btn-outline-primary"
-                :class="{ active: selectedCategory === 'Lost and Found' }"
-                @click="selectedCategory = 'Lost and Found'; console.log('Selected Category:', selectedCategory)">
+            <button 
+                class="btn btn-outline-primary" 
+                :class="{ active: selectedCategory === 'Lost and Found' }" 
+                @click="selectedCategory = 'Lost and Found'">
                 Lost and Found
             </button>
-        </div>        
-       
+        </div>
+
+
         <!-- New Post Form -->
         <div id="forumForm" v-show="!displayForumForm">
             <div class="topright">
@@ -218,16 +212,15 @@
             </div>
             <br><br>
             <div class="card my-4">
-               
                 <div class="card-header" style="text-align: center; font-size: 20px; font-weight: bold;">Create a New Post on Forum</div>
                 <div class="card-body">
                     <form>
                         <div class="mb-3">
                             <label for="category" class="form-label">Category</label>
                             <select class="form-select" id="category" name="category" v-model="category" required>
-                              <option value="General">General</option>
-                              <option value="Feedback">Feedback</option>
-                              <option value="Lost and Found">Lost and Found</option>
+                            <option value="General">General</option>
+                            <option value="Feedback">Feedback</option>
+                            <option value="Lost and Found">Lost and Found</option>
                             </select>
                         </div>                          
                         <div class="mb-3">
@@ -238,27 +231,29 @@
                             <label for="content" class="form-label">Content</label>
                             <textarea class="form-control" id="content" name="content" rows="4" v-model="content" required></textarea>
                         </div>
-                        <a style="display: flex; justify-content: center; align-items: center; margin-top: 25px;"
-                        class="btn btn-primary"
+                        <a style="display: flex; justify-content: center; align-items: center; margin-top: 25px;" class="btn btn-primary" 
                         @click="createPost">
-                            Submit Post
+                        Submit Post
                         </a>
                     </form>
                 </div>
             </div>
         </div>
 
-
         <!-- Forum Posts -->
+        <div v-if="forums.length === 0">
+            <p>No posts available.</p>
+        </div>
         <div class="forum-post" v-for="post in filteredPosts" :key="post.id">
             <div style="display: flex; align-items: center;">
                 <h3 style="margin: 0; flex-grow: 1;">{{ post.title }}</h3>
-                <!-- Like Button with Dynamic Class Binding -->
+                <!-- Thumbs Up Button -->
                 <button 
-                @click="toggleLike(post.id)" 
-                :class="{'btn btn-primary': post.isLiked, 'btn btn-outline-primary': !post.isLiked}">
-                <span v-if="post.isLiked">Liked</span>
-                <span v-else>Like</span>
+                    @click="toggleLike(post.id)" 
+                    :class="post.isLiked ? 'btn-primary' : 'btn-light'" 
+                    class="btn" 
+                    style="font-size: 15px; margin-left: 10px;">
+                    <span class="material-icons" :class="post.isLiked ? 'text-white' : 'text-black'">thumb_up</span>
                 </button>
             </div>                        
             <!-- <p><strong>Category:</strong> {{ post.category }}</p> -->
@@ -270,19 +265,17 @@
                 <!-- Heading and Add Comment button side by side -->
                 <div style="display: flex; align-items: center;">
                     <h5>Comments</h5>
-                    <button type="button" class="btn btn-primary buttonDisplay" style="font-size: 15px; background-color: orangered; border-color: white; margin-left: 10px;"
+                    <button type="button" class="btn btn-primary buttonDisplay" style="font-size: 15px; background-color: orangered; border-color: white; margin-left: 10px;" 
                     @click="openComment(post.id)">
                         Add Comment
                     </button>
                 </div>
-               
                 <!-- Check if comments exist -->
                 <div v-if="post.comments.length > 0">
                     <!-- Toggle Comments Button -->
                     <button class="btn btn-link" @click="post.showComments = !post.showComments">
                         {{ post.showComments ? 'Hide Comments' : 'Show Comments' }}
                     </button>
-           
                     <!-- Display Comments if toggle is active -->
                     <div v-if="post.showComments">
                         <div class="comment" v-for="comment in post.comments" :key="comment.id">
@@ -294,53 +287,39 @@
                 <!-- Display "No comments" if there are no comments -->
                 <div v-else>
                     <p>No comments</p>
-                </div>
+                </div> 
             </div>            
         </div>
-    </div>
 
-
-
-
-    <!-- Post new comemnt-->
-    <div id="CommentForm" v-show="!displayCommentForm">
-        <div class="topright">
-            <button type="button" class="btn btn-light" style="padding: 10px;" @click="closeComment">
-                <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor" class="bi bi-x-lg" viewBox="0 0 16 16">
-                    <path d="M2.146 2.854a.5.5 0 1 1 .708-.708L8 7.293l5.146-5.147a.5.5 0 0 1 .708.708L8.707 8l5.147 5.146a.5.5 0 0 1-.708.708L8 8.707l-5.146 5.147a.5.5 0 0 1-.708-.708L7.293 8z"/>
-                </svg>
-            </button>
-        </div>
-        <br><br>
-        <div class="card my-4">
-            <div class="card-header" style="text-align: center; font-size: 20px; font-weight: bold;">Create a Comment on this Post</div>
-            <div class="card-body">
-                <form>                          
-                    <div class="mb-3">
-                        <label for="commentDetails" class="form-label">Content</label>
-                        <textarea class="form-control" id="commentDetails" name="commentDetails" rows="4" v-model="commentDetails" required></textarea>
-                    </div>
-                    <a class="btn btn-primary" style="display: flex; justify-content: center; align-items: center; margin-top: 25px;"
-                    @click="postComment(parentID)">
+        <!-- Post new comemnt-->
+        <div id="CommentForm" v-show="!displayCommentForm">
+            <div class="topright">
+                <button type="button" class="btn btn-light" style="padding: 10px;" @click="closeComment">
+                    <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor" class="bi bi-x-lg" viewBox="0 0 16 16">
+                        <path d="M2.146 2.854a.5.5 0 1 1 .708-.708L8 7.293l5.146-5.147a.5.5 0 0 1 .708.708L8.707 8l5.147 5.146a.5.5 0 0 1-.708.708L8 8.707l-5.146 5.147a.5.5 0 0 1-.708-.708L7.293 8z"/>
+                    </svg>
+                </button>
+            </div>
+            <br><br>
+            <div class="card my-4">
+                <div class="card-header" style="text-align: center; font-size: 20px; font-weight: bold;">Create a Comment on this Post</div>
+                <div class="card-body">
+                    <form>                          
+                        <div class="mb-3">
+                            <label for="commentDetails" class="form-label">Content</label>
+                            <textarea class="form-control" id="commentDetails" name="commentDetails" rows="4" v-model="commentDetails" required></textarea>
+                        </div>
+                        <a class="btn btn-primary" style="display: flex; justify-content: center; align-items: center; margin-top: 25px;" 
+                            @click="postComment(parentID)">
                         Submit Comment
-                    </a>
-                </form>
+                        </a>
+                    </form>
+                </div>
             </div>
         </div>
-    </div>  
+    </div>
+        
+    <!-- Bootstrap JS bundle -->
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3/dist/js/bootstrap.bundle.min.js"></script> 
 </body>
-
-
-<script src="https://unpkg.com/vue@3/dist/vue.global.js"></script>
-    <script type="module" src="db/forumCRUD.js"></script>
-    <script type="module" src="assets/js/Forum.js"></script>
 </html>
-
-
-
-
-
-
-
-
-
