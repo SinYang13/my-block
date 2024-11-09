@@ -12,7 +12,9 @@
     <link rel="stylesheet" href="assets/css/owl.css" />
     <link rel="stylesheet" href="assets/css/animate.css" />
     <link rel="stylesheet" href="https://unpkg.com/swiper@7/swiper-bundle.min.css" />
+    <script src="https://cdn.jsdelivr.net/npm/jsbarcode@3.11.6/dist/JsBarcode.all.min.js"></script>
     <script type="module" src="./assets/js/profile.js"></script>
+
 
     <style>
         .profile-container {
@@ -402,6 +404,27 @@
                 font-size: 75%
             }
         }
+
+        .modal-overlay {
+            position: fixed;
+            top: 0;
+            left: 0;
+            right: 0;
+            bottom: 0;
+            background: rgba(0, 0, 0, 0.5);
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            z-index: 1000;
+        }
+
+        .modal-content {
+            background: #fff;
+            padding: 20px;
+            border-radius: 8px;
+            width: 300px;
+            box-shadow: 0 5px 15px rgba(0, 0, 0, 0.3);
+        }
     </style>
 </head>
 
@@ -530,7 +553,7 @@
                     <!-- Profile Settings-->
                     <div class="col-lg-8 pb-5" v-if="eventsList.length !=0">
                         <!-- insert table instead -->
-                         <div class="row" v-for="i in eventsList">
+                        <div class="row" v-for="i in eventsList">
                             <article class="card fl-left">
                                 <section class="date">
                                     <time datetime="23th feb">
@@ -552,10 +575,22 @@
                                             {{i.eventLocation}}, Singapore
                                         </p>
                                     </div>
-                                    <a href="#">tickets</a>
+                                    <a style="color: #fff;" @click="openModal(i.eventId)">tickets</a>
                                 </section>
                             </article>
-                         </div>
+                        </div>
+                        <!-- Modal -->
+                        <div v-if="showModal" class="modal-overlay" @click.self="closeModal">
+                            <div class="modal-content">
+                                <h3 style="text-align: center;">Ticket</h3>
+                                <small>Name of Ticket Holder: {{attendees[0].name}}</small>
+                                <small>No. of Pax: {{attendees.length}}</small>
+                                <svg id="barcode"></svg>
+                                <button @click="closeModal">Close</button>
+                            </div>
+                        </div>
+
+
                     </div>
                     <div class="col-lg-8 pb-5" v-else>
                         <h1>You have not signed up for any events</h1>

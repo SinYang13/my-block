@@ -4,10 +4,19 @@ import {
     collection, getDocs
 } from "https://www.gstatic.com/firebasejs/10.14.0/firebase-firestore.js";
 
+
 function formatDate(date) {
     const d = new Date(date.seconds * 1000);
     const parts = d.toLocaleDateString();
     return parts
+}
+
+function generateQR(value) {
+    JsBarcode("#barcode", value, {
+        format: 'code128',
+        displayValue: true,
+        width: 1
+    });
 }
 
 
@@ -22,6 +31,10 @@ const app = Vue.createApp({
             userDetails: '',
             createdDate: '',
             eventsList: [],
+            showModal: false,
+            modalData:{},
+            attendees: [],
+            ticketId: ''
 
         };
     }, // data
@@ -75,7 +88,7 @@ const app = Vue.createApp({
         async getEvents() {
             const weekday = ["Sunday", "Monday", "Tuesday", "Wednesday", "Thursday", "Friday", "Saturday"];
             const month = ["January", "February", "March", "April", "May", "June", "July", "August", "September", "October", "November", "December"];
-            const shortmonth = ["Jan", "Feb", "Mar", "Apr", "MayJun", "Jul", "Aug", "Sep", "Oct", "Nov", "Dec"];
+            const shortmonth = ["Jan", "Feb", "Mar", "Apr", "May","Jun", "Jul", "Aug", "Sep", "Oct", "Nov", "Dec"];
             const colRef = collection(db, 'users/' + this.userid + '/registrations')
 
             //get collection data
@@ -117,6 +130,24 @@ const app = Vue.createApp({
                 })
 
 
+        },
+        openModal(barcodeValue) {
+            this.modalData.barcodeValue = barcodeValue;
+            this.showModal = true;
+
+            // Generate the barcode when the modal opens
+            this.$nextTick(() => {
+                generateQR(this.modalData.barcodeValue);
+            });
+
+            this.eventsList.forEach(item =>{
+                if(item.eventId == barcodeValue){
+                    this.attendees = item.attendees
+                }
+            })
+        },
+        closeModal() {
+            this.showModal = false;
         },
 
         async getuser() {
