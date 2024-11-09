@@ -22,6 +22,7 @@
   <link rel="stylesheet" href="https://unpkg.com/swiper@7/swiper-bundle.min.css" />
 
   <script src="https://unpkg.com/vue@3/dist/vue.global.js"></script>
+  <script type="module" src="assets/js/index.js"></script>
   <!-- Import your JavaScript file -->
 
   <style>
@@ -113,10 +114,10 @@
         </div>
         <div class="col-lg-4 col-md-4">
           <ul class="social-links">
-            <li><a href="https://www.facebook.com/sgsmu/"><i class="fab fa-facebook"></i></a></li>
+            <li><a href="https://www.facebook.com/sgsmu/" target="_blank"><i class="fab fa-facebook"></i></a></li>
             <li><a href="https://x.com/sgSMU" target="_blank"><i class="fab fa-twitter"></i></a></li>
-            <li><a href="https://www.linkedin.com/school/singapore-management-university/posts/?feedView=all"><i class="fab fa-linkedin"></i></a></li>
-            <li><a href="https://www.instagram.com/sgsmu/?hl=en"><i class="fab fa-instagram"></i></a></li>
+            <li><a href="https://www.linkedin.com/school/singapore-management-university/posts/?feedView=all" target="_blank"><i class="fab fa-linkedin"></i></a></li>
+            <li><a href="https://www.instagram.com/sgsmu/?hl=en" target="_blank"><i class="fab fa-instagram"></i></a></li>
           </ul>
         </div>
       </div>
@@ -250,7 +251,8 @@
                   <p class="card-text">{{ event.description }}</p>
                 </div>
                 <div class="main-button text-center">
-                  <a :href="event.link" class="btn btn-primary">See more!</a>
+                  <a :href="event.link" class="btn btn-primary" @click="openEventModal(event)" data-bs-toggle="modal"
+                  data-bs-target="#eventModal">See more!</a>
                 </div>
               </div>
             </div>
@@ -258,7 +260,116 @@
         </div>
       </section>
       </div>
+         <!-- Modal (Popup) -->
+    <div class="modal" id="eventModal" tabindex="-1" aria-labelledby="eventModalLabel" aria-hidden="true">
+      <div class="modal-dialog modal-md">
+        <div class="modal-content" v-if="selectedEvent">
+          <div class="modal-header">
+            <h5 class="modal-title" id="eventModalLabel">{{ selectedEvent.title }}</h5>
+            <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close" @click="closeEventModal"></button>
+          </div>
+          <div class="modal-body">
+            <!-- Make the image take the full width of the modal -->
+            <img :src="selectedEvent.imageURL" class="img-fluid w-100 mb-3" alt="Event Image">
+            <p><strong>Date:</strong> {{ selectedEvent.date }}</p>
+            <p><strong>Price:</strong> {{ selectedEvent.price }}</p>
+            <p><strong>Description:</strong> {{ selectedEvent.description }}</p>
+            <p><strong>Location:</strong> {{ selectedEvent.place }} (Postal Code: {{ selectedEvent.postal }})</p>
+          </div>
+          <div class="modal-footer">
+            <button type="button" class="btn btn-primary" @click="googleCreateEvent">Add to Calendar</button>
+            <button type="button" class="btn btn-success" @click="openSignupModal">Sign up</button>
+            <button type="button" class="btn btn-danger" data-bs-dismiss="modal" @click="closeEventModal">Close</button>
+          </div>
+        </div>
+      </div>
+    </div>
+
+  <div class="modal" id="signupModal" tabindex="-1" aria-labelledby="signupModalLabel" aria-hidden="true" 
+v-if="showSignupModal" style="background: rgba(0,0,0,0.5);">
+<div class="modal-dialog modal-lg">
+<div class="modal-content">
+ <div class="modal-header">
+   <h5 class="modal-title" id="signupModalLabel">Sign Up for {{ selectedEvent.title }}</h5>
+   <button type="button" class="btn-close" @click="closeSignupModal"></button>
+ </div>
+ <div class="modal-body">
+   <!-- Event Details Summary -->
+   <div class="event-details-container row mb-4 p-3 bg-light rounded">
+     <div class="col-md-4">
+       <img :src="selectedEvent.imageURL" class="img-fluid rounded" alt="Event Image">
+     </div>
+     <div class="col-md-8">
+       <h6>Event Details</h6>
+       <p class="mb-1"><small><strong>Event:</strong> {{ selectedEvent.title }}</small></p>
+       <p class="mb-1"><small><strong>Date:</strong> {{ selectedEvent.date }}</small></p>
+       <p class="mb-1"><small><strong>Location:</strong> {{ selectedEvent.place }}</small></p>
+       <p class="mb-1"><small><strong>Price:</strong> {{ selectedEvent.price }}</small></p>
+     </div>
+   </div>
+
+   <!-- Attendee Forms Container -->
+   <div id="attendeeForms">
+     <div v-for="(form, index) in attendeeForms" :key="index" class="attendee-form mb-4">
+       <h6>Attendee {{ index + 1 }} Details</h6>
+       <div class="row g-3">
+         <div class="col-md-6">
+           <input type="text" class="form-control" v-model="form.name" placeholder="Full Name">
+         </div>
+         <div class="col-md-6">
+           <input type="email" class="form-control" v-model="form.email" placeholder="Email">
+         </div>
+         <div class="col-md-6">
+           <input type="tel" class="form-control" v-model="form.phone" placeholder="Phone Number">
+         </div>
+         <div class="col-md-6">
+           <input type="text" class="form-control" v-model="form.dietaryRestrictions" placeholder="Dietary Restrictions">
+         </div>
+         <div class="col-12">
+           <textarea class="form-control" v-model="form.specialRequests" rows="2" placeholder="Special Requests or Notes"></textarea>
+         </div>
+         <div class="col-12 text-end mt-2">
+          <button type="button" class="btn btn-danger btn-sm" @click="removeAttendeeForm(index)">Remove Attendee</button>
+        </div>
+       </div>
+     </div>
+     
+   </div>
+
+   <!-- Add Another Attendee Button -->
+   <button class="btn btn-outline-primary mb-3" @click="addAttendeeForm">
+     <i class="fas fa-user-plus"></i> Add Another Attendee
+   </button>
+ </div>
+ <div class="modal-footer">
+   <button type="button" class="btn btn-secondary" @click="closeSignupModal">Cancel</button>
+   <button type="button" class="btn btn-primary" @click="submitRegistration" >Submit Registration</button>
+
+ </div>
+</div>
+</div>
+</div>
+<!-- Custom Login Prompt Modal for Events -->
+<div class="modal fade" id="loginPromptModalEvents" tabindex="-1" aria-labelledby="loginPromptLabelEvents" aria-hidden="true">
+  <div class="modal-dialog">
+    <div class="modal-content">
+      <div class="modal-header">
+        <h5 class="modal-title" id="loginPromptLabelEvents">Please Log In</h5>
+        <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+      </div>
+      <div class="modal-body">
+        <p>You need to log in to register for this event. Please log in to continue.</p>
+      </div>
+      <div class="modal-footer">
+        <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Cancel</button>
+        <a href="login.html" class="btn btn-primary">Log In</a> <!-- Redirect to login page -->
+      </div>
+    </div>
   </div>
+</div>
+  </div>
+  
+ 
 
   <div class="video section">
     <div class="container">
@@ -308,15 +419,15 @@
           </div>
           <div class="row">
             <div class="col-lg-6">
-              <div class="item phone">
+              <div class="item phone" style="width: 250px;"> 
                 <img src="assets/images/phone-icon.png" alt="" style="max-width: 52px;">
-                <h6>999<br><span>Phone Number</span></h6>
+                <h6>9093 4389<br><span>Phone Number</span></h6>
               </div>
             </div>
             <div class="col-lg-6">
-              <div class="item email">
+              <div class="item email" style="margin-left: -100px;">
                 <img src="assets/images/email-icon.png" alt="" style="max-width: 52px;">
-                <h6>ilovewad.com<br><span>Business Email</span></h6>
+                <h6>myblockwad2@gmail.com<br><span>Business Email</span></h6>
               </div>
             </div>
           </div>
@@ -371,7 +482,7 @@
   <script src="assets/js/owl-carousel.js"></script>
   <script src="assets/js/counter.js"></script>
   <script src="assets/js/custom.js"></script>
-  <script type="module" src="assets/js/index.js"></script>
+  <!-- <script type="module" src="assets/js/index.js"></script> -->
 
 </body>
 
