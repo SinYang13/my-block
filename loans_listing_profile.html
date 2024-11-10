@@ -356,7 +356,10 @@
                         </div>
                     </div>
                     <!-- Profile Settings-->
-                    <div class="col-lg-8 pb-5" style="padding: 40px;" v-if="loanOwners.length!=0">
+                    <div v-if="loans_loading" class="text-center">
+                        <p>Loading...</p>
+                    </div>
+                    <div class="col-lg-8 pb-5" style="padding: 40px;" v-else-if="loanOwners.length!=0">
                         <!-- insert table instead -->
                         <table class="table table-hover mb-0">
                             <thead>

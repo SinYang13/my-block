@@ -554,7 +554,10 @@
                         </div>
                     </div>
                     <!-- Profile Settings-->
-                    <div class="col-lg-8 pb-5" v-if="eventsList.length !=0">
+                    <div v-if="events_loading" class="text-center">
+                        <p>Loading...</p>
+                    </div>
+                    <div class="col-lg-8 pb-5" v-else-if="eventsList.length !=0">
                         <!-- insert table instead -->
                         <div class="row" v-for="i in eventsList">
                             <article class="card fl-left">
