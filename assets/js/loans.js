@@ -1,7 +1,7 @@
 import { db } from './config.js';
 import {
     collection, getDocs, addDoc, query,
-    Timestamp, orderBy, doc, updateDoc,
+    Timestamp, orderBy, doc, updateDoc, getDoc
 } from "https://www.gstatic.com/firebasejs/10.14.0/firebase-firestore.js";
 import { getStorage, ref, getDownloadURL } from "https://www.gstatic.com/firebasejs/10.14.0/firebase-storage.js";
 
@@ -21,11 +21,13 @@ const app = Vue.createApp({
             searchTerm: "",
             filteredLoans: [],
             loans: [], // Initialize as an empty array
+            collectionVenue: '', // Store the user's collection venue here
             formdisplayActive: false,
             userName: sessionStorage.getItem("loggedInUserEmail"),
             startdate: new Date(),
             currItemName: '',
             currNo: 0,
+            ccMissing:false,
 
             successDisplay: false,
             CLIENT_ID:"815388161577-1q8k35ihr9mtr8cvhis048ljdod8v7f8.apps.googleusercontent.com",
@@ -59,6 +61,7 @@ const app = Vue.createApp({
         },
         currentDate() {
             var tdy = new Date()
+            tdy.setDate(tdy.getDate() + 1); // Set to the next day
             var yr = tdy.getFullYear()
             var mth = tdy.getMonth() + 1
             var date = tdy.getDate()
@@ -67,11 +70,15 @@ const app = Vue.createApp({
             console.log(mindate)
 
             return (mindate)
-        }
+        },
+        
 
     },
     async mounted() {
         this.loading = true;
+        if (this.userName) {
+            await this.getUserCollectionVenue(); // Fetch the user's collection venue if logged in
+        }
         window.addEventListener("load", () => {
             this.gapiLoaded();
             this.gisLoaded();
@@ -88,6 +95,26 @@ const app = Vue.createApp({
         window.addEventListener('scroll', this.handleScroll);
     },
     methods: {
+        async getUserCollectionVenue() {
+            if (!this.userName) {
+                console.error("No user is logged in.");
+                return;
+            }
+            const userDocRef = doc(db, "users", this.userName); // Assumes userName is the document ID
+            const userDoc = await getDoc(userDocRef);
+
+            if (userDoc.exists()) {
+                const venue = userDoc.data().preferredCommunityClub;
+                if (venue) {
+                    this.collectionVenue = venue;
+                    this.ccMissing = false; // CC is found
+                } else {
+                    this.ccMissing = true; // CC is missing
+                }
+            } else {
+                console.error("No such user document found!");
+            }
+        },
         async readLoan() {
             const loanlist = [];
             const querySnapshot = await getDocs(collection(db, "loans"));
@@ -155,14 +182,25 @@ const app = Vue.createApp({
                 const loginModal = new bootstrap.Modal(document.getElementById('loginPromptModal'));
                 loginModal.show();
                 return;
-            }
+            };
+            if (!this.collectionVenue) {
+                // If collectionVenue is missing, show alert
+                alert("Please go to your profile to select your preferred Community Club for collection before reserving an item.");
+                return;
+            };
         
             // If logged in, proceed with opening the form
             this.formdisplayActive = true;
             this.currItemName = itemName;
         },
 
-        closeForm() {
+        closeForm1() {
+            // console.log("sup")
+            this.formdisplayActive = false;
+            this.successDisplay = false;
+            this.curritemName = '';
+        },
+        closeForm2() {
             // console.log("sup")
             this.formdisplayActive = false;
             this.successDisplay = false;

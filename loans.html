@@ -32,6 +32,84 @@
 <script src="https://unpkg.com/vue@3/dist/vue.global.js"></script>
 
 <style>
+   table {
+        margin: auto;
+        text-align: left;
+        font-family: Arial, sans-serif;
+        font-size: 16px;
+        color: #333;
+        border-spacing: 0 10px; /* Adds vertical spacing between rows */
+    }
+
+    table tbody tr {
+        display: flex;
+        justify-content: space-between;
+        align-items: center;
+        padding: 10px 0;
+    }
+
+    table tbody tr td:first-child {
+        font-weight: bold;
+        color: #666;
+        padding-right: 20px;
+        white-space: nowrap;
+    }
+
+    table tbody tr td:last-child {
+        color: #000;
+        font-weight: 500;
+        text-align: right;
+    }
+
+    /* Styling for the success message and icon */
+    .showSuccessmsg h1 {
+        font-size: 1.5em;
+        font-weight: bold;
+        color: #333;
+        text-align: center;
+        margin-top: 20px;
+        margin-bottom: 20px;
+    }
+
+    .showSuccessmsg svg {
+        display: block;
+        margin: 0 auto;
+        width: 60px;
+        height: 60px;
+        color: #28a745; /* Green color */
+    }
+
+    /* Styling for buttons */
+    .btn {
+        display: inline-block;
+        font-size: 1em;
+        font-weight: 500;
+        padding: 10px 20px;
+        margin: 15px 5px 0;
+        text-decoration: none;
+        border-radius: 8px;
+        transition: background-color 0.3s ease;
+    }
+
+    .btn-secondary {
+        background-color: #6c757d;
+        color: white;
+    }
+
+    .btn-secondary:hover {
+        background-color: #5a6268;
+    }
+
+    .btn-primary {
+        background-color: #007bff;
+        color: white;
+    }
+
+    .btn-primary:hover {
+        background-color: #0069d9;
+    }
+  
+  
   /* Basic styles for the overlay */
   .overlay {
       position: fixed; /* Stay in place */
@@ -219,7 +297,7 @@
                   </div>
                   <div class="form-group text-center">
                       <a class="btn btn-primary"  @click="submitLoan">Submit</a>
-                      <a class="btn cancel" @click="closeForm">Close</a>
+                      <a class="btn cancel" @click="closeForm1">Close</a>
                   </div>
               </form>
           </div>
@@ -250,7 +328,7 @@
                                 </tr>
                                 <tr>
                                     <td>Collection venue:</td>
-                                    <td>Bishan East Zone 1 RC</td>
+                                    <td>{{collectionVenue}}</td>
                                 </tr>
                                 <tr>
                                     <td>Start Date:</td>
@@ -263,7 +341,7 @@
                                 
                             </tbody>
                         </table>
-                        <a href="#" class="btn btn-secondary btn-lg" @click = "closeForm">Return</a>
+                        <a href="#" class="btn btn-secondary btn-lg" @click = "closeForm2">Return</a>
                         <a href="#" class="btn btn-primary btn-lg" @click = "googleCreateEvent">Add to Calendar</a>
                       </div>
                       <!--/ End Error Inner -->

@@ -1,7 +1,7 @@
 import { db } from './config.js';
 import { readUser } from '../../db/usersCRUD.js';
 import {
-    collection, getDocs, deleteDoc, doc
+    collection, getDocs, deleteDoc, doc, updateDoc,
 } from "https://www.gstatic.com/firebasejs/10.14.0/firebase-firestore.js";
 
 
@@ -24,6 +24,7 @@ function generateQR(value) {
 const app = Vue.createApp({
     data() {
         return {
+            selectedCC:'',
             loanOwners: [],
             userid: sessionStorage.getItem("loggedInUserEmail"),
             userType:sessionStorage.getItem("loggedInUserType"),
@@ -90,6 +91,24 @@ const app = Vue.createApp({
             console.log(rentalList);
             return rentalList;
         },
+        updateCC() {
+            if (this.selectedCC) {
+                const userRef = doc(db, 'users', this.userid);
+                updateDoc(userRef, {
+                    preferredCommunityClub: this.selectedCC
+                })
+                .then(() => {
+                    console.log("Preferred Community Club updated successfully");
+                    alert("Preferred Community Club updated successfully.");
+            
+                })
+                .catch((error) => {
+                    console.error("Error updating preferred Community Club: ", error);
+                });
+            } else {
+                alert("Please select a Community Club.");
+            }
+        },
 
         async getEvents() {
             const weekday = ["Sunday", "Monday", "Tuesday", "Wednesday", "Thursday", "Friday", "Saturday"];
@@ -138,6 +157,20 @@ const app = Vue.createApp({
 
 
         },
+        deleteEvent(eventId) {
+            console.log(eventId);
+            const docRef = doc(db, 'users/' + this.userid + '/registrations', eventId);
+            deleteDoc(docRef)
+                .then(() => {
+                    console.log("Event successfully deleted");
+                    // Refresh the events list
+                    this.getEvents();
+                })
+                .catch((error) => {
+                    console.error("Error deleting event: ", error);
+                });
+        },
+        
 
         async getServices() {
             const colRef = collection(db, 'users/' + this.userid + '/selectedServices')
@@ -193,6 +226,7 @@ const app = Vue.createApp({
 
         async getuser() {
             const user = await readUser(this.userid);
+            this.selectedCC = user.preferredCommunityClub || ''; // Set the selected CC from the database
             this.userDetails = user
             const registerDate = user.registerDate
 

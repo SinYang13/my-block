@@ -17,6 +17,25 @@
 
 
     <style>
+          .close-btn {
+            position: absolute;
+            top: 10px;
+            right: 10px;
+            background-color: #f35525;
+            /* Red color for visibility */
+            color: white;
+            border: none;
+            border-radius: 50%;
+            width: 30px;
+            height: 30px;
+            font-size: 16px;
+            font-weight: bold;
+            cursor: pointer;
+            transition: background-color 0.3s ease;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+        }
         .profile-container {
             max-width: 400px;
             margin: 100px auto;
@@ -659,8 +678,10 @@
                         <p>Loading...</p>
                     </div>
                     <div class="col-lg-8 pb-5" v-else-if="eventsList.length !=0">
+                        
                         <!-- insert table instead -->
                         <div class="event-card" v-for="i in eventsList">
+                            <button class="close-btn" @click="deleteEvent(i.id)">X</button>
                             <div class="event-date">
                                 <span class="event-day">{{i.date}}</span>
                                 <span class="event-month">{{i.shortmth}}</span>
