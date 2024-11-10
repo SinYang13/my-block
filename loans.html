@@ -163,7 +163,7 @@
 
 
     <!-- None  <576px, sm  ≥576px, md  ≥768px, lg  ≥992px, xl  ≥1200px, xxl  ≥1400px -->
-    <div class="properties section">
+    <div class="properties section" v-if="!loading">
       <div class="container">
         <!-- Bootstrap card structure for events while keeping your classes -->
         <div class="row row-cols-1 row-cols-md-3 g-4">
@@ -227,7 +227,7 @@
   </div>
 
           <!-- Overlay for success and if the user wants to add to their calendar -->
-          <div v-if="successDisplay" class="overlay">
+          <div v-if="!loading && successDisplay" class="overlay">
             <div class="showSuccessmsg">
               <link href="https://maxcdn.bootstrapcdn.com/font-awesome/4.7.0/css/font-awesome.min.css" rel="stylesheet" />
               <section class="mail-seccess section">

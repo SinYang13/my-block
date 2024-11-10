@@ -425,6 +425,107 @@
             width: 300px;
             box-shadow: 0 5px 15px rgba(0, 0, 0, 0.3);
         }
+
+        /* continue */
+       /* General Card Layout */
+/* Card Layout */
+/* Container Styling */
+.event-card {
+    display: flex;
+    align-items: center;
+    background-color: #fff;
+    border-radius: 10px;
+    box-shadow: 0 4px 10px rgba(0, 0, 0, 0.1);
+    overflow: hidden;
+    padding: 20px;
+    margin-bottom: 20px;
+    transition: transform 0.3s ease, box-shadow 0.3s ease;
+    position: relative;
+}
+
+.event-card:hover {
+    transform: translateY(-3px);
+    box-shadow: 0 6px 15px rgba(0, 0, 0, 0.15);
+}
+
+/* Date Styling */
+.event-date {
+    background-color: #007bff;
+    color: #fff;
+    width: 70px;
+    text-align: center;
+    padding: 10px 0;
+    border-radius: 10px;
+    font-weight: bold;
+    margin-right: 20px;
+    flex-shrink: 0;
+}
+
+.event-day {
+    font-size: 1.8em;
+    line-height: 1;
+}
+
+.event-month {
+    font-size: 0.9em;
+    text-transform: uppercase;
+}
+
+/* Content Styling */
+.event-content {
+    flex: 1;
+}
+
+.event-title {
+    font-size: 1.4em;
+    font-weight: 700;
+    margin: 0;
+    color: #333;
+    margin-bottom: 8px;
+}
+
+.event-details {
+    font-size: 0.95em;
+    color: #555;
+}
+
+.event-date-time,
+.event-location {
+    display: flex;
+    align-items: center;
+    margin-top: 5px;
+}
+
+.event-date-time i,
+.event-location i {
+    color: #888;
+    margin-right: 8px;
+}
+
+.event-date-time span,
+.event-location span {
+    color: #666;
+}
+
+/* Ticket Button Styling */
+.ticket-button {
+    background-color: #007bff;
+    color: #fff;
+    padding: 10px 18px;
+    border: none;
+    border-radius: 20px;
+    font-weight: 600;
+    cursor: pointer;
+    transition: background-color 0.3s ease;
+}
+
+.ticket-button:hover {
+    background-color: #0056b3;
+}
+
+
+
+
     </style>
 </head>
 
@@ -515,20 +616,20 @@
                             <nav class="list-group list-group-flush">
 
                                 <a class="list-group-item" href="profile.html"><i
-                                        class="fa fa-user text-muted"></i>Profile Settings</a>
+                                        class="fa fa-user text-muted"></i>&nbsp;Profile Settings</a>
                                 <a class="list-group-item" href="#"><i
-                                        class="fa fa-map-marker text-muted"></i>Addresses</a>
+                                        class="fa fa-map-marker text-muted"></i>&nbsp;Addresses</a>
                                 <a class="list-group-item active" href="events_listing_profile.html">
                                     <div class="d-flex justify-content-between align-items-center">
                                         <div><i class="fa fa-ticket mr-1 text-muted"></i>
-                                            <div class="d-inline-block font-weight-medium text-uppercase">Events</div>
+                                            <div class="d-inline-block font-weight-medium text-uppercase">&nbsp;Events</div>
                                         </div><span class="badge bg-secondary">{{eventsList.length}}</span>
                                     </div>
                                 </a>
                                 <a class="list-group-item" href="loans_listing_profile.html">
                                     <div class="d-flex justify-content-between align-items-center">
                                         <div><i class="fa fa-file mr-1 text-muted"></i>
-                                            <div class="d-inline-block font-weight-medium text-uppercase">Loans List
+                                            <div class="d-inline-block font-weight-medium text-uppercase">&nbsp;&nbsp;Loans List
                                             </div>
                                             <!-- </div><span class="badge badge-secondary"></span> -->
                                         </div><span class="badge bg-secondary">{{loanOwners.length}}</span>
@@ -559,32 +660,28 @@
                     </div>
                     <div class="col-lg-8 pb-5" v-else-if="eventsList.length !=0">
                         <!-- insert table instead -->
-                        <div class="row" v-for="i in eventsList">
-                            <article class="card fl-left">
-                                <section class="date">
-                                    <time datetime="23th feb">
-                                        <span>{{i.date}}</span><span>{{i.shortmth}}</span>
-                                    </time>
-                                </section>
-                                <section class="card-cont">
-                                    <h3>{{i.eventTitle}}</h3>
-                                    <div class="even-date">
+                        <div class="event-card" v-for="i in eventsList">
+                            <div class="event-date">
+                                <span class="event-day">{{i.date}}</span>
+                                <span class="event-month">{{i.shortmth}}</span>
+                            </div>
+                            <div class="event-content">
+                                <h3 class="event-title">{{i.eventTitle}}</h3>
+                                <div class="event-details">
+                                    <div class="event-date-time">
                                         <i class="fa fa-calendar"></i>
-                                        <time>
-                                            <span>{{i.fulldate}}</span>
-                                            <span>{{i.time}}</span>
-                                        </time>
+                                        <span>{{i.fulldate}} &nbsp; | &nbsp; {{i.time}}</span>
                                     </div>
-                                    <div class="even-info">
+                                    <div class="event-location">
                                         <i class="fa fa-map-marker"></i>
-                                        <p>
-                                            {{i.eventLocation}}, Singapore
-                                        </p>
+                                        <span>{{i.eventLocation}}, Singapore</span>
                                     </div>
-                                    <a style="color: #fff;" @click="openModal(i.eventId)">tickets</a>
-                                </section>
-                            </article>
+                                </div>
+                            </div>
+                            <button class="ticket-button" @click="openModal(i.eventId)">Get Ticket</button>
                         </div>
+                        
+                        
                         <!-- Modal -->
                         <div v-if="showModal" class="modal-overlay" @click.self="closeModal">
                             <div class="modal-content">
@@ -606,7 +703,7 @@
         </div>
         <div class="profile-container" v-else>
             <h1>User Profile</h1>
-            <p>You are currently not logged in</p>
+            <p>You have Logged out successfully</p>
             <div id="adminDashboardBtn" class="mt-3"></div>
             <button id="loginButton" class="btn btn-primary mt-3"
                 onclick="window.location.href='./login.html';">Login</button>

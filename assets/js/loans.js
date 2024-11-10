@@ -16,6 +16,8 @@ function formatDate(date) {
 const app = Vue.createApp({
     data() {
         return {
+            
+            loading:true,
             searchTerm: "",
             filteredLoans: [],
             loans: [], // Initialize as an empty array
@@ -69,6 +71,7 @@ const app = Vue.createApp({
 
     },
     async mounted() {
+        this.loading = true;
         window.addEventListener("load", () => {
             this.gapiLoaded();
             this.gisLoaded();
@@ -78,6 +81,7 @@ const app = Vue.createApp({
         const loanlist = await this.readLoan();
         this.loans = loanlist; // Update the reactive property
         this.filteredLoans = this.loans;
+        this.loading = false;
 
         const app = this;
         this.handleProfileLink();
@@ -160,14 +164,15 @@ const app = Vue.createApp({
 
         closeForm() {
             // console.log("sup")
-            this.formdisplayActive = false
-            this.successDisplay = false
+            this.formdisplayActive = false;
+            this.successDisplay = false;
             this.curritemName = '';
             window.location.reload()
         },
 
         submitLoan() {
             //need to connect to firebase and include all the random stuff
+            this.successDisplay = false; // Ensure it's hidden initially
             let inputDate = new Date(this.startdate)
             let currentDate = new Date()
             if(inputDate >= currentDate){
@@ -183,6 +188,7 @@ const app = Vue.createApp({
                     .then(() => {
                         // console.log("successful") //try to reset page
                         this.editLoan();
+                        this.successDisplay = true; // Display on success
     
                     })
                     .catch((error) => {
