@@ -24,6 +24,31 @@ import { logEvent } from "https://www.gstatic.com/firebasejs/10.14.0/firebase-an
 
 const storage = getStorage();
 
+function handleLinkClick(event) {
+  event.preventDefault(); // Prevent default link navigation
+
+  const url = event.currentTarget.href; // Get the destination URL
+
+  // Add fade-out class to trigger animation
+  document.body.classList.add("fade-out");
+
+  // Delay the navigation to allow the fade-out animation to complete
+  setTimeout(() => {
+    window.location.href = url;
+  }, 500); // Delay matches the duration of the fadeOut animation (0.5s)
+}
+
+// Apply the event listener to all <a> tags with class "animated-link"
+document.addEventListener("DOMContentLoaded", () => {
+  const links = document.querySelectorAll("a.animated-link");
+
+  // Add event listeners for the fade-out animation on link click
+  links.forEach((link) => link.addEventListener("click", handleLinkClick));
+
+  // Trigger fade-in when the page loads
+  document.body.classList.add("fade-in");
+});
+
 // Use the global Vue object instead of importing createApp
 const eventsApp = Vue.createApp({
   data() {
@@ -44,22 +69,22 @@ const eventsApp = Vue.createApp({
         const eventsRef = collection(db, "events");
         const q = query(eventsRef, orderBy("date", "asc")); // Order events by date
         const querySnapshot = await getDocs(q);
-    
+
         const eventsArray = [];
         const currentDate = new Date(); // Get the current date
-    
+
         // Loop through the events and fetch images from Firebase Storage
         const promises = querySnapshot.docs.map(async (doc) => {
           const eventData = doc.data();
           const eventDate = eventData.date.toDate(); // Convert Firestore timestamp to Date object
-    
+
           // Check and log the date comparison
           console.log(`Event Date: ${eventDate}, Current Date: ${currentDate}`);
           if (eventDate >= currentDate) {
             // Fetch image URL if the event is upcoming
             const imageRef = ref(storage, "events/" + eventData.image);
             const imageURL = await getDownloadURL(imageRef);
-    
+
             eventsArray.push({
               ...eventData,
               id: doc.id,
@@ -70,31 +95,30 @@ const eventsApp = Vue.createApp({
             console.log(`Skipping expired event with date: ${eventDate}`);
           }
         });
-    
+
         await Promise.all(promises); // Wait for all image URLs to be fetched
-    
+
         // Limit to 6 upcoming events
         this.events = eventsArray.slice(0, 6);
         console.log("Upcoming Events:", this.events); // Log to verify filtered events
       } catch (error) {
         console.error("Error fetching events:", error);
       }
-    }
-    ,
+    },
     async submitRegistration() {
       const userId = sessionStorage.getItem("loggedInUserEmail");
-    
+
       if (!userId) {
         alert("Please log in to register for events.");
         return;
       }
-    
+
       const registrationData = {
         eventId: this.selectedEvent.id,
         eventTitle: this.selectedEvent.title,
         eventDate: this.selectedEvent.date,
         eventLocation: this.selectedEvent.place,
-        attendees: this.attendeeForms.map(form => ({
+        attendees: this.attendeeForms.map((form) => ({
           name: form.name,
           email: form.email,
           phone: form.phone,
@@ -106,44 +130,51 @@ const eventsApp = Vue.createApp({
         },
         timestamp: new Date(), // Optional: add a timestamp
       };
-    
+
       try {
         // Add registration to user's "registrations" subcollection
-        await addDoc(collection(db, "users", userId, "registrations"), registrationData);
-    
+        await addDoc(
+          collection(db, "users", userId, "registrations"),
+          registrationData
+        );
+
         // Add registration to the event's "registrations" subcollection
-        await addDoc(collection(db, "events", this.selectedEvent.id, "registrations"), registrationData);
-    
-        alert("Registration successful! Payment will be collected on site (If Any)");
+        await addDoc(
+          collection(db, "events", this.selectedEvent.id, "registrations"),
+          registrationData
+        );
+
+        alert(
+          "Registration successful! Payment will be collected on site (If Any)"
+        );
         this.closeSignupModal(); // Close the modal after successful submission
       } catch (error) {
         console.error("Error adding registration:", error);
         alert("Failed to register. Please try again.");
       }
     },
-    
-  
+
     closeEventModal() {
       console.log("close");
       this.selectedEvent = {};
       console.log("close");
     },
-  
+
     addAttendeeForm() {
       // Logic to add an attendee form
       const attendeeForm = {
-        name: '',
-        email: '',
-        phone: '',
-        dietaryRestrictions: '',
-        specialRequests: ''
+        name: "",
+        email: "",
+        phone: "",
+        dietaryRestrictions: "",
+        specialRequests: "",
       };
       this.attendeeForms.push(attendeeForm);
     },
     removeAttendeeForm(index) {
       this.attendeeForms.splice(index, 1);
     },
-    
+
     openEventModal(event) {
       this.selectedEvent = {
         ...event,
@@ -153,51 +184,68 @@ const eventsApp = Vue.createApp({
       console.log(this.selectedEvent);
       this.showSignupModal = false;
     },
-  
+
     openSignupModal() {
       console.log("Opening signup modal");
-  
+
       // Check if the user is logged in
       const userId = sessionStorage.getItem("loggedInUserEmail");
-  
+
       if (!userId) {
-          // Show the login prompt modal for events instead of alert
-          const loginModal = new bootstrap.Modal(document.getElementById('loginPromptModalEvents'));
-          loginModal.show();
-          return;
+        // Show the login prompt modal for events instead of alert
+        const loginModal = new bootstrap.Modal(
+          document.getElementById("loginPromptModalEvents")
+        );
+        loginModal.show();
+        return;
       }
-  
+
       // If logged in, proceed to show the signup modal
       this.showSignupModal = true;
-  
+
       if (this.attendeeForms.length === 0) {
-          this.addAttendeeForm(); // Ensure at least one form is available initially
+        this.addAttendeeForm(); // Ensure at least one form is available initially
       }
-  
+
       // Manually show the signup modal using Bootstrap's JavaScript API
       this.$nextTick(() => {
-          const signupModalInstance = new bootstrap.Modal(document.getElementById('signupModal'));
-          signupModalInstance.show();
+        const signupModalInstance = new bootstrap.Modal(
+          document.getElementById("signupModal")
+        );
+        signupModalInstance.show();
       });
-  },
-  
-   
-   closeSignupModal() {
+    },
+
+    closeSignupModal() {
       console.log("Closing signup modal"); // Debugging line
       this.showSignupModal = false;
-      this.attendeeForms = [{ name: '', email: '', phone: '', dietaryRestrictions: '', specialRequests: '' }];
-   
-      const signupModalInstance = bootstrap.Modal.getInstance(document.getElementById('signupModal'));
+      this.attendeeForms = [
+        {
+          name: "",
+          email: "",
+          phone: "",
+          dietaryRestrictions: "",
+          specialRequests: "",
+        },
+      ];
+
+      const signupModalInstance = bootstrap.Modal.getInstance(
+        document.getElementById("signupModal")
+      );
       if (signupModalInstance) {
-         signupModalInstance.hide();
+        signupModalInstance.hide();
       }
-   },
+    },
     async fetchAnnouncements() {
       try {
         let announcements = await readAnnouncements();
-        let filteredAnnouncements = announcements.filter(announcement => announcement.pinned === true);
-        
-        filteredAnnouncements.sort((a, b) => new Date(b.expiry) - new Date(a.expiry));
+        let filteredAnnouncements = announcements.filter(
+          (announcement) => announcement.pinned === true
+        );
+
+        filteredAnnouncements.sort(
+          (a, b) => new Date(b.expiry) - new Date(a.expiry)
+        );
         this.announcements = filteredAnnouncements;
         console.log(this.announcements);
       } catch (err) {
@@ -283,7 +331,7 @@ const eventsApp = Vue.createApp({
         // profileLink.innerHTML = `<a href="login.html"><i class="fa fa-sign-in-alt"></i> Login / Register</a>`;
       }
     },
-    
+
     trackPageView() {
       logEvent(analytics, "page_view", {
         page_title: document.title,
@@ -291,7 +339,7 @@ const eventsApp = Vue.createApp({
         page_path: window.location.pathname,
       });
     },
- 
+
     async incrementVisitorCount() {
       try {
         // Reference to the visitorCount document
@@ -353,23 +401,27 @@ eventsApp.mount("#app");
 
 var form = document.getElementById("contact-form");
 
-form.addEventListener("submit", function(event) {
+form.addEventListener("submit", function (event) {
   event.preventDefault();
 
-  emailjs.send("service_yk1eg59", "template_d7z5v2j", {
-    from_name: document.getElementById("name").value,
-    email: document.getElementById("email").value,
-    subject: document.getElementById("subject").value,
-    message: document.getElementById("message").value
-  })
-  .then(function(response) {
-    alert("Email sent successfully!");
-    document.getElementById("name").value = '';
-    document.getElementById("email").value = '';
-    document.getElementById("subject").value = '';
-    document.getElementById("message").value = '';
-  }, function(error) {
-    console.error("EmailJS error:", error); // log error to console for debugging
-    alert("There was an error sending the email.");
-  });
+  emailjs
+    .send("service_yk1eg59", "template_d7z5v2j", {
+      from_name: document.getElementById("name").value,
+      email: document.getElementById("email").value,
+      subject: document.getElementById("subject").value,
+      message: document.getElementById("message").value,
+    })
+    .then(
+      function (response) {
+        alert("Email sent successfully!");
+        document.getElementById("name").value = "";
+        document.getElementById("email").value = "";
+        document.getElementById("subject").value = "";
+        document.getElementById("message").value = "";
+      },
+      function (error) {
+        console.error("EmailJS error:", error); // log error to console for debugging
+        alert("There was an error sending the email.");
+      }
+    );
 });

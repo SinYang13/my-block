@@ -32,6 +32,36 @@ reset
 --------------------------------------------- 
 */
 
+/* CSS for fade-in and fade-out effects */
+.fade-out {
+  animation: fadeOut 1s forwards;
+}
+
+.fade-in {
+  animation: fadeIn 1s forwards;
+}
+
+/* Keyframes for fade animations */
+@keyframes fadeOut {
+  from { opacity: 1; }
+  to { opacity: 0; }
+}
+
+@keyframes fadeIn {
+  from { opacity: 0; }
+  to { opacity: 1; }
+}
+
+[v-cloak] {
+  display: none;
+}
+
+
+
+
+
+
+
 
 #open-button {
   /* background-color: #555; */

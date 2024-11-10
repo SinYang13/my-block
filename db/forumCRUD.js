@@ -152,7 +152,20 @@ export async function readPosts() {
 // Delete post
 export async function deletePost(postId) {
     const postRef = doc(db, "forum", postId);
-    await deleteDoc(postRef);
+    const commentsRef = collection(postRef, "comments");
+
+    try {
+        // Delete all documents in the 'comments' subcollection
+        const commentsSnapshot = await getDocs(commentsRef);
+        const deleteCommentsPromises = commentsSnapshot.docs.map((commentDoc) => deleteDoc(commentDoc.ref));
+        await Promise.all(deleteCommentsPromises);
+
+        // After deleting all comments, delete the main post document
+        await deleteDoc(postRef);
+        console.log("Post and its comments successfully deleted.");
+    } catch (error) {
+        console.error("Error deleting post and comments:", error);
+    }
 }
 
 // Delete comment
