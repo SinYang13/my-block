@@ -26,23 +26,26 @@
   <!-- Import your JavaScript file -->
 
   <style>
-    .carousel-caption{
+    .carousel-caption {
       background-color: white;
     }
-    
-   /* Main section container */
-   .sector {
+
+    /* Main section container */
+    .sector {
       position: relative;
       width: 100vw;
       /* background-color: #f0f0f0; */
-      overflow: hidden; /* Prevents overflow */
+      overflow: hidden;
+      /* Prevents overflow */
     }
 
     /* Full-width background image */
     .sector-left {
       width: 100vw;
-      height: 500px; /* Adjust height as needed */
-      background-image: url("assets/images/video-bg.jpg"); /* Replace with your image path */
+      height: 500px;
+      /* Adjust height as needed */
+      background-image: url("assets/images/video-bg.jpg");
+      /* Replace with your image path */
       background-size: cover;
       background-position: center;
       position: relative;
@@ -61,7 +64,8 @@
       padding: 20px;
       max-width: 80%;
       line-height: 1.5;
-      margin-top: -200px; /* Adjust this value to move the text up or down */
+      margin-top: -200px;
+      /* Adjust this value to move the text up or down */
     }
 
     /* Centered content container */
@@ -75,7 +79,8 @@
       /* box-shadow: 0px 4px 8px rgba(0, 0, 0, 0.2); */
       position: relative;
       z-index: 1;
-      margin: -250px auto 0 auto; /* Moves content up slightly for overlap */
+      margin: -250px auto 0 auto;
+      /* Moves content up slightly for overlap */
       /* text-align: center; */
     }
 
@@ -91,12 +96,12 @@
     }
   </style>
 
-<script type="text/javascript" src="https://cdn.jsdelivr.net/npm/@emailjs/browser@4/dist/email.min.js"></script>
-<script type="text/javascript">
-  (function() {
-    emailjs.init("Mg4b_D7UoMg-vHCYE"); // Replace with your EmailJS User ID
-  })();
-</script>
+  <script type="text/javascript" src="https://cdn.jsdelivr.net/npm/@emailjs/browser@4/dist/email.min.js"></script>
+  <script type="text/javascript">
+    (function () {
+      emailjs.init("Mg4b_D7UoMg-vHCYE"); // Replace with your EmailJS User ID
+    })();
+  </script>
 
 </head>
 
@@ -116,8 +121,10 @@
           <ul class="social-links">
             <li><a href="https://www.facebook.com/sgsmu/" target="_blank"><i class="fab fa-facebook"></i></a></li>
             <li><a href="https://x.com/sgSMU" target="_blank"><i class="fab fa-twitter"></i></a></li>
-            <li><a href="https://www.linkedin.com/school/singapore-management-university/posts/?feedView=all" target="_blank"><i class="fab fa-linkedin"></i></a></li>
-            <li><a href="https://www.instagram.com/sgsmu/?hl=en" target="_blank"><i class="fab fa-instagram"></i></a></li>
+            <li><a href="https://www.linkedin.com/school/singapore-management-university/posts/?feedView=all"
+                target="_blank"><i class="fab fa-linkedin"></i></a></li>
+            <li><a href="https://www.instagram.com/sgsmu/?hl=en" target="_blank"><i class="fab fa-instagram"></i></a>
+            </li>
           </ul>
         </div>
       </div>
@@ -169,16 +176,16 @@
     </div>
   </div> -->
 
-  <div id="app">
+  <div id="app" v-cloak>
     <!-- BS carousel: start -->
     <section class="sector">
       <div class="sector-left">
         <div class="text-overlay">
-            <h6 style=" color: #ee626b;
+          <h6 style=" color: #ee626b;
             font-size: 15px;
             text-transform: uppercase;
             font-weight: 700;">Announcements</h6>
-            <h2 style="  font-size: 40px; color: white;
+          <h2 style="  font-size: 40px; color: white;
             font-weight: 700;
             text-transform: capitalize;
             margin-top: 20px;
@@ -186,22 +193,24 @@
         </div>
       </div>
       <div class="sector-content">
-        <div id="carouselExampleControls" class="carousel slide" data-bs-ride="carousel" v-if="announcements.length > 0">
+        <div id="carouselExampleControls" class="carousel slide" data-bs-ride="carousel"
+          v-if="announcements.length > 0">
           <div class="carousel-inner">
             <div class="carousel-item active">
-              <img :src="announcements[0].img" class="d-block" style="max-height:50%; max-width: 100%; margin:auto" alt="...">
-                <div class="carousel-caption d-none d-md-block">
-                  <h3>{{announcements[0].title}}</h3>
-                  <p>{{announcements[0].content}}</p>
-                </div>
+              <img :src="announcements[0].img" class="d-block" style="max-height:50%; max-width: 100%; margin:auto"
+                alt="...">
+              <div class="carousel-caption d-none d-md-block">
+                <h3>{{announcements[0].title}}</h3>
+                <p>{{announcements[0].content}}</p>
+              </div>
             </div>
             <div class="carousel-item" v-for="announcement in announcements.slice(1)">
-              <img :src="announcement.img" class="d-block"
-                style="max-height:50%; max-width: 100%; margin:auto" alt="...">
-                <div class="carousel-caption d-none d-md-block">
-                  <h3>{{announcement.title}}</h3>
-                  <p>{{announcement.content}}</p>
-                </div>
+              <img :src="announcement.img" class="d-block" style="max-height:50%; max-width: 100%; margin:auto"
+                alt="...">
+              <div class="carousel-caption d-none d-md-block">
+                <h3>{{announcement.title}}</h3>
+                <p>{{announcement.content}}</p>
+              </div>
             </div>
           </div>
           <button class="carousel-control-prev" type="button" data-bs-target="#carouselExampleControls"
@@ -217,9 +226,9 @@
         </div>
       </div>
     </section>
-  
 
-    
+
+
 
     <div class="properties section ">
       <section class="sector">
@@ -253,21 +262,22 @@
                 </div>
                 <div class="main-button text-center">
                   <a :href="event.link" class="btn btn-primary" @click="openEventModal(event)" data-bs-toggle="modal"
-                  data-bs-target="#eventModal">See more!</a>
+                    data-bs-target="#eventModal">See more!</a>
                 </div>
               </div>
             </div>
           </div>
         </div>
       </section>
-      </div>
-         <!-- Modal (Popup) -->
+    </div>
+    <!-- Modal (Popup) -->
     <div class="modal" id="eventModal" tabindex="-1" aria-labelledby="eventModalLabel" aria-hidden="true">
       <div class="modal-dialog modal-md">
         <div class="modal-content" v-if="selectedEvent">
           <div class="modal-header">
             <h5 class="modal-title" id="eventModalLabel">{{ selectedEvent.title }}</h5>
-            <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close" @click="closeEventModal"></button>
+            <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"
+              @click="closeEventModal"></button>
           </div>
           <div class="modal-body">
             <!-- Make the image take the full width of the modal -->
@@ -286,91 +296,95 @@
       </div>
     </div>
 
-  <div class="modal" id="signupModal" tabindex="-1" aria-labelledby="signupModalLabel" aria-hidden="true" 
-v-if="showSignupModal" style="background: rgba(0,0,0,0.5);">
-<div class="modal-dialog modal-lg">
-<div class="modal-content">
- <div class="modal-header">
-   <h5 class="modal-title" id="signupModalLabel">Sign Up for {{ selectedEvent.title }}</h5>
-   <button type="button" class="btn-close" @click="closeSignupModal"></button>
- </div>
- <div class="modal-body">
-   <!-- Event Details Summary -->
-   <div class="event-details-container row mb-4 p-3 bg-light rounded">
-     <div class="col-md-4">
-       <img :src="selectedEvent.imageURL" class="img-fluid rounded" alt="Event Image">
-     </div>
-     <div class="col-md-8">
-       <h6>Event Details</h6>
-       <p class="mb-1"><small><strong>Event:</strong> {{ selectedEvent.title }}</small></p>
-       <p class="mb-1"><small><strong>Date:</strong> {{ selectedEvent.date }}</small></p>
-       <p class="mb-1"><small><strong>Location:</strong> {{ selectedEvent.place }}</small></p>
-       <p class="mb-1"><small><strong>Price:</strong> {{ selectedEvent.price }}</small></p>
-     </div>
-   </div>
+    <div class="modal" id="signupModal" tabindex="-1" aria-labelledby="signupModalLabel" aria-hidden="true"
+      v-if="showSignupModal" style="background: rgba(0,0,0,0.5);">
+      <div class="modal-dialog modal-lg">
+        <div class="modal-content">
+          <div class="modal-header">
+            <h5 class="modal-title" id="signupModalLabel">Sign Up for {{ selectedEvent.title }}</h5>
+            <button type="button" class="btn-close" @click="closeSignupModal"></button>
+          </div>
+          <div class="modal-body">
+            <!-- Event Details Summary -->
+            <div class="event-details-container row mb-4 p-3 bg-light rounded">
+              <div class="col-md-4">
+                <img :src="selectedEvent.imageURL" class="img-fluid rounded" alt="Event Image">
+              </div>
+              <div class="col-md-8">
+                <h6>Event Details</h6>
+                <p class="mb-1"><small><strong>Event:</strong> {{ selectedEvent.title }}</small></p>
+                <p class="mb-1"><small><strong>Date:</strong> {{ selectedEvent.date }}</small></p>
+                <p class="mb-1"><small><strong>Location:</strong> {{ selectedEvent.place }}</small></p>
+                <p class="mb-1"><small><strong>Price:</strong> {{ selectedEvent.price }}</small></p>
+              </div>
+            </div>
 
-   <!-- Attendee Forms Container -->
-   <div id="attendeeForms">
-     <div v-for="(form, index) in attendeeForms" :key="index" class="attendee-form mb-4">
-       <h6>Attendee {{ index + 1 }} Details</h6>
-       <div class="row g-3">
-         <div class="col-md-6">
-           <input type="text" class="form-control" v-model="form.name" placeholder="Full Name">
-         </div>
-         <div class="col-md-6">
-           <input type="email" class="form-control" v-model="form.email" placeholder="Email">
-         </div>
-         <div class="col-md-6">
-           <input type="tel" class="form-control" v-model="form.phone" placeholder="Phone Number">
-         </div>
-         <div class="col-md-6">
-           <input type="text" class="form-control" v-model="form.dietaryRestrictions" placeholder="Dietary Restrictions">
-         </div>
-         <div class="col-12">
-           <textarea class="form-control" v-model="form.specialRequests" rows="2" placeholder="Special Requests or Notes"></textarea>
-         </div>
-         <div class="col-12 text-end mt-2">
-          <button type="button" class="btn btn-danger btn-sm" @click="removeAttendeeForm(index)">Remove Attendee</button>
+            <!-- Attendee Forms Container -->
+            <div id="attendeeForms">
+              <div v-for="(form, index) in attendeeForms" :key="index" class="attendee-form mb-4">
+                <h6>Attendee {{ index + 1 }} Details</h6>
+                <div class="row g-3">
+                  <div class="col-md-6">
+                    <input type="text" class="form-control" v-model="form.name" placeholder="Full Name">
+                  </div>
+                  <div class="col-md-6">
+                    <input type="email" class="form-control" v-model="form.email" placeholder="Email">
+                  </div>
+                  <div class="col-md-6">
+                    <input type="tel" class="form-control" v-model="form.phone" placeholder="Phone Number">
+                  </div>
+                  <div class="col-md-6">
+                    <input type="text" class="form-control" v-model="form.dietaryRestrictions"
+                      placeholder="Dietary Restrictions">
+                  </div>
+                  <div class="col-12">
+                    <textarea class="form-control" v-model="form.specialRequests" rows="2"
+                      placeholder="Special Requests or Notes"></textarea>
+                  </div>
+                  <div class="col-12 text-end mt-2">
+                    <button type="button" class="btn btn-danger btn-sm" @click="removeAttendeeForm(index)">Remove
+                      Attendee</button>
+                  </div>
+                </div>
+              </div>
+
+            </div>
+
+            <!-- Add Another Attendee Button -->
+            <button class="btn btn-outline-primary mb-3" @click="addAttendeeForm">
+              <i class="fas fa-user-plus"></i> Add Another Attendee
+            </button>
+          </div>
+          <div class="modal-footer">
+            <button type="button" class="btn btn-secondary" @click="closeSignupModal">Cancel</button>
+            <button type="button" class="btn btn-primary" @click="submitRegistration">Submit Registration</button>
+
+          </div>
         </div>
-       </div>
-     </div>
-     
-   </div>
-
-   <!-- Add Another Attendee Button -->
-   <button class="btn btn-outline-primary mb-3" @click="addAttendeeForm">
-     <i class="fas fa-user-plus"></i> Add Another Attendee
-   </button>
- </div>
- <div class="modal-footer">
-   <button type="button" class="btn btn-secondary" @click="closeSignupModal">Cancel</button>
-   <button type="button" class="btn btn-primary" @click="submitRegistration" >Submit Registration</button>
-
- </div>
-</div>
-</div>
-</div>
-<!-- Custom Login Prompt Modal for Events -->
-<div class="modal fade" id="loginPromptModalEvents" tabindex="-1" aria-labelledby="loginPromptLabelEvents" aria-hidden="true">
-  <div class="modal-dialog">
-    <div class="modal-content">
-      <div class="modal-header">
-        <h5 class="modal-title" id="loginPromptLabelEvents">Please Log In</h5>
-        <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
       </div>
-      <div class="modal-body">
-        <p>You need to log in to register for this event. Please log in to continue.</p>
-      </div>
-      <div class="modal-footer">
-        <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Cancel</button>
-        <a href="login.html" class="btn btn-primary">Log In</a> <!-- Redirect to login page -->
+    </div>
+    <!-- Custom Login Prompt Modal for Events -->
+    <div class="modal fade" id="loginPromptModalEvents" tabindex="-1" aria-labelledby="loginPromptLabelEvents"
+      aria-hidden="true">
+      <div class="modal-dialog">
+        <div class="modal-content">
+          <div class="modal-header">
+            <h5 class="modal-title" id="loginPromptLabelEvents">Please Log In</h5>
+            <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+          </div>
+          <div class="modal-body">
+            <p>You need to log in to register for this event. Please log in to continue.</p>
+          </div>
+          <div class="modal-footer">
+            <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Cancel</button>
+            <a href="login.html" class="btn btn-primary">Log In</a> <!-- Redirect to login page -->
+          </div>
+        </div>
       </div>
     </div>
   </div>
-</div>
-  </div>
-  
- 
+
+
 
   <div class="video section">
     <div class="container">
@@ -419,8 +433,8 @@ v-if="showSignupModal" style="background: rgba(0,0,0,0.5);">
             style="height: 500px; width: 100%; border: 0; border-radius: 10px; box-shadow: 0px 0px 15px rgba(0, 0, 0, 0.15); background-color: #f0f0f0;">
           </div>
           <div class="row">
-            <div class="col-lg-6" >
-              <div class="item phone"> 
+            <div class="col-lg-6">
+              <div class="item phone">
                 <img src="assets/images/phone-icon.png" alt="" style="max-width: 52px;">
                 <h6>90934389<br><span>Phone Number</span></h6>
               </div>

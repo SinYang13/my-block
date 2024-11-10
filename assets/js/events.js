@@ -17,6 +17,32 @@ import {
 // Initialize Firebase storage
 const storage = getStorage();
 
+// Function to handle link clicks
+function handleLinkClick(event) {
+  event.preventDefault(); // Prevent default link navigation
+
+  const url = event.currentTarget.href; // Get the destination URL
+
+  // Add fade-out class to trigger animation
+  document.body.classList.add("fade-out");
+
+  // Delay the navigation to allow the fade-out animation to complete
+  setTimeout(() => {
+    window.location.href = url;
+  }, 500); // Delay matches the duration of the fadeOut animation (0.5s)
+}
+
+// Apply the event listener to all <a> tags with class "animated-link"
+document.addEventListener("DOMContentLoaded", () => {
+  const links = document.querySelectorAll("a.animated-link");
+
+  // Add event listeners for the fade-out animation on link click
+  links.forEach((link) => link.addEventListener("click", handleLinkClick));
+
+  // Trigger fade-in when the page loads
+  document.body.classList.add("fade-in");
+});
+
 const eventsApp = Vue.createApp({
   data() {
     return {
@@ -30,9 +56,11 @@ const eventsApp = Vue.createApp({
       showPastEvents: false, // Toggle for past events view
       pastEvents: [], // Filtered array for past events
 
-      CLIENT_ID: "815388161577-1q8k35ihr9mtr8cvhis048ljdod8v7f8.apps.googleusercontent.com",
+      CLIENT_ID:
+        "815388161577-1q8k35ihr9mtr8cvhis048ljdod8v7f8.apps.googleusercontent.com",
       API_KEY: "AIzaSyCp8RabRDvoSbfNgDqzy14fqxj-5ePsOBI",
-      DISCOVERY_DOC: "https://www.googleapis.com/discovery/v1/apis/calendar/v3/rest",
+      DISCOVERY_DOC:
+        "https://www.googleapis.com/discovery/v1/apis/calendar/v3/rest",
       SCOPES: "https://www.googleapis.com/auth/calendar",
 
       tokenClient: null,
@@ -47,37 +75,37 @@ const eventsApp = Vue.createApp({
         const eventsRef = collection(db, "events");
         const eventsQuery = query(eventsRef, orderBy("place", "asc"));
         const querySnapshot = await getDocs(eventsQuery);
-  
+
         const eventsArray = [];
         const pastEventsArray = [];
         const categoriesSet = new Set();
         const currentDate = new Date();
-  
+
         const promises = querySnapshot.docs.map(async (doc) => {
           const eventData = doc.data();
           const eventDate = eventData.date.toDate();
-  
+
           const imageRef = ref(storage, "events/" + eventData.image);
           const imageURL = await getDownloadURL(imageRef);
-  
+
           const event = {
             ...eventData,
             id: doc.id,
             imageURL,
             link: eventData.link || "#",
           };
-  
+
           if (eventDate >= currentDate) {
             eventsArray.push(event);
           } else {
             pastEventsArray.push(event);
           }
-  
+
           categoriesSet.add(eventData.cat);
         });
-  
+
         await Promise.all(promises);
-  
+
         this.events = eventsArray;
         this.pastEvents = pastEventsArray;
         this.categories = Array.from(categoriesSet);
@@ -89,22 +117,21 @@ const eventsApp = Vue.createApp({
     },
     togglePastEvents() {
       this.showPastEvents = !this.showPastEvents;
-    }
-    ,
+    },
     async submitRegistration() {
       const userId = sessionStorage.getItem("loggedInUserEmail");
-    
+
       if (!userId) {
         alert("Please log in to register for events.");
         return;
       }
-    
+
       const registrationData = {
         eventId: this.selectedEvent.id,
         eventTitle: this.selectedEvent.title,
         eventDate: this.selectedEvent.date,
         eventLocation: this.selectedEvent.place,
-        attendees: this.attendeeForms.map(form => ({
+        attendees: this.attendeeForms.map((form) => ({
           name: form.name,
           email: form.email,
           phone: form.phone,
@@ -116,22 +143,30 @@ const eventsApp = Vue.createApp({
         },
         timestamp: new Date(), // Optional: add a timestamp
       };
-    
+
       try {
         // Add registration to user's "registrations" subcollection
-        await addDoc(collection(db, "users", userId, "registrations"), registrationData);
-    
+        await addDoc(
+          collection(db, "users", userId, "registrations"),
+          registrationData
+        );
+
         // Add registration to the event's "registrations" subcollection
-        await addDoc(collection(db, "events", this.selectedEvent.id, "registrations"), registrationData);
-    
-        alert("Registration successful! Payment will be collected on site (If Any)");
+        await addDoc(
+          collection(db, "events", this.selectedEvent.id, "registrations"),
+          registrationData
+        );
+
+        alert(
+          "Registration successful! Payment will be collected on site (If Any)"
+        );
         this.closeSignupModal(); // Close the modal after successful submission
       } catch (error) {
         console.error("Error adding registration:", error);
         alert("Failed to register. Please try again.");
       }
     },
-    
+
     // Update the filter when a button is clicked
     setFilter(category) {
       this.filter = category;
@@ -142,72 +177,85 @@ const eventsApp = Vue.createApp({
       this.selectedEvent = {};
       console.log("close");
     },
-  
+
     addAttendeeForm() {
       // Logic to add an attendee form
       const attendeeForm = {
-        name: '',
-        email: '',
-        phone: '',
-        dietaryRestrictions: '',
-        specialRequests: ''
+        name: "",
+        email: "",
+        phone: "",
+        dietaryRestrictions: "",
+        specialRequests: "",
       };
       this.attendeeForms.push(attendeeForm);
     },
     removeAttendeeForm(index) {
       this.attendeeForms.splice(index, 1);
     },
-    
+
     openEventModal(event) {
       this.selectedEvent = {
         ...event,
         date: event.date.toDate().toLocaleString(), // Convert Firestore timestamp to readable date
       };
-      console.log( {
+      console.log({
         ...event,
         date: event.date.toDate().toLocaleString(), // Convert Firestore timestamp to readable date
-      })
+      });
       this.showSignupModal = false;
     },
-  
+
     openSignupModal() {
       console.log("Opening signup modal");
-  
+
       // Check if the user is logged in
       const userId = sessionStorage.getItem("loggedInUserEmail");
-  
+
       if (!userId) {
-          // Show the login prompt modal for events instead of alert
-          const loginModal = new bootstrap.Modal(document.getElementById('loginPromptModalEvents'));
-          loginModal.show();
-          return;
+        // Show the login prompt modal for events instead of alert
+        const loginModal = new bootstrap.Modal(
+          document.getElementById("loginPromptModalEvents")
+        );
+        loginModal.show();
+        return;
       }
-  
+
       // If logged in, proceed to show the signup modal
       this.showSignupModal = true;
-  
+
       if (this.attendeeForms.length === 0) {
-          this.addAttendeeForm(); // Ensure at least one form is available initially
+        this.addAttendeeForm(); // Ensure at least one form is available initially
       }
-  
+
       // Manually show the signup modal using Bootstrap's JavaScript API
       this.$nextTick(() => {
-          const signupModalInstance = new bootstrap.Modal(document.getElementById('signupModal'));
-          signupModalInstance.show();
+        const signupModalInstance = new bootstrap.Modal(
+          document.getElementById("signupModal")
+        );
+        signupModalInstance.show();
       });
-  },
-  
-   
-   closeSignupModal() {
+    },
+
+    closeSignupModal() {
       console.log("Closing signup modal"); // Debugging line
       this.showSignupModal = false;
-      this.attendeeForms = [{ name: '', email: '', phone: '', dietaryRestrictions: '', specialRequests: '' }];
-   
-      const signupModalInstance = bootstrap.Modal.getInstance(document.getElementById('signupModal'));
+      this.attendeeForms = [
+        {
+          name: "",
+          email: "",
+          phone: "",
+          dietaryRestrictions: "",
+          specialRequests: "",
+        },
+      ];
+
+      const signupModalInstance = bootstrap.Modal.getInstance(
+        document.getElementById("signupModal")
+      );
       if (signupModalInstance) {
-         signupModalInstance.hide();
+        signupModalInstance.hide();
       }
-   },
+    },
     handleScroll() {
       const scrollPosition = window.scrollY;
       const headerHeight = document.querySelector("header").offsetHeight;
@@ -246,11 +294,11 @@ const eventsApp = Vue.createApp({
     },
 
     gapiLoaded() {
-      console.log("Running gapiLoaded...")
+      console.log("Running gapiLoaded...");
       gapi.load("client", this.initializeGapiClient);
     },
     async initializeGapiClient() {
-      console.log("Running initializeGapiClient...")
+      console.log("Running initializeGapiClient...");
 
       await gapi.client.init({
         apiKey: this.API_KEY,
@@ -260,7 +308,7 @@ const eventsApp = Vue.createApp({
       console.log("Google API client initialized.");
     },
     gisLoaded() {
-      console.log("Running gisLoaded...")
+      console.log("Running gisLoaded...");
 
       this.tokenClient = google.accounts.oauth2.initTokenClient({
         client_id: this.CLIENT_ID,
@@ -271,7 +319,7 @@ const eventsApp = Vue.createApp({
       console.log("Google Identity Services initialized.");
     },
     handleTokenResponse(resp) {
-      console.log("Running handleTokenResponse...")
+      console.log("Running handleTokenResponse...");
 
       if (resp.error !== undefined) {
         console.error("Error during token response", resp.error);
@@ -279,12 +327,12 @@ const eventsApp = Vue.createApp({
       }
       // Assuming you want to create an event with some event details
       const eventDetails = {
-        email: "example@example.com" // Replace with actual email or event data
+        email: "example@example.com", // Replace with actual email or event data
       };
       this.scheduleEvent();
     },
     googleCreateEvent() {
-      console.log("Running googleCreateEvent...")
+      console.log("Running googleCreateEvent...");
 
       if (!this.gapiInited || !this.gisInited) {
         console.error("gapi or gis not initialized.");
@@ -298,21 +346,19 @@ const eventsApp = Vue.createApp({
       }
     },
     scheduleEvent() {
-      let start = new Date(this.selectedEvent.date).toISOString()
+      let start = new Date(this.selectedEvent.date).toISOString();
 
       let endDate = new Date(start);
 
       // Add 2 hours (2 * 60 * 60 * 1000 milliseconds) to the start date
-      endDate.setTime(endDate.getTime() + (2 * 60 * 60 * 1000));
+      endDate.setTime(endDate.getTime() + 2 * 60 * 60 * 1000);
 
       // Convert back to ISO string if needed
       let end = endDate.toISOString();
-      console.log(start)
+      console.log(start);
       console.log("End:", end);
 
-
-
-      console.log("Running scheduleEvent...")
+      console.log("Running scheduleEvent...");
 
       const event = {
         summary: this.selectedEvent.title,
@@ -344,12 +390,11 @@ const eventsApp = Vue.createApp({
         if (event.error) {
           console.error("Error creating event", event.error);
         } else {
-          window.alert("Event has been added to your google calendar")
+          window.alert("Event has been added to your google calendar");
           console.info("Event created: " + event.htmlLink);
         }
       });
     },
-
   },
   computed: {
     // Return filtered events based on the selected category

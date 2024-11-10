@@ -235,9 +235,17 @@
                         <div class="dashboard-visualization w-100" style="display: flex; flex-direction: column;">
                             <div class="visualization-tile small"
                                 style="display: flex; flex-direction: column; padding: 10px; height: 100%;">
-                                <div style="margin-bottom: 10px;">
-                                    <h6>Sentiment Analysis</h6>
+                                <div
+                                    style="margin-bottom: 10px; display: flex; align-items: center; justify-content: space-between;">
+                                    <h6 style="margin: 0;" class="me-2">Sentiment Analysis</h6>
+                                    <button type="button" class="btn btn-outline-primary" data-bs-toggle="popover"
+                                        data-bs-placement="right" data-bs-html="true" data-bs-content="The green bar represents positive sentiment posts. <br/><br/> 
+                                        The red bar represents negative sentiment posts. <br/><br/> 
+                                        The boxplots show the statistics for the posts, negative and positive. <br/><br/>
+                                        Posts and comments are analysed with Google Cloud Natural Language.">Info
+                                    </button>
                                 </div>
+
                                 <div id="sentimentChart" style="width: 100%; flex-grow: 1;"></div>
                             </div>
                         </div>
@@ -248,9 +256,15 @@
                         <div class="dashboard-visualization w-100" style="display: flex; flex-direction: column;">
                             <div class="visualization-tile small"
                                 style="display: flex; flex-direction: column; padding: 10px; height: 100%;">
-                                <div style="margin-bottom: 10px;">
-                                    <h6>Classification Analysis</h6>
+                                <div
+                                    style="margin-bottom: 10px; display: flex; align-items: center; justify-content: space-between;">
+                                    <h6 style="margin: 0;" class="me-2">Classification Analysis</h6>
+                                    <button type="button" class="btn btn-outline-primary" data-bs-toggle="popover"
+                                        data-bs-placement="right" data-bs-html="true" data-bs-content="This chart shows the top categories that posts and comments are about.<br/><br/>
+                                        Posts and comments are analysed with Google Cloud Natural Language.">Info
+                                    </button>
                                 </div>
+
                                 <div id="categoriesChart" style="width: 100%; flex-grow: 1;"></div>
                             </div>
                         </div>
@@ -334,6 +348,13 @@
         const storage = getStorage();
 
         const { createApp } = Vue;
+
+        document.addEventListener('DOMContentLoaded', function () {
+            var popoverTriggerList = [].slice.call(document.querySelectorAll('[data-bs-toggle="popover"]'));
+            var popoverList = popoverTriggerList.map(function (popoverTriggerEl) {
+                return new bootstrap.Popover(popoverTriggerEl);
+            });
+        });
 
         createApp({
             data() {
@@ -434,14 +455,17 @@
                         let selectedPost = null;
 
                         for (let post of this.posts) {
-                            if (post.id === id) {
+                            console.log(post);
+                            console.log(post.id);
+                            console.log(this.selectedPost);
+                            if (post.id === this.selectedPost) {
                                 selectedPost = post;
                                 break; // Exit the loop once the post is found
                             }
                         }
 
 
-
+                        console.log([selectedPost]);
                         this.groupAnalyses([selectedPost]);
 
                     } catch (error) {
@@ -696,7 +720,7 @@
 
                 createCategoriesGraph(categories, elementId = 'categoriesChart') {
                     if (this.commentMode == true) {
-                        elementId = 'categoriesChartComments'
+                        elementId = 'categoriesChartComments';
                     }
 
                     // Clear any existing chart in the container
@@ -708,8 +732,11 @@
                         frequencyCounts[category] = (frequencyCounts[category] || 0) + 1;
                     });
 
-                    // Convert frequencyCounts object to array of objects
-                    const data = Object.entries(frequencyCounts).map(([string, count]) => ({ string, count }));
+                    // Convert frequencyCounts object to array of objects and sort it by count in descending order
+                    let data = Object.entries(frequencyCounts)
+                        .map(([string, count]) => ({ string, count }))
+                        .sort((a, b) => b.count - a.count) // Sort in descending order
+                        .slice(0, 5); // Select top 5 items
 
                     // Set up dimensions based on the parent container's width
                     var width = 612;
@@ -722,7 +749,6 @@
 
 
                     const height = data.length * 30;
-
                     // Create SVG container
                     const svg = d3.select(`#${elementId}`)
                         .append("svg")
@@ -761,7 +787,7 @@
                     // Add Y axis
                     svg.append("g")
                         .call(d3.axisLeft(y))
-                        .attr("font-size", "12px");
+                        .attr("font-size", "8px");
 
                     // Add labels to each bar
                     svg.selectAll("text.label")
@@ -775,8 +801,8 @@
                         .text(d => d.count)
                         .attr("font-size", "12px")
                         .attr("fill", "black");
-
                 }
+
 
 
             },
