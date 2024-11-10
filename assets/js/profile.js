@@ -1,7 +1,7 @@
 import { db } from './config.js';
 import { readUser } from '../../db/usersCRUD.js';
 import {
-    collection, getDocs
+    collection, getDocs, deleteDoc, doc
 } from "https://www.gstatic.com/firebasejs/10.14.0/firebase-firestore.js";
 
 
@@ -26,13 +26,14 @@ const app = Vue.createApp({
         return {
             loanOwners: [],
             userid: sessionStorage.getItem("loggedInUserEmail"),
-            // userid: "Kelly",
+            userType:sessionStorage.getItem("loggedInUserType"),
             showProfile: false,
             userDetails: '',
             createdDate: '',
             eventsList: [],
+            serviceList: [],
             showModal: false,
-            modalData:{},
+            modalData: {},
             attendees: [],
             ticketId: ''
 
@@ -56,6 +57,7 @@ const app = Vue.createApp({
         };
         this.getuser();
         this.getEvents();
+        this.getServices();
     },
     methods: {
         async getRentals() {
@@ -88,7 +90,7 @@ const app = Vue.createApp({
         async getEvents() {
             const weekday = ["Sunday", "Monday", "Tuesday", "Wednesday", "Thursday", "Friday", "Saturday"];
             const month = ["January", "February", "March", "April", "May", "June", "July", "August", "September", "October", "November", "December"];
-            const shortmonth = ["Jan", "Feb", "Mar", "Apr", "May","Jun", "Jul", "Aug", "Sep", "Oct", "Nov", "Dec"];
+            const shortmonth = ["Jan", "Feb", "Mar", "Apr", "May", "Jun", "Jul", "Aug", "Sep", "Oct", "Nov", "Dec"];
             const colRef = collection(db, 'users/' + this.userid + '/registrations')
 
             //get collection data
@@ -131,6 +133,39 @@ const app = Vue.createApp({
 
 
         },
+
+        async getServices() {
+            const colRef = collection(db, 'users/' + this.userid + '/selectedServices')
+
+            //get collection data
+            getDocs(colRef)
+                .then((snapshot) => {
+                    let services = []
+                    snapshot.docs.forEach((doc) => {
+                        services.push({
+                            ...doc.data(),
+                            id: doc.id,
+                        })
+
+                    })
+                    console.log(services)
+                    this.serviceList = services
+                })
+                .catch(err => {
+                    console.log(err.message)
+                })
+
+
+        },
+        deleteService(serviceId) {
+            console.log(serviceId)
+            const docRef = doc(db, 'users/' + this.userid + '/selectedServices', serviceId)
+            deleteDoc(docRef)
+                .then(() => {
+                    console.log("Successful")
+                    window.location.reload();
+                })
+        },
         openModal(barcodeValue) {
             this.modalData.barcodeValue = barcodeValue;
             this.showModal = true;
@@ -140,8 +175,8 @@ const app = Vue.createApp({
                 generateQR(this.modalData.barcodeValue);
             });
 
-            this.eventsList.forEach(item =>{
-                if(item.eventId == barcodeValue){
+            this.eventsList.forEach(item => {
+                if (item.eventId == barcodeValue) {
                     this.attendees = item.attendees
                 }
             })
