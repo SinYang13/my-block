@@ -9,104 +9,49 @@
     <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3/dist/css/bootstrap.min.css" rel="stylesheet">
     <!-- Vue 3 -->
     <script src="https://unpkg.com/vue@3/dist/vue.global.js"></script>
-    <script type="module" src="../db/announcementsCRUD.js"></script>
+    <script type="module" src="../db/eventsCRUD.js"></script>
     <link rel="stylesheet" href="../assets/css/fontawesome.css">
     <link rel="stylesheet" href="../assets/css/templatemo-villa-agency.css">
     <link rel="stylesheet" href="../assets/css/owl.css">
     <link rel="stylesheet" href="../assets/css/animate.css">
     <link rel="stylesheet" href="https://unpkg.com/swiper@7/swiper-bundle.min.css" />
+    <link rel="stylesheet" href="styles.css">
     <style>
-        .dashboard-container {
-            display: flex;
-            flex-direction: column;
-            height: 80vh;
+        #createEventForm {
+            width: 100%
         }
 
-        @media (min-width: 992px) {
-            .dashboard-container {
-                flex-direction: row;
-            }
+        .spoiler {
+            cursor: pointer;
+            background-color: grey;
+            color: transparent;
+            /* Initially hides the text */
+            padding: 10px;
+            border-radius: 5px;
+            user-select: none;
+            /* Prevents text selection */
+            transition: color 0.3s ease, background-color 0.3s ease;
         }
 
-        .dashboard-menu {
-            width: 100%;
-            background-color: #f8f9fa;
-            padding: 20px;
+        .spoiler.revealed {
+            color: black;
+            /* Reveals the text */
+            background-color: transparent;
         }
-
-        @media (min-width: 992px) {
-            .dashboard-menu {
-                width: 20%;
-            }
-        }
-
-        .dashboard-visualization {
-            width: 100%;
-            padding-left: 20px;
-            padding-right: 20px;
-            display: grid;
-            grid-template-columns: 1fr;
-            gap: 20px;
-        }
-
-        @media (min-width: 992px) {
-            .dashboard-visualization {
-                width: 80%;
-                grid-template-columns: repeat(2, 1fr);
-            }
-        }
-
-        .dashboard-menu ul {
-            list-style-type: none;
-            padding: 0;
-        }
-
-        .dashboard-menu ul li {
-            margin-bottom: 15px;
-        }
-
-        .dashboard-menu ul li a {
-            text-decoration: none;
-            color: #333;
-            font-weight: bold;
-        }
-
-        .visualization-tile {
-            background-color: #e9ecef;
-            border-radius: 8px;
-            display: flex;
-            align-items: center;
-            justify-content: center;
-            position: relative;
-            height: 39vh;
-        }
-
-        .visitor-count {
-            font-size: 2em;
-            font-weight: bold;
-            display: flex;
-            align-items: center;
-            justify-content: center;
-        }
-
-        .card-body {
-            display: flex;
-            align-items: center;
-            justify-content: center;
-            height: 100%;
-            width: 100%;
-        }
-
-        .card-title {
-            margin-top: 20px;
-        }
-
-        .line-chart {
-            width: 100%;
-            height: 100%;
-        }
-
     </style>
+    <!-- Firebase App (compatibility version) -->
+    <script src="https://www.gstatic.com/firebasejs/9.15.0/firebase-app-compat.js"></script>
+
+    <!-- Firebase Firestore (compatibility version) -->
+    <script src="https://www.gstatic.com/firebasejs/9.15.0/firebase-firestore-compat.js"></script>
+
+    <!-- Firebase Authentication (compatibility version) -->
+    <script src="https://www.gstatic.com/firebasejs/9.15.0/firebase-auth-compat.js"></script>
+
+    <!-- Firebase Storage (compatibility version) -->
+    <script src="https://www.gstatic.com/firebasejs/9.15.0/firebase-storage-compat.js"></script>
+
+
 </head>
 
 <body>
@@ -153,31 +98,370 @@
 
 
     <div id="app">
-        <div class="dashboard-container">
-            <div class="dashboard-menu">
-                <ul>
-                    <li><a href="announcements.html">Announcements</a></li>
-                    <li><a href="events.html">Events</a></li>
-                    <li><a href="forum.html">Forum</a></li>
-                    <li><a href="loans.html">Loans</a></li>
-                </ul>
+        <!-- Delete Confirmation Modal -->
+        <div class="modal fade" id="deleteConfirmationModal" tabindex="-1"
+            aria-labelledby="deleteConfirmationModalLabel" aria-hidden="true">
+            <div class="modal-dialog">
+                <div class="modal-content">
+                    <div class="modal-header">
+                        <h5 class="modal-title" id="deleteConfirmationModalLabel">Confirm Deletion</h5>
+                        <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                    </div>
+                    <div class="modal-body">
+                        Are you sure you want to delete this item?
+                    </div>
+                    <div class="modal-footer">
+                        <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Cancel</button>
+                        <button type="button" class="btn btn-danger" @click="confirmDelete">Delete</button>
+                    </div>
+                </div>
             </div>
         </div>
 
+        <!-- Comments Modal -->
+        <div class="modal fade" id="commentsModal" tabindex="-1" aria-labelledby="commentsModal" aria-hidden="true">
+            <div class="modal-dialog modal-lg">
+                <div class="modal-content">
+                    <div class="modal-header">
+                        <h5 class="modal-title" id="commentsModalLabel">Comments</h5>
+                        <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"
+                            @click="clear()"></button>
+                    </div>
+                    <div class="modal-body">
+                        <div class="card mb-2">
+                            <div class="card-header">
+                                Comments Summary
+                            </div>
+                            <div class="card-body d-flex flex-column gap-2 ">
+                                <h4 class="card-title">Number of comments: {{this.comments.length}}</h4>
+                                <div id="sentimentChartComments" style="width: 100%;"></div>
+                                <div id="categoriesChartComments" style="width: 100%;"></div>
+                            </div>
+                        </div>
+
+                        <div class="card mb-2" v-for="comment in comments">
+                            <div class="card-header">
+                                <h6>{{comment.author}}</h6>
+                            </div>
+                            <div class="card-body d-flex flex-column gap-2 text-start" style="align-items: start;">
+                                <div class="row">
+                                    <div class="col-10">
+                                        <p>{{comment.content}}</p>
+                                        <p class=""><small class="text-muted">
+                                                Date Posted:
+                                                {{ comment.createdAt ?
+                                                comment.createdAt.toDate().toISOString().split('T')[0] :
+                                                'N/A'
+                                                }}
+                                            </small></p>
+                                    </div>
+                                    <div class="col-12 col-lg-2 d-flex align-items-center justify-content-end">
+                                        <button type="button" class="btn btn-outline-danger"
+                                            :data-bs-toggle="'collapse'" :data-bs-target="'#collapse-' + comment.id"
+                                            aria-expanded="false" :aria-controls="'collapse-' + comment.id">
+                                            <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16"
+                                                fill="currentColor" class="bi bi-trash" viewBox="0 0 16 16">
+                                                <path
+                                                    d="M5.5 5.5A.5.5 0 0 1 6 6v6a.5.5 0 0 1-1 0V6a.5.5 0 0 1 .5-.5m2.5 0a.5.5 0 0 1 .5.5v6a.5.5 0 0 1-1 0V6a.5.5 0 0 1 .5-.5m3 .5a.5.5 0 0 0-1 0v6a.5.5 0 0 0 1 0z" />
+                                                <path
+                                                    d="M14.5 3a1 1 0 0 1-1 1H13v9a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2V4h-.5a1 1 0 0 1-1-1V2a1 1 0 0 1 1-1H6a1 1 0 0 1 1-1h2a1 1 0 0 1 1 1h3.5a1 1 0 0 1 1 1zM4.118 4 4 4.059V13a1 1 0 0 0 1 1h6a1 1 0 0 0 1-1V4.059L11.882 4zM2.5 3h11V2h-11z" />
+                                            </svg>
+                                        </button>
+                                    </div>
+
+                                </div>
+
+                            </div>
+                            <div class="collapse" :id="'collapse-' + comment.id">
+                                <div class="card card-body">
+                                    <p>Confirm Delete?</p>
+                                    <div class="d-flex gap-2">
+                                        <!-- Cancel Button -->
+                                        <button type="button" class="btn btn-outline-success"
+                                            :data-bs-toggle="'collapse'" :data-bs-target="'#collapse-' + comment.id"
+                                            aria-expanded="false" :aria-controls="'collapse-' + comment.id">
+                                            <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16"
+                                                fill="currentColor" class="bi bi-ban" viewBox="0 0 16 16">
+                                                <path
+                                                    d="M15 8a6.97 6.97 0 0 0-1.71-4.584l-9.874 9.875A7 7 0 0 0 15 8M2.71 12.584l9.874-9.875a7 7 0 0 0-9.874 9.874ZM16 8A8 8 0 1 1 0 8a8 8 0 0 1 16 0" />
+                                            </svg>
+                                        </button>
+
+                                        <!-- Delete Button -->
+                                        <button type="button" class="btn btn-danger" @click="deleteComment(comment.id)"
+                                            :data-bs-toggle="'collapse'" :data-bs-target="'#collapse-' + comment.id"
+                                            aria-expanded="false" :aria-controls="'collapse-' + comment.id">
+                                            <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16"
+                                                fill="currentColor" class="bi bi-trash" viewBox="0 0 16 16">
+                                                <path
+                                                    d="M5.5 5.5A.5.5 0 0 1 6 6v6a.5.5 0 0 1-1 0V6a.5.5 0 0 1 .5-.5m2.5 0a.5.5 0 0 1 .5.5v6a.5.5 0 0 1-1 0V6a.5.5 0 0 1 .5-.5m3 .5a.5.5 0 0 0-1 0v6a.5.5 0 0 0 1 0z" />
+                                                <path
+                                                    d="M14.5 3a1 1 0 0 1-1 1H13v9a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2V4h-.5a1 1 0 0 1-1-1V2a1 1 0 0 1 1-1H6a1 1 0 0 1 1-1h2a1 1 0 0 1 1 1h3.5a1 1 0 0 1 1 1zM4.118 4 4 4.059V13a1 1 0 0 0 1 1h6a1 1 0 0 0 1-1V4.059L11.882 4zM2.5 3h11V2h-11z" />
+                                            </svg>
+                                        </button>
+                                    </div>
+                                </div>
+                            </div>
+
+                        </div>
+
+
+                    </div>
+                    <div class="modal-footer">
+                        <button type="button" class="btn btn-secondary" data-bs-dismiss="modal"
+                            @click="clear()">Close</button>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+
+        <div class="row">
+            <div class="col-12 col-lg-3 p-4">
+                <div class="dashboard-menu">
+                    <ul>
+                        <li><a href="announcements.html">Announcements</a></li>
+                        <li><a href="events.html">Events</a></li>
+                        <li style="background-color: lightcoral"><a href="forum.html">Forum</a></li>
+                        <li><a href="loans.html">Loans</a></li>
+                        <li><a href="users.html">Users</a></li>
+                    </ul>
+                </div>
+            </div>
+            <div class="col-12 col-lg-9 p-4">
+                <div class="row" style="margin-bottom:20px">
+                    <!-- Sentiment Analysis Tile -->
+                    <div class="col-12 col-lg-4 d-flex align-items-stretch" style="padding-left:0px">
+                        <div class="dashboard-visualization w-100" style="display: flex; flex-direction: column;">
+                            <div class="visualization-tile small"
+                                style="display: flex; flex-direction: column; padding: 10px; height: 100%;">
+                                <div style="margin-bottom: 10px;">
+                                    <h6>Sentiment Analysis</h6>
+                                </div>
+                                <div id="sentimentChart" style="width: 100%; flex-grow: 1;"></div>
+                            </div>
+                        </div>
+                    </div>
+
+                    <!-- Classification Analysis Tile -->
+                    <div class="col-12 col-lg-5 d-flex align-items-stretch">
+                        <div class="dashboard-visualization w-100" style="display: flex; flex-direction: column;">
+                            <div class="visualization-tile small"
+                                style="display: flex; flex-direction: column; padding: 10px; height: 100%;">
+                                <div style="margin-bottom: 10px;">
+                                    <h6>Classification Analysis</h6>
+                                </div>
+                                <div id="categoriesChart" style="width: 100%; flex-grow: 1;"></div>
+                            </div>
+                        </div>
+                    </div>
+
+                    <!-- Posts Count Tile -->
+                    <div class="col-12 col-lg-3 d-flex align-items-stretch">
+                        <div class="visualization-tile small h-100 container w-100"
+                            style="padding: 0px; display: flex; flex-direction: column; align-items: center;">
+                            <span>Posts Count:</span>
+                            <div class="visitor-count" style="font-size: 1.5em;">
+                                {{ posts.length }}
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="row">
+                    <div class="visualization-tile large" style="padding-left: 0px; padding-right: 0px;">
+                        <div class="row" style="height:100%; margin:5px;">
+                            <div v-for="post in posts" :key="post.id" class="col-12 mb-5 mb-xxl-3">
+                                <div class="card" style="padding-right:10px">
+                                    <div class="row g-0">
+                                        <div class="col-10 col-lg-10">
+                                            <div class="" style="padding: 10px">
+                                                <h5 class="">{{ post.title }}</h5>
+                                                <p class="">{{ post.content }}</p>
+                                                <p class=""><small class="text-muted">Category: {{ post.category }}
+                                                        |
+                                                        Date Posted:
+                                                        {{ post.createdAt ? post.createdAt.toISOString().split('T')[0] :
+                                                        'N/A'
+                                                        }}
+                                                        | Author: {{ post.author }} </small></p>
+                                            </div>
+                                        </div>
+                                        <div class="col-12 col-lg-2 d-flex align-items-center justify-content-end">
+                                            <button
+                                                v-if="post.comments && post.comments.some(request => request[0] !== '')"
+                                                class="btn btn-outline-primary  me-2"
+                                                @click="showCommentsModal(post.id, post, post.comments)">
+                                                <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16"
+                                                    fill="currentColor" class="bi bi-chat" viewBox="0 0 16 16">
+                                                    <path
+                                                        d="M2.678 11.894a1 1 0 0 1 .287.801 11 11 0 0 1-.398 2c1.395-.323 2.247-.697 2.634-.893a1 1 0 0 1 .71-.074A8 8 0 0 0 8 14c3.996 0 7-2.807 7-6s-3.004-6-7-6-7 2.808-7 6c0 1.468.617 2.83 1.678 3.894m-.493 3.905a22 22 0 0 1-.713.129c-.2.032-.352-.176-.273-.362a10 10 0 0 0 .244-.637l.003-.01c.248-.72.45-1.548.524-2.319C.743 11.37 0 9.76 0 8c0-3.866 3.582-7 8-7s8 3.134 8 7-3.582 7-8 7a9 9 0 0 1-2.347-.306c-.52.263-1.639.742-3.468 1.105" />
+                                                </svg>
+                                            </button>
+                                            <button type="button" class="btn btn-danger"
+                                                @click="showDeleteModal(post.id)">
+                                                <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16"
+                                                    fill="currentColor" class="bi bi-trash" viewBox="0 0 16 16">
+                                                    <path
+                                                        d="M5.5 5.5A.5.5 0 0 1 6 6v6a.5.5 0 0 1-1 0V6a.5.5 0 0 1 .5-.5m2.5 0a.5.5 0 0 1 .5.5v6a.5.5 0 0 1-1 0V6a.5.5 0 0 1 .5-.5m3 .5a.5.5 0 0 0-1 0v6a.5.5 0 0 0 1 0z" />
+                                                    <path
+                                                        d="M14.5 3a1 1 0 0 1-1 1H13v9a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2V4h-.5a1 1 0 0 1-1-1V2a1 1 0 0 1 1-1H6a1 1 0 0 1 1-1h2a1 1 0 0 1 1 1h3.5a1 1 0 0 1 1 1zM4.118 4 4 4.059V13a1 1 0 0 0 1 1h6a1 1 0 0 0 1-1V4.059L11.882 4zM2.5 3h11V2h-11z" />
+                                                </svg>
+                                            </button>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
     </div>
 
+
+
+
+
+
+    <script src="https://d3js.org/d3.v7.min.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3/dist/js/bootstrap.bundle.min.js"></script>
+
     <script type="module">
-        import { readAnnouncements } from '../db/announcementsCRUD.js';
+        import { readPosts, updatePost, deletePost, postComment, deleteComment } from '../db/forumCRUD.js';
+        import { getStorage, ref, uploadBytes, getDownloadURL } from "https://www.gstatic.com/firebasejs/10.14.0/firebase-storage.js";
+        import { collection, setDoc, getDocs, updateDoc, deleteDoc, doc, getDoc } from 'https://www.gstatic.com/firebasejs/10.14.0/firebase-firestore.js';
+        const storage = getStorage();
 
         const { createApp } = Vue;
 
         createApp({
             data() {
                 return {
+                    post: {
+                        author: '',
+                        category: '',
+                        content: '',
+                        createdAt: null,
+                        title: '',
+                        comments: [],
+                    },
 
+                    comments: [],
+
+                    posts: [],
+                    selectedPost: null,
+                    sentiments: [],
+                    categories: [],
+
+                    commentMode: false
                 };
             },
             methods: {
+                showCommentsModal(post, postObj, comments) {
+                    console.log(comments);
+                    this.selectedPost = post
+                    this.comments = comments;
+                    // this.parseComments(this.comments);
+                    console.log(this.comments);
+                    const commentsModal = new bootstrap.Modal(document.getElementById('commentsModal'));
+                    commentsModal.show();
+
+                    this.commentMode = true;
+
+                    this.groupAnalyses([postObj]);
+                },
+                showDeleteModal(id) {
+                    // Set the selectedEventId and show the modal
+                    this.selectedPost = id;
+                    const deleteModal = new bootstrap.Modal(document.getElementById('deleteConfirmationModal'));
+                    deleteModal.show();
+                },
+                confirmDelete() {
+                    // Use selectedEventId to delete the event
+                    this.handleDeletePost(this.selectedPost);
+
+                    // Close the modal
+                    const deleteModal = bootstrap.Modal.getInstance(document.getElementById('deleteConfirmationModal'));
+                    deleteModal.hide();
+
+                    // Clear the selected event ID
+                    this.clear();
+                },
+                async handleDeletePost(id) {
+                    try {
+                        await deletePost(id);
+                        alert('Post deleted successfully');
+                        // await this.loadAnnouncements();
+                        for (let i in this.posts) {
+                            if (this.posts[i].id == id) {
+                                this.posts.splice(i, 1);
+
+                            }
+                        }
+
+                        this.groupAnalyses(this.posts);
+                    } catch (error) {
+                        console.error('Error deleting post:', error);
+                        alert('Failed to delete post.');
+                    }
+                },
+
+                async deleteComment(id) {
+                    console.log(id)
+                    console.log(this.selectedPost)
+                    try {
+                        await deleteComment(this.selectedPost, id)
+                        alert('Comment deleted successfully');
+
+                        for (let i in this.comments) {
+                            if (this.comments[i].id == id) {
+                                this.comments.splice(i, 1);
+                            }
+                        }
+
+                        for (let postIdx in this.posts) {
+                            if (this.posts[postIdx].comments) {
+                                for (let commentIdx in this.posts[postIdx].comments) {
+                                    if (this.posts[postIdx].comments[commentIdx].id === id) {
+                                        this.posts[postIdx].comments.splice(commentIdx, 1);
+                                        break; // Exit the loop after deleting the comment
+                                    }
+                                }
+                            }
+                        }
+
+                        let selectedPost = null;
+
+                        for (let post of this.posts) {
+                            if (post.id === id) {
+                                selectedPost = post;
+                                break; // Exit the loop once the post is found
+                            }
+                        }
+
+
+
+                        this.groupAnalyses([selectedPost]);
+
+                    } catch (error) {
+                        console.error('Error deleting comment:', error);
+                        alert('Failed to delete comment.');
+                    }
+                },
+                clear() {
+                    this.post = {
+                        author: '',
+                        category: '',
+                        content: '',
+                        createdAt: null,
+                        title: '',
+                        comments: '',
+                    };
+
+                    this.selectedPost = null;
+                    this.groupAnalyses(this.posts);
+                },
                 handleScroll() {
                     const scrollPosition = window.scrollY;
                     const headerHeight = document.querySelector('header').offsetHeight;
@@ -204,7 +488,6 @@
                         const profileLinkText = document.getElementById("profileLinkText");
                         profileLinkText.textContent = "Profile"
 
-                        // profileLink.innerHTML = `<a href="profile.html"><i class="fa fa-calendar"></i> Profile</a>`;
                     } else {
                         const profileLinkRedir = document.getElementById("profileLinkRedir");
                         profileLinkRedir.setAttribute("href", "login.html");
@@ -214,14 +497,295 @@
 
                         const profileLinkText = document.getElementById("profileLinkText");
                         profileLinkText.textContent = "Login / Register"
-
-                        // profileLink.innerHTML = `<a href="login.html"><i class="fa fa-sign-in-alt"></i> Login / Register</a>`;
                     }
+                },
+                async loadPosts() {
+                    const posts = await readPosts();
+                    // Convert Firestore Timestamp to Date only if `registerDate` exists
+                    this.posts = posts.map(post => {
+                        if (post.createdAt && typeof post.createdAt.toDate === 'function') {
+                            post.createdAt = post.createdAt.toDate();
+                        } else {
+                            post.createdAt = null; // Set to null if `registerDate` is missing
+                        }
+                        return post;
+                    });
+                    console.log(this.posts);
+                },
+
+                async handleCreateUser() {
+                    const userData = this.user;
+
+                    console.log(userData)
+
+                    await createUser(this.user.email, userData);
+                },
+
+                groupAnalyses(posts) {
+                    this.sentiments = [];
+                    this.categories = [];
+
+                    for (let post of posts) {
+                        if (post && post.score) { // Check if post exists and has a score
+                            this.sentiments.push(post.score);
+                        }
+
+                        if (post && post.categories) { // Check if post exists and has categories
+                            for (let category of post.categories) {
+                                if (category && category.name) { // Check if category and category name exist
+                                    let parts = category.name.split("/");
+                                    this.categories.push(parts[parts.length - 1]);
+                                }
+                            }
+                        }
+
+                        if (post && post.comments) { // Check if post exists and has comments
+                            for (let comment of post.comments) {
+                                if (comment && comment.score) { // Check if comment exists and has a score
+                                    this.sentiments.push(comment.score);
+                                }
+
+                                if (comment && comment.categories) { // Check if comment exists and has categories
+                                    for (let category of comment.categories) {
+                                        if (category && category.name) { // Check if category and category name exist
+                                            let parts = category.name.split("/");
+                                            this.categories.push(parts[parts.length - 1]);
+                                        }
+                                    }
+                                }
+                            }
+                        }
+                    }
+
+
+                    console.log(this.sentiments);
+                    console.log(this.categories);
+
+                    this.createSentimentGraph(this.sentiments);
+                    this.createCategoriesGraph(this.categories);
+                },
+                createSentimentGraph(sentimentScores, elementId = 'sentimentChart') {
+                    if (this.commentMode == true) {
+                        elementId = 'sentimentChartComments'
+                    }
+
+                    // Clear any existing chart in the container
+                    d3.select(`#${elementId}`).html("");
+
+                    // Separate positive and negative sentiments
+                    const positiveScores = sentimentScores.filter(d => d > 0);
+                    const negativeScores = sentimentScores.filter(d => d < 0);
+
+                    // Calculate summary statistics for positive and negative scores
+                    function calculateBoxPlotData(data) {
+                        data.sort(d3.ascending);
+                        const q1 = d3.quantile(data, 0.25);
+                        const median = d3.median(data);
+                        const q3 = d3.quantile(data, 0.75);
+                        const min = d3.min(data);
+                        const max = d3.max(data);
+                        return { q1, median, q3, min, max };
+                    }
+
+                    const positiveStats = calculateBoxPlotData(positiveScores);
+                    const negativeStats = calculateBoxPlotData(negativeScores);
+
+                    // Set up dimensions
+                    var width = 732;
+
+                    if (this.commentMode == false) {
+                        const containerWidth = document.getElementById(elementId).offsetWidth;
+
+                        width = containerWidth;
+                    }
+
+                    const height = 200;
+                    const margin = { top: 20, right: 30, bottom: 0, left: 30 };
+
+                    // Create SVG container
+                    const svg = d3.select(`#${elementId}`)
+                        .append("svg")
+                        .attr("width", width)
+                        .attr("height", height);
+
+                    // X-axis scale: -1 to 1 for sentiment scores
+                    const x = d3.scaleLinear()
+                        .domain([-1, 1])
+                        .range([margin.left, width - margin.right]);
+
+                    // Y-axis position scale for boxplots
+                    const y = d3.scaleBand()
+                        .domain(["Negative", "Positive"])
+                        .range([height - margin.bottom, margin.top])
+                        .padding(0.5);
+
+                    // Add x-axis
+                    svg.append("g")
+                        .attr("transform", `translate(0, ${height / 2})`)
+                        .call(d3.axisBottom(x).ticks(10))
+                        .attr("font-size", "12px");
+
+                    // Add a horizontal line at y-axis middle for boxplot alignment
+                    svg.append("line")
+                        .attr("x1", margin.left)
+                        .attr("x2", width - margin.right)
+                        .attr("y1", height / 2)
+                        .attr("y2", height / 2)
+                        .attr("stroke", "gray")
+                        .attr("stroke-width", 0.5);
+
+                    // Function to draw a single boxplot
+                    function drawBoxPlot(stats, yPosition, color) {
+                        // Box
+                        svg.append("rect")
+                            .attr("x", x(stats.q1))
+                            .attr("y", yPosition - 10)
+                            .attr("width", x(stats.q3) - x(stats.q1))
+                            .attr("height", 20)
+                            .attr("fill", color)
+                            .attr("opacity", 0.6);
+
+                        // Median line
+                        svg.append("line")
+                            .attr("x1", x(stats.median))
+                            .attr("x2", x(stats.median))
+                            .attr("y1", yPosition - 10)
+                            .attr("y2", yPosition + 10)
+                            .attr("stroke", color)
+                            .attr("stroke-width", 2);
+
+                        // Whiskers
+                        svg.append("line") // Min to Q1
+                            .attr("x1", x(stats.min))
+                            .attr("x2", x(stats.q1))
+                            .attr("y1", yPosition)
+                            .attr("y2", yPosition)
+                            .attr("stroke", color)
+                            .attr("stroke-width", 1);
+
+                        svg.append("line") // Q3 to Max
+                            .attr("x1", x(stats.q3))
+                            .attr("x2", x(stats.max))
+                            .attr("y1", yPosition)
+                            .attr("y2", yPosition)
+                            .attr("stroke", color)
+                            .attr("stroke-width", 1);
+
+                        // Min and Max ticks
+                        svg.append("line") // Min tick
+                            .attr("x1", x(stats.min))
+                            .attr("x2", x(stats.min))
+                            .attr("y1", yPosition - 5)
+                            .attr("y2", yPosition + 5)
+                            .attr("stroke", color)
+                            .attr("stroke-width", 1);
+
+                        svg.append("line") // Max tick
+                            .attr("x1", x(stats.max))
+                            .attr("x2", x(stats.max))
+                            .attr("y1", yPosition - 5)
+                            .attr("y2", yPosition + 5)
+                            .attr("stroke", color)
+                            .attr("stroke-width", 1);
+                    }
+
+                    // Draw boxplots
+                    drawBoxPlot(negativeStats, height / 2 - 40, "red"); // Negative boxplot
+                    drawBoxPlot(positiveStats, height / 2 - 40, "green"); // Positive boxplot
+                },
+
+                createCategoriesGraph(categories, elementId = 'categoriesChart') {
+                    if (this.commentMode == true) {
+                        elementId = 'categoriesChartComments'
+                    }
+
+                    // Clear any existing chart in the container
+                    d3.select(`#${elementId}`).html("");
+
+                    // Count occurrences of each category
+                    const frequencyCounts = {};
+                    categories.forEach(category => {
+                        frequencyCounts[category] = (frequencyCounts[category] || 0) + 1;
+                    });
+
+                    // Convert frequencyCounts object to array of objects
+                    const data = Object.entries(frequencyCounts).map(([string, count]) => ({ string, count }));
+
+                    // Set up dimensions based on the parent container's width
+                    var width = 612;
+                    const margin = { top: 20, right: 20, bottom: 40, left: 100 };
+
+                    if (this.commentMode == false) {
+                        const containerWidth = document.getElementById(elementId).offsetWidth;
+                        width = containerWidth - margin.left - margin.right;
+                    }
+
+
+                    const height = data.length * 30;
+
+                    // Create SVG container
+                    const svg = d3.select(`#${elementId}`)
+                        .append("svg")
+                        .attr("width", width + margin.left + margin.right) // Total SVG width includes margins
+                        .attr("height", height + margin.top + margin.bottom) // Total SVG height includes margins
+                        .append("g")
+                        .attr("transform", `translate(${margin.left},${margin.top})`);
+
+                    // X scale for counts
+                    const x = d3.scaleLinear()
+                        .domain([0, d3.max(data, d => d.count)])
+                        .range([0, width]);
+
+                    // Y scale for category strings
+                    const y = d3.scaleBand()
+                        .domain(data.map(d => d.string))
+                        .range([0, height])
+                        .padding(0.1);
+
+                    // Add bars
+                    svg.selectAll("rect")
+                        .data(data)
+                        .enter()
+                        .append("rect")
+                        .attr("y", d => y(d.string))
+                        .attr("width", d => x(d.count))
+                        .attr("height", y.bandwidth())
+                        .attr("fill", "steelblue");
+
+                    // Add X axis
+                    svg.append("g")
+                        .attr("transform", `translate(0,${height})`)
+                        .call(d3.axisBottom(x).ticks(5))
+                        .attr("font-size", "12px");
+
+                    // Add Y axis
+                    svg.append("g")
+                        .call(d3.axisLeft(y))
+                        .attr("font-size", "12px");
+
+                    // Add labels to each bar
+                    svg.selectAll("text.label")
+                        .data(data)
+                        .enter()
+                        .append("text")
+                        .attr("class", "label")
+                        .attr("x", d => x(d.count) + 5)
+                        .attr("y", d => y(d.string) + y.bandwidth() / 2)
+                        .attr("dy", ".35em")
+                        .text(d => d.count)
+                        .attr("font-size", "12px")
+                        .attr("fill", "black");
+
                 }
+
+
             },
             async mounted() {
                 this.handleProfileLink();
                 window.addEventListener('scroll', this.handleScroll);
+                await this.loadPosts();
+                this.groupAnalyses(this.posts);
+                // this.analyzeAllSentiments(this.allText);
             }
         }).mount('#app');
     </script>

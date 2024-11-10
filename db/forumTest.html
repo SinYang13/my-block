@@ -75,7 +75,7 @@
     </div>
 
     <script type="module">
-        import { createPost, readPosts, updatePost, deletePost, addComment } from './forumCRUD.js';
+        import { createPost, readPosts, updatePost, deletePost, postComment } from './forumCRUD.js';
 import { getDocs, collection, doc } from "https://www.gstatic.com/firebasejs/10.14.0/firebase-firestore.js";
 import { db } from './firebaseConfig.js';
 
@@ -221,7 +221,7 @@ import { db } from './firebaseConfig.js';
 
             const commentData = { content, author, createdAt: new Date() };
             try {
-                await addComment(postId, commentData);
+                await postComment(postId, commentData);
                 alert(`Comment added to post with ID: ${postId}`);
             } catch (error) {
                 console.error("Error adding comment:", error);

@@ -163,10 +163,59 @@
                 <div class="modal-content">
                     <div class="modal-header">
                         <h5 class="modal-title" id="deleteConfirmationModalLabel">User Registrations</h5>
-                        <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                        <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close" @click="clear()"></button>
                     </div>
                     <div class="modal-body">
+                        <div class="card mb-2">
+                            <div class="card-header">
+                                Attendees Summary
+                            </div>
+                            <div class="card-body d-flex flex-column gap-2 text-start">
+                                <h4 class="card-title">Number of Attendees: {{this.attendees.number}}</h4>
+                                <hr>
+
+                                <p><strong>Dietary Restrictions</strong></p>
+                                <table v-if="attendees.dietaryRestrictions && attendees.dietaryRestrictions.some(diet => diet[0] !== '')" class="table">
+                                    <thead>
+                                        <tr>
+                                            <th scope="col">Dietary Restriction</th>
+                                            <th scope="col">Number</th>
+                                        </tr>
+                                    </thead>
+                                    <tbody>
+                                        <tr v-for="diet in attendees.dietaryRestrictions" :key="diet[0]">
+                                            <td>{{ diet[0] }}</td>
+                                            <td>{{ diet[1] }}</td>
+                                        </tr>
+                                    </tbody>
+                                </table>
+                                <p v-else>None</p>
+
+                                <br>
+
+                                <p><strong>Special Requests</strong></p>
+                                <table v-if="attendees.specialRequests && attendees.specialRequests.some(request => request[0] !== '')" class="table">
+                                    <thead>
+                                        <tr>
+                                            <th scope="col">Special Request</th>
+                                            <th scope="col">Number</th>
+                                        </tr>
+                                    </thead>
+                                    <tbody>
+                                        <tr v-for="request in attendees.specialRequests" :key="request[0]">
+                                            <td>{{ request[0] }}</td>
+                                            <td>{{ request[1] }}</td>
+                                        </tr>
+                                    </tbody>
+                                </table>
+                                <p v-else>None</p>
+                                
+                                
+                            </div>
+                        </div>
+
                         <div id="accordion">
+                            <h6 class="mt-4">Participants</h6>
                             <div class="card" v-for="(registration, index) in registrations" :key="registration.id">
                                 <div class="card-header" :id="'heading' + index">
                                     <h5 class="mb-0">
@@ -207,7 +256,7 @@
                         </div>
                     </div>
                     <div class="modal-footer">
-                        <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Close</button>
+                        <button type="button" class="btn btn-secondary" data-bs-dismiss="modal" @click="clear()">Close</button>
                     </div>
                 </div>
             </div>
@@ -391,13 +440,67 @@
                     },
                     registrations: {},
                     events: [],
-                    selectedEventId: null
+                    selectedEventId: null,
+                    attendees: {
+                        number: 0,
+                        dietaryRestrictions: [],
+                        specialRequests: [],
+                    }
                 };
             },
             methods: {
+                parseAttendees(event) {
+                    console.log(event);
+
+                    for (let registrant of event) {
+                        for (let attendee of registrant.attendees) {
+                            this.attendees.number++;
+
+                            // Process dietary restrictions
+                            if (attendee.dietaryRestrictions && attendee.dietaryRestrictions !== "") {
+                                let restrictionExists = false;
+
+                                for (let i = 0; i < this.attendees.dietaryRestrictions.length; i++) {
+                                    if (this.attendees.dietaryRestrictions[i][0] === attendee.dietaryRestrictions) {
+                                        this.attendees.dietaryRestrictions[i][1]++;
+                                        restrictionExists = true;
+                                        break;
+                                    }
+                                }
+
+                                if (!restrictionExists) {
+                                    this.attendees.dietaryRestrictions.push([attendee.dietaryRestrictions, 1]);
+                                }
+                            }
+
+                            // Process special requests
+                            if (attendee.specialRequests && attendee.specialRequests !== "") {
+                                let requestExists = false;
+
+                                for (let i = 0; i < this.attendees.specialRequests.length; i++) {
+                                    if (this.attendees.specialRequests[i][0] === attendee.specialRequests) {
+                                        this.attendees.specialRequests[i][1]++;
+                                        requestExists = true;
+                                        break;
+                                    }
+                                }
+
+                                if (!requestExists) {
+                                    this.attendees.specialRequests.push([attendee.specialRequests, 1]);
+                                }
+                            }
+
+                            console.log(this.attendees);
+                        }
+                    }
+
+                },
+
+
                 showRegistrationsModal(registrations) {
                     console.log(registrations);
                     this.registrations = registrations;
+                    this.parseAttendees(this.registrations);
                     console.log(this.registrations);
                     const registrationsModal = new bootstrap.Modal(document.getElementById('registrationsModal'));
                     registrationsModal.show();
@@ -424,6 +527,12 @@
                     };
 
                     this.registrations = {};
+
+                    this.attendees = {
+                        number: 0,
+                        dietaryRestrictions: [],
+                        specialRequests: [],
+                    }
                 },
                 showDeleteModal(eventId) {
                     // Set the selectedEventId and show the modal

@@ -4,6 +4,8 @@ import {
     Timestamp, orderBy,
 } from "https://www.gstatic.com/firebasejs/10.14.0/firebase-firestore.js";
 
+import { createPost, readPosts, updatePost, deletePost, postComment, deleteComment } from '../db/forumCRUD.js';
+
 
 // <div id='app'></div>
 const app = Vue.createApp({
