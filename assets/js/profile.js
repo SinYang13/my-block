@@ -35,7 +35,10 @@ const app = Vue.createApp({
             showModal: false,
             modalData: {},
             attendees: [],
-            ticketId: ''
+            ticketId: '',
+            events_loading: true, // Add loading state here
+            service_loading: true,
+            loans_loading:true
 
         };
     }, // data
@@ -82,6 +85,7 @@ const app = Vue.createApp({
                 });
             }
             this.loanOwners = rentalList;
+            this.loans_loading = false;
 
             console.log(rentalList);
             return rentalList;
@@ -125,7 +129,8 @@ const app = Vue.createApp({
 
                     })
                     console.log(event)
-                    this.eventsList = event
+                    this.eventsList = event;
+                    this.events_loading = false;
                 })
                 .catch(err => {
                     console.log(err.message)
@@ -149,7 +154,8 @@ const app = Vue.createApp({
 
                     })
                     console.log(services)
-                    this.serviceList = services
+                    this.serviceList = services;
+                    this.service_loading = false;
                 })
                 .catch(err => {
                     console.log(err.message)
