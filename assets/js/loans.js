@@ -10,7 +10,31 @@ function formatDate(date) {
     const d = new Date(date.seconds * 1000);
     const parts = d.toLocaleDateString();
     return parts
-}
+};
+function handleLinkClick(event) {
+    event.preventDefault(); // Prevent default link navigation
+  
+    const url = event.currentTarget.href; // Get the destination URL
+  
+    // Add fade-out class to trigger animation
+    document.body.classList.add("fade-out");
+  
+    // Delay the navigation to allow the fade-out animation to complete
+    setTimeout(() => {
+      window.location.href = url;
+    }, 500); // Delay matches the duration of the fadeOut animation (0.5s)
+  }
+  
+  // Apply the event listener to all <a> tags with class "animated-link"
+  document.addEventListener("DOMContentLoaded", () => {
+    const links = document.querySelectorAll("a.animated-link");
+  
+    // Add event listeners for the fade-out animation on link click
+    links.forEach((link) => link.addEventListener("click", handleLinkClick));
+  
+    // Trigger fade-in when the page loads
+    document.body.classList.add("fade-in");
+  });
 
 
 const app = Vue.createApp({
