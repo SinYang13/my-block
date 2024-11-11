@@ -1,5 +1,5 @@
 import { db } from "../js/config";
-import { createPost, postComment } from "../../db/forumCRUD";
+import { createPost, postComment } from "../../db/forumCRUD.js";
 import {
   collection,
   getDocs,
