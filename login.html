@@ -79,7 +79,7 @@
         </div>
     </header>
     
-    <div id="app" class="login-container">
+    <div id="app" class="login-container" v-cloak>
         <h2 class="text-center">Login</h2>
         <div v-if="error" class="alert alert-danger">{{ error }}</div>
         <form @submit.prevent="login">
