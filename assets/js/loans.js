@@ -99,14 +99,16 @@ const app = Vue.createApp({
 
     },
     async mounted() {
-        this.loading = true;
-        if (this.userName) {
-            await this.getUserCollectionVenue(); // Fetch the user's collection venue if logged in
-        }
         window.addEventListener("load", () => {
             this.gapiLoaded();
             this.gisLoaded();
         });
+        
+        this.loading = true;
+        if (this.userName) {
+            await this.getUserCollectionVenue(); // Fetch the user's collection venue if logged in
+        }
+        
 
         // Fetch the loans when the component is mounted
         const loanlist = await this.readLoan();
@@ -402,7 +404,7 @@ const app = Vue.createApp({
             const event = {
               summary: "Loaned " + this.currItemName,
               location: "4B Boon Tiong Rd, #01-35 Boon Tiong Arcadia, Singapore 165004",
-              description: "Your deadline is on friday regardless of when u collect it:)",
+              description: "Your deadline is fixed regardless of when u collect it:)",
               start: {
                 dateTime: start,
                 timeZone: "Asia/Singapore",
