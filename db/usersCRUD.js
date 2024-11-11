@@ -96,11 +96,20 @@ export async function updateUser(email, updatedData) {
 
 // Delete a user (using email as document ID)
 export async function deleteUser(email) {
+    const userRef = doc(db, "users", email);
+    const registrationsRef = collection(userRef, "registrations");
+
     try {
-        const userRef = doc(db, "users", email);
+        // Delete all documents in the 'posts' subcollection
+        const registrationsSnapshot = await getDocs(registrationsRef);
+        const deleteRegistrationsPromises = registrationsSnapshot.docs.map((userDoc) => deleteDoc(userDoc.ref));
+        await Promise.all(deleteRegistrationsPromises);
+
+        // After deleting all posts, delete the main user document
         await deleteDoc(userRef);
+        console.log("User and their posts successfully deleted.");
     } catch (error) {
-        console.error('Error deleting user:', error);
+        console.error("Error deleting user and posts:", error);
         throw error;
     }
 }

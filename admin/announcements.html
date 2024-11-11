@@ -165,6 +165,7 @@
                             <li><a href="events.html">Events</a></li>
                             <li><a href="forum.html">Forum</a></li>
                             <li><a href="loans.html">Loans</a></li>
+                            <li><a href="services.html">Services</a></li>
                             <li><a href="users.html">Users</a></li>
                         </ul>
                     </div>
@@ -241,15 +242,18 @@
                                 <div v-for="announcement in announcements" :key="announcement.id"
                                     class="col-12 mb-5 mb-lg-3">
                                     <div class="card" style="padding-right:10px">
-                                        <div class="row g-0" style="height:100px">
+                                        <div class="row g-0">
                                             <div class="col-2">
                                                 <img :src="announcement.img" class="img-fluid rounded-start"
-                                                    alt="Announcement Image" style="height:100px">
+                                                    alt="Announcement Image" style="max-height:200px">
                                             </div>
-                                            <div class="col-10 col-lg-8">
-                                                <div class="" style="height:100px; padding: 10px">
+                                            <div class="col-10 col-lg-8"
+                                                style="padding: 10px; display: flex; flex-direction: column; justify-content: space-between;">
+                                                <div class="row">
                                                     <h5 class="">{{ announcement.title }}</h5>
                                                     <p class="">{{ announcement.content }}</p>
+                                                </div>
+                                                <div class="row">
                                                     <p class="">
                                                         <small class="text-muted">
                                                             From: {{ announcement.from }}
@@ -494,6 +498,8 @@
                         alert("Please fill in all required fields.");
                         return;
                     }
+
+                    console.log(this.announcement.imgName);
 
                     let imgUrl = `https://firebasestorage.googleapis.com/v0/b/myblock-wad.appspot.com/o/announcements%2F${encodeURIComponent(this.announcement.imgName)}?alt=media`;
                     if (imgFile) {

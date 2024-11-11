@@ -224,6 +224,7 @@
                         <li><a href="events.html">Events</a></li>
                         <li style="background-color: lightcoral"><a href="forum.html">Forum</a></li>
                         <li><a href="loans.html">Loans</a></li>
+                        <li><a href="services.html">Services</a></li>
                         <li><a href="users.html">Users</a></li>
                     </ul>
                 </div>
@@ -383,6 +384,10 @@
                     console.log(comments);
                     this.selectedPost = post
                     this.comments = comments;
+
+                    this.comments.sort(function (x, y) {
+                        return x.createdAt - y.createdAt;
+                    })
                     // this.parseComments(this.comments);
                     console.log(this.comments);
                     const commentsModal = new bootstrap.Modal(document.getElementById('commentsModal'));

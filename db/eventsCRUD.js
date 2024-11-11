@@ -62,7 +62,20 @@ async function updateEvent(eventId, updatedData) {
 // Delete function
 async function deleteEvent(eventId) {
     const eventRef = doc(db, "events", eventId);
-    await deleteDoc(eventRef);
+    const attendeesRef = collection(eventRef, "attendees");
+
+    try {
+        // Delete all documents in the 'attendees' subcollection
+        const attendeesSnapshot = await getDocs(attendeesRef);
+        const deleteAttendeesPromises = attendeesSnapshot.docs.map((attendeeDoc) => deleteDoc(attendeeDoc.ref));
+        await Promise.all(deleteAttendeesPromises);
+
+        // After deleting all attendees, delete the main event document
+        await deleteDoc(eventRef);
+        console.log("Event and its attendees successfully deleted.");
+    } catch (error) {
+        console.error("Error deleting event and attendees:", error);
+    }
 }
 
 export { createEvent, readEvents, updateEvent, deleteEvent };

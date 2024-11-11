@@ -280,6 +280,7 @@
                             <li style="background-color: lightcoral"><a href="events.html">Events</a></li>
                             <li><a href="forum.html">Forum</a></li>
                             <li><a href="loans.html">Loans</a></li>
+                            <li><a href="services.html">Services</a></li>
                             <li><a href="users.html">Users</a></li>
                         </ul>
                     </div>
@@ -360,25 +361,25 @@
                             <div class="row" style="height:100%; margin:5px;">
                                 <div v-for="event in events" :key="event.id" class="col-12 mb-5 mb-xxl-3">
                                     <div class="card" style="padding-right:10px">
-                                        <div class="row g-0" style="height:100px">
+                                        <div class="row g-0">
                                             <div class="col-2">
                                                 <img :src="event.image" class="img-fluid rounded-start"
-                                                    alt="Announcement Image" style="height:100px">
+                                                    alt="Announcement Image" style="max-height:200px">
                                             </div>
-                                            <div class="col-10 col-lg-8">
-                                                <div class="" style="height:100px; padding: 10px">
-                                                    <div class="" style="height:100px; padding: 10px">
-                                                        <h5 class="">{{ event.title }}</h5>
-                                                        <p class="">{{ event.description }}</p>
-                                                        <p class=""><small class="text-muted">Category: {{ event.cat }}
-                                                                |
-                                                                Price: {{
-                                                                event.price }}
-                                                                | Date: {{ new Date(event.date.seconds *
-                                                                1000).toLocaleString() }} |
-                                                                Place: {{ event.place }} | Postal: {{ event.postal
-                                                                }}</small></p>
-                                                    </div>
+                                            <div class="col-10 col-lg-8" style="display: flex; flex-direction: column; justify-content: space-between;">
+                                                <div class="row" style="padding: 10px">
+                                                    <h5 class="">{{ event.title }}</h5>
+                                                    <p class="">{{ event.description }}</p>
+                                                </div>
+                                                <div class="row" style="padding: 10px; ">
+                                                    <p class=""><small class="text-muted">Category: {{ event.cat }}
+                                                            |
+                                                            Price: {{
+                                                            event.price }}
+                                                            | Date: {{ new Date(event.date.seconds *
+                                                            1000).toLocaleString() }} |
+                                                            Place: {{ event.place }} | Postal: {{ event.postal
+                                                            }}</small></p>
                                                 </div>
                                             </div>
                                             <div class="col-12 col-lg-2 d-flex align-items-center justify-content-end">
@@ -561,7 +562,14 @@
                     try {
                         await deleteEvent(id);
                         alert('Event deleted successfully');
-                        await this.loadEvents();
+
+                        for (let i in this.events) {
+                            if (this.events[i].id == id) {
+                                this.events.splice(i, 1);
+
+                            }
+                        }
+
                     } catch (error) {
                         console.error('Error deleting event:', error);
                         alert('Failed to delete event.');
@@ -657,6 +665,8 @@
                         return;
                     }
 
+                    console.log(this.event.imgName);
+
                     let imgUrl = `https://firebasestorage.googleapis.com/v0/b/myblock-wad.appspot.com/o/events%2F${encodeURIComponent(this.event.imgName)}?alt=media`;
                     if (imgFile) {
                         // Upload the new image to Firebase Storage
@@ -671,7 +681,22 @@
                         console.log('Updating event with data:', updatedEvent);
                         await updateEvent(id, updatedEvent);
                         alert('Event updated successfully');
-                        await this.loadEvents();
+                        for (let i in this.events) {
+                            if (this.events[i].id === id) {
+                                // Ensure registerDate is a Date object
+                                // const dateObj = new Date(registerDate);
+
+                                this.events[i] = {
+                                    id: id,
+                                    ...updatedEvent,
+                                    image: imgUrl,
+                                };
+
+                                // Convert to ISO string and log the date
+                                // console.log(dateObj.toISOString().split('T')[0]);
+                                break;
+                            }
+                        }
                     } catch (error) {
                         console.error("Error updating event:", error);
                         alert("Failed to update event.");
