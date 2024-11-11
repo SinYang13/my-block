@@ -14,6 +14,7 @@
     <link rel="stylesheet" href="assets/css/templatemo-villa-agency.css">
     <link rel="stylesheet" href="assets/css/owl.css">
     <link rel="stylesheet" href="assets/css/animate.css">
+    <link rel="icon" type="image/png" href="assets/favicon.png">
     <style type="text/css">
         body {
             /* margin-top: 20px; */
@@ -21,7 +22,8 @@
             text-align: left;
             background-color: #e2e8f0;
         }
-        .main-body{
+
+        .main-body {
             margin: 20px;
         }
 
@@ -69,6 +71,10 @@
             align-items: center;
             padding: 0 1rem;
             flex-shrink: 0;
+        }
+
+        .inner-main-header {
+            float: right;
         }
 
         .inner-main-body,
@@ -168,78 +174,165 @@
             min-height: 1px;
             padding: 1rem;
         }
+
+        .inner-main-body {
+            background-color: #f8f9fa;
+            border-radius: 8px;
+            padding: 20px;
+            margin-bottom: 20px;
+        }
+
+        /* Card styling */
+        .card {
+            border: 1px solid #e9ecef;
+            border-radius: 10px;
+            transition: transform 0.3s ease;
+        }
+
+        .card:hover {
+            transform: translateY(-5px);
+            box-shadow: 0px 4px 10px rgba(0, 0, 0, 0.1);
+        }
+
+        /* Media section for profile image and content */
+        .media {
+            display: flex;
+            align-items: center;
+        }
+
+        .media .mr-3 {
+            border-radius: 50%;
+        }
+
+        .media-body {
+            flex: 1;
+            margin: 20px;
+        }
+
+        /* Post title styling */
+        .media-body h6 a {
+            font-size: 1.1rem;
+            font-weight: bold;
+            color: #343a40;
+            text-decoration: none;
+        }
+
+        .media-body h6 a:hover {
+            color: #007bff;
+        }
+
+        /* Post content */
+        .text-secondary {
+            color: #6c757d !important;
+        }
+
+        /* Comment section */
+        .text-muted {
+            color: #adb5bd !important;
+            font-size: 0.9rem;
+        }
+
+        /* Icon styling for comments and likes */
+        .text-center .far,
+        .text-center .fa {
+            cursor: pointer;
+            transition: color 0.3s ease;
+        }
+
+        /* Heart icon styles when liked */
+        .text-center .fa-heart.text-danger {
+            color: #e74c3c;
+        }
+
+        .text-center .far:hover,
+        .text-center .fa:hover {
+            color: #007bff;
+        }
+
+        /* Responsive adjustments */
+        @media (max-width: 576px) {
+            .inner-main-body {
+                padding: 15px;
+            }
+
+            .card-body {
+                padding: 10px;
+            }
+        }
     </style>
 
-    
+
 </head>
 
 <body>
-<!-- ***** Preloader End ***** -->
+    <!-- ***** Preloader End ***** -->
 
-<div class="sub-header">
-    <div class="container">
-      <div class="row">
-        <div class="col-lg-8 col-md-8">
-          <ul class="info">
-            <li><i class="fa fa-envelope"></i> my-block.com</li>
-            <li><i class="fa fa-map"></i> Singapore</li>
-          </ul>
+    <div class="sub-header">
+        <div class="container">
+            <div class="row">
+                <div class="col-lg-8 col-md-8">
+                    <ul class="info">
+                        <li><i class="fa fa-envelope"></i> my-block.com</li>
+                        <li><i class="fa fa-map"></i> Singapore</li>
+                    </ul>
+                </div>
+                <div class="col-lg-4 col-md-4">
+                    <ul class="social-links">
+                        <li><a href="https://www.facebook.com/sgsmu/"><i class="fab fa-facebook"></i></a></li>
+                        <li><a href="https://x.com/sgSMU" target="_blank"><i class="fab fa-twitter"></i></a></li>
+                        <li><a
+                                href="https://www.linkedin.com/school/singapore-management-university/posts/?feedView=all"><i
+                                    class="fab fa-linkedin"></i></a></li>
+                        <li><a href="https://www.instagram.com/sgsmu/?hl=en"><i class="fab fa-instagram"></i></a></li>
+                    </ul>
+                </div>
+            </div>
         </div>
-        <div class="col-lg-4 col-md-4">
-          <ul class="social-links">
-            <li><a href="https://www.facebook.com/sgsmu/"><i class="fab fa-facebook"></i></a></li>
-            <li><a href="https://x.com/sgSMU" target="_blank"><i class="fab fa-twitter"></i></a></li>
-            <li><a href="https://www.linkedin.com/school/singapore-management-university/posts/?feedView=all"><i class="fab fa-linkedin"></i></a></li>
-            <li><a href="https://www.instagram.com/sgsmu/?hl=en"><i class="fab fa-instagram"></i></a></li>
-          </ul>
-        </div>
-      </div>
     </div>
-  </div>
-  
-  <!-- Header Area Start -->
-  <header class="header-area header-sticky">
-    <div class="container">
-      <div class="row">
-        <div class="col-12">
-          <nav class="main-nav">
-            <a href="index.html" class="logo">
-              <h1>
-                <span>
-                  <inline>MyBlock</inline>
-                </span>
-              </h1>
-            </a>
-            <ul class="nav">
-              <li><a href="announcements.html">Announcements</a></li>
-              <li><a href="events.html">Events</a></li>
-              <li><a href="forum.html" class="active">Forum</a></li>
-              <li><a href="loans.html">Loans</a></li>
-              <li><a href="services.html">Services</a></li>
-              <li id="profileLink">
-                <a href="profile.html" id="profileLinkRedir">
-                  <i class="fa fa-calendar" id="profileLinkImg"></i>
-                  <span id="profileLinkText">Profile</span>
-                </a>
-              </li>
-            </ul>
-            <a class="menu-trigger"><span>Menu</span></a>
-          </nav>
+
+    <!-- Header Area Start -->
+    <header class="header-area header-sticky">
+        <div class="container">
+            <div class="row">
+                <div class="col-12">
+                    <nav class="main-nav">
+                        <a href="index.html" class="logo">
+                            <h1>
+                                <span>
+                                    <inline>MyBlock</inline>
+                                </span>
+                            </h1>
+                        </a>
+                        <ul class="nav">
+                            <li><a href="announcements.html">Announcements</a></li>
+                            <li><a href="events.html">Events</a></li>
+                            <li><a href="forum.html" class="active">Forum</a></li>
+                            <li><a href="loans.html">Loans</a></li>
+                            <li><a href="services.html">Services</a></li>
+                            <li id="profileLink">
+                                <a href="profile.html" id="profileLinkRedir">
+                                    <i class="fa fa-calendar" id="profileLinkImg"></i>
+                                    <span id="profileLinkText">Profile</span>
+                                </a>
+                            </li>
+                        </ul>
+                        <a class="menu-trigger"><span>Menu</span></a>
+                    </nav>
+                </div>
+            </div>
         </div>
-      </div>
-    </div>
-  </header>
-  
-  <div class="page-heading header-text">
-    <div class="container">
-      <div class="row">
-        <div class="col-lg-12">
-          <span class="breadcrumb"><a href="index.html">Home</a> / Forum</span>
-          <h3>Forum</h3>
+    </header>
+
+    <div class="page-heading header-text">
+        <div class="container">
+            <div class="row">
+                <div class="col-lg-12">
+                    <span class="breadcrumb"><a href="index.html">Home</a> / Forum</span>
+                    <h3>Forum</h3>
+                </div>
+            </div>
         </div>
-      </div>
     </div>
-  </div>
 
 
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.12.0-2/css/all.min.css"
@@ -322,8 +415,8 @@
                     <div class="inner-main-header">
                         <span class="input-icon input-icon-sm ml-auto w-auto">
                             <input type="text"
-                                class="form-control form-control-sm bg-gray-200 border-gray-200 shadow-none mb-4 mt-4" v-model="searchQuery"
-                                placeholder="Search forum" />
+                                class="form-control form-control-sm bg-gray-200 border-gray-200 shadow-none mb-4 mt-4"
+                                v-model="searchQuery" placeholder="Search forum" />
                         </span>
                     </div>
                     <!-- /Inner main header -->
@@ -335,9 +428,11 @@
                         <div class="card mb-2" v-for="post in filteredPosts">
                             <div class="card-body p-2 p-sm-3">
                                 <div class="media forum-item">
-                                    <a href="#" data-toggle="collapse" data-target=".forum-content" @click="showComments(post.id)"><img
-                                            src="https://bootdey.com/img/Content/avatar/avatar1.png"
-                                            class="mr-3 rounded-circle" width="50" alt="User" /></a>
+                                    <a href="#" data-toggle="collapse" data-target=".forum-content"
+                                        @click="showComments(post.id)">
+                                        <img :src="getRandomImage(post.author)" class="mr-3 rounded-circle" width="50"
+                                            alt="User" />
+                                    </a>
                                     <div class="media-body">
                                         <h6><a href="#" data-toggle="collapse" data-target=".forum-content"
                                                 class="text-body" @click="showComments(post.id)">{{post.title}}</a></h6>
@@ -371,7 +466,8 @@
                     <!-- Forum Detail -->
                     <div class="inner-main-body p-2 p-sm-3 collapse forum-content">
                         <a href="#" class="btn btn-light btn-sm mb-3 has-icon" data-toggle="collapse"
-                            data-target=".forum-content"><i class="fa fa-arrow-left mr-2"></i>Back</a>
+                            data-target=".forum-content"><i class="fa fa-arrow-left mr-2"
+                                style="margin-right: 5px;"></i>Back</a>
                         <a href="#" style="float: right;" class="btn btn-primary btn-sm mb-3 has-icon" type="button"
                             data-toggle="modal" data-target="#threadModalComment" @click="openForm"><i
                                 class="fa fa-plus-left mr-2"></i>Add New Comment</a>
@@ -379,8 +475,8 @@
                             <div class="card-body">
                                 <div class="media forum-item">
                                     <a href="javascript:void(0)" class="card-link">
-                                        <img src="https://bootdey.com/img/Content/avatar/avatar1.png"
-                                            class="rounded-circle" width="50" alt="User" />
+                                        <img :src="getRandomImage(posts.author)" class="mr-3 rounded-circle" width="50"
+                                            alt="User" />
                                     </a>
                                     <div class="media-body ml-3">
                                         <a href="javascript:void(0)" class="text-secondary">{{posts.author}}</a>
@@ -395,7 +491,14 @@
                                     <div class="text-muted small text-center">
                                         <span style="padding: 5px;"><i class="far fa-comment ml-2"></i>
                                             {{commentsCount}}</span>
-                                        <span class="d-none d-sm-inline-block"><i class="far fa-heart"></i> 19</span>
+                                        <a type="button" @click="liked(posts.id)">
+                                            <span class="d-none d-sm-inline-block">
+                                                <!-- Dynamically bind the class for the heart icon based on the like status -->
+                                                <i
+                                                    :class="[heartStatus[posts.id] ? 'fa fa-heart text-danger' : 'far fa-heart']"></i>
+                                                {{posts.likedCount}}
+                                            </span>
+                                        </a>
                                     </div>
                                 </div>
                             </div>
@@ -404,8 +507,8 @@
                             <div class="card-body">
                                 <div class="media forum-item">
                                     <a href="javascript:void(0)" class="card-link">
-                                        <img src="https://bootdey.com/img/Content/avatar/avatar2.png"
-                                            class="rounded-circle" width="50" alt="User" />
+                                        <img :src="getRandomImage(c.author)" class="mr-3 rounded-circle" width="50"
+                                        alt="User" />
                                     </a>
                                     <div class="media-body ml-3">
                                         <a href="javascript:void(0)" class="text-secondary">{{c.author}}</a>
@@ -430,11 +533,11 @@
                 <div class="modal-dialog modal-lg" role="document">
                     <div class="modal-content">
                         <form>
-                            <div class="modal-header d-flex align-items-center bg-primary text-white">
+                            <div class="modal-header d-flex align-items-center bg-primary">
                                 <h6 class="modal-title mb-0" id="threadModalLabel">New Discussion</h6>
-                                <button type="button" class="close" data-dismiss="modal" aria-label="Close">
-                                    <span aria-hidden="true">×</span>
-                                </button>
+                                <!-- <button type="button" class="close" data-dismiss="modal" aria-label="Close" style="float: right;">
+                                    <span aria-hidden="true">&times;</span>
+                                </button> -->
                             </div>
                             <div class="modal-body">
                                 <div class="form-group">
@@ -454,8 +557,6 @@
 
                                 <div class="form-group">
                                     <label for="threadTitle">Content</label>
-                                    <!-- <input type="text" class="form-control" id="threadTitle" placeholder="Enter title"
-                                        autofocus="" /> -->
                                     <textarea class="form-control" id="content" name="content" rows="4"
                                         v-model="content" required></textarea>
                                 </div>
@@ -469,6 +570,7 @@
                 </div>
             </div>
 
+
             <!-- New Comment Modal -->
             <div class="modal fade" id="threadModalComment" tabindex="-1" role="dialog"
                 aria-labelledby="threadModalCommentLabel" aria-hidden="true">
@@ -477,9 +579,9 @@
                         <form>
                             <div class="modal-header d-flex align-items-center bg-primary text-white">
                                 <h6 class="modal-title mb-0" id="threadModalCommentLabel">New Discussion</h6>
-                                <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                                <!-- <button type="button" class="close" data-dismiss="modal" aria-label="Close">
                                     <span aria-hidden="true">×</span>
-                                </button>
+                                </button> -->
                             </div>
                             <div class="modal-body">
 

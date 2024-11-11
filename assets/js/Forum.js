@@ -1,5 +1,5 @@
-import { db } from "../js/config.js";
-import { createPost, postComment } from "../../db/forumCRUD.js";
+import { db } from "../js/config";
+import { createPost, postComment } from "../../db/forumCRUD";
 import {
   collection,
   getDocs,
@@ -58,6 +58,17 @@ const app = Vue.createApp({
       commentsCount: 0,
       heart: "far fa-heart",
       heartStatus: {},
+      avatarImages: [
+        "https://bootdey.com/img/Content/avatar/avatar1.png",
+        "https://bootdey.com/img/Content/avatar/avatar2.png",
+        "https://bootdey.com/img/Content/avatar/avatar3.png",
+        "https://bootdey.com/img/Content/avatar/avatar4.png",
+        "https://bootdey.com/img/Content/avatar/avatar5.png",
+        "https://bootdey.com/img/Content/avatar/avatar6.png",
+        "https://bootdey.com/img/Content/avatar/avatar7.png",
+        "https://bootdey.com/img/Content/avatar/avatar8.png"
+    ],
+    randomImageMap: {}
     };
   }, // data
   computed: {
@@ -85,6 +96,19 @@ const app = Vue.createApp({
     console.log("mounted");
   },
   methods: {
+    getRandomImage(postId) {
+        // Check if an image has already been assigned to this post
+        if(postId == "noid"){
+            const randomIndex = Math.floor(Math.random() * this.avatarImages.length);
+        }
+        if (!this.randomImageMap[postId]) {
+            // Assign a random image from the array
+            const randomIndex = Math.floor(Math.random() * this.avatarImages.length);
+            this.randomImageMap[postId] = this.avatarImages[randomIndex];
+        }
+        // Return the assigned image
+        return this.randomImageMap[postId];
+    },
     openForm() {
       console.log("opening form...");
       this.displayForumForm = false;
@@ -221,7 +245,7 @@ const app = Vue.createApp({
                 }
               });
               this.commentsCount = this.posts.comments.length;
-              console.log(this.posts.comments.length);
+            //   console.log(this.posts.comments.length);
         } catch {
             console.log("failed");
         }
