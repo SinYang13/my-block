@@ -5,31 +5,20 @@
     <meta charset="utf-8">
     <!--  This file has been downloaded from bootdey.com @bootdey on twitter -->
     <!--  All snippets are MIT license http://bootdey.com/license -->
-    <title>Forum Page</title>
+    <title>bs4 forum - Bootdey.com</title>
     <meta name="viewport" content="width=device-width, initial-scale=1">
-    <!-- Bootstrap JS bundle -->
-    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3/dist/js/bootstrap.bundle.min.js"></script>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Login</title>
-    <!-- Bootstrap CSS -->
-    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3/dist/css/bootstrap.min.css" rel="stylesheet">
-    <!-- Vue 3 -->
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@4.4.1/dist/css/bootstrap.min.css" rel="stylesheet">
     <script src="https://unpkg.com/vue@3/dist/vue.global.js"></script>
-    <link rel="stylesheet" href="assets/css/fontawesome.css">
-    <link rel="stylesheet" href="assets/css/templatemo-villa-agency.css">
-    <link rel="stylesheet" href="assets/css/owl.css">
-    <link rel="stylesheet" href="assets/css/animate.css">
-    <link rel="stylesheet" href="https://unpkg.com/swiper@7/swiper-bundle.min.css"/>
-
-    <script type="module" src="./assets/js/Forum.js"></script>
-
+    <script src="./assets/js/Forum.js" type="module"></script>
     <style type="text/css">
         body {
             margin-top: 20px;
             color: #1a202c;
             text-align: left;
             background-color: #e2e8f0;
+        }
+        .main-body{
+            margin: 20px;
         }
 
         .inner-wrapper {
@@ -175,68 +164,12 @@
             min-height: 1px;
             padding: 1rem;
         }
-
-        #forumForm {
-            position: fixed;
-            top: 50%;
-            left: 50%;
-            transform: translate(-50%, -50%);
-            z-index: 1000;
-            background: white;
-            border-radius: 8px;
-            box-shadow: 0 2px 10px rgba(0, 0, 0, 0.1);
-            padding: 20px;
-            /* Add padding for better spacing */
-            width: 90%;
-            /* Make the form responsive */
-            max-width: 500px;
-            /* Set a maximum width for larger screens */
-        }
-
-        #commentForm {
-            position: fixed;
-            top: 50%;
-            left: 50%;
-            transform: translate(-50%, -50%);
-            z-index: 1000;
-            background: white;
-            border-radius: 8px;
-            box-shadow: 0 2px 10px rgba(0, 0, 0, 0.1);
-            padding: 20px;
-            /* Add padding for better spacing */
-            width: 90%;
-            /* Make the form responsive */
-            max-width: 500px;
-            /* Set a maximum width for larger screens */
-        }
-
-        .category-buttons .btn {
-            width: 150px;
-            /* Set a fixed width for uniformity */
-            height: 50px;
-            /* Set a fixed height if needed */
-            font-size: 16px;
-            /* Adjust font size for readability */
-            padding: 10px;
-            /* Adjust padding to make buttons look even */
-            text-align: center;
-            margin: 5px auto;
-            /* Optional: add spacing between buttons */
-        }
-
-        .like-button {
-            border: none;
-            background-color: white;
-            /* Default color */
-            color: black;
-        }
-
-        .like-button.liked {
-            background-color: blue;
-            /* Liked color */
-            color: white;
-        }
     </style>
+
+    <link rel="stylesheet" href="assets/css/fontawesome.css">
+    <link rel="stylesheet" href="assets/css/templatemo-villa-agency.css">
+    <link rel="stylesheet" href="assets/css/owl.css">
+    <link rel="stylesheet" href="assets/css/animate.css">
 </head>
 
 <body>
@@ -279,7 +212,6 @@
                             <li><a href="events.html">Events</a></li>
                             <li><a href="forum.html">Forum</a></li>
                             <li><a href="loans.html">Loans</a></li>
-                            <li><a href="services.html">Services</a></li>
                             <li id="profileLink">
                                 <a href="profile.html" id="profileLinkRedir">
                                     <i class="fa fa-calendar" id="profileLinkImg"></i>
@@ -293,219 +225,274 @@
             </div>
         </div>
     </header>
-    <div id="app">
-        <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.12.0-2/css/all.min.css"
-            integrity="sha256-46r060N2LrChLLb5zowXQ72/iKKNiw/lAmygmHExk/o=" crossorigin="anonymous" />
-        <div class="forum container">
-            <div class="main-body p-0">
-                <div class="inner-wrapper">
-                    <!-- Inner sidebar -->
-                    <div class="inner-sidebar">
-                        <!-- Inner sidebar header -->
-                        <div class="inner-sidebar-header justify-content-center">
-                            <button class="btn btn-primary has-icon btn-block" type="button" v-show="displayButton"
-                                style="background-color: orangered; border-color: white;" @click="openForm">
-                                <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24"
-                                    fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"
-                                    stroke-linejoin="round" class="feather feather-plus mr-2">
-                                    <line x1="12" y1="5" x2="12" y2="19"></line>
-                                    <line x1="5" y1="12" x2="19" y2="12"></line>
-                                </svg>
-                                ADD POST
-                            </button>
-                        </div>
-                        <!-- /Inner sidebar header -->
 
-                        <!-- Inner sidebar body -->
-                        <div class="inner-sidebar-body p-0">
-                            <div class="p-3 h-100" data-simplebar="init">
-                                <div class="simplebar-wrapper" style="margin: -16px;">
-                                    <div class="simplebar-height-auto-observer-wrapper">
-                                        <div class="simplebar-height-auto-observer"></div>
-                                    </div>
-                                    <div class="simplebar-mask">
-                                        <div class="simplebar-offset" style="right: 0px; bottom: 0px;">
-                                            <!-- <div class="simplebar-content-wrapper" style="height: 100%; overflow: hidden scroll;"> -->
+
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.12.0-2/css/all.min.css"
+        integrity="sha256-46r060N2LrChLLb5zowXQ72/iKKNiw/lAmygmHExk/o=" crossorigin="anonymous" />
+    <div class="container" id="app">
+        <div class="main-body p-0">
+            <div class="inner-wrapper">
+                <!-- Inner sidebar -->
+                <div class="inner-sidebar">
+                    <!-- Inner sidebar header -->
+                    <div class="inner-sidebar-header justify-content-center">
+                        <button class="btn btn-primary has-icon btn-block" type="button" data-toggle="modal"
+                            data-target="#threadModal" @click="openForm">
+                            <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24"
+                                fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"
+                                stroke-linejoin="round" class="feather feather-plus mr-2">
+                                <line x1="12" y1="5" x2="12" y2="19"></line>
+                                <line x1="5" y1="12" x2="19" y2="12"></line>
+                            </svg>
+                            NEW DISCUSSION
+                        </button>
+                    </div>
+                    <!-- /Inner sidebar header -->
+
+                    <!-- Inner sidebar body -->
+                    <div class="inner-sidebar-body p-0">
+                        <div class="p-3 h-100" data-simplebar="init">
+                            <div class="simplebar-wrapper" style="margin: -16px;">
+                                <div class="simplebar-height-auto-observer-wrapper">
+                                    <div class="simplebar-height-auto-observer"></div>
+                                </div>
+                                <div class="simplebar-mask">
+                                    <div class="simplebar-offset" style="right: 0px; bottom: 0px;">
+                                        <div class="simplebar-content-wrapper" style="height: 100%;">
                                             <div class="simplebar-content" style="padding: 16px;">
                                                 <nav class="nav nav-pills nav-gap-y-1 flex-column">
-                                                    <div class="category-buttons mt-4 text-center"
-                                                        style="font-size: 20px;">
-                                                        Filter Posts By: <br><br>
-                                                        <button class="btn btn-outline-primary"
-                                                            :class="{ active: selectedCategory === 'All' }"
-                                                            @click="selectedCategory = 'All'">
-                                                            All
-                                                        </button> <br>
-                                                        <button class="btn btn-outline-primary"
-                                                            :class="{ active: selectedCategory === 'General' }"
-                                                            @click="selectedCategory = 'General'">
-                                                            General
-                                                        </button> <br>
-                                                        <button class="btn btn-outline-primary"
-                                                            :class="{ active: selectedCategory === 'Feedback' }"
-                                                            @click="selectedCategory = 'Feedback'">
-                                                            Feedback
-                                                        </button> <br>
-                                                        <button class="btn btn-outline-primary"
-                                                            :class="{ active: selectedCategory === 'Lost and Found' }"
-                                                            @click="selectedCategory = 'Lost and Found'">
-                                                            Lost and Found
-                                                        </button>
-                                                    </div>
+                                                    <a class="nav-link nav-link-faded has-icon"
+                                                        :class="{ active: selectedCategory === 'All' }"
+                                                        @click="selectedCategory = 'All'">
+                                                        All
+                                                    </a>
+                                                    <a class="nav-link nav-link-faded has-icon"
+                                                        :class="{ active: selectedCategory === 'General' }"
+                                                        @click="selectedCategory = 'General'">
+                                                        General
+                                                    </a>
+                                                    <a class="nav-link nav-link-faded has-icon"
+                                                        :class="{ active: selectedCategory === 'Feedback' }"
+                                                        @click="selectedCategory = 'Feedback'">
+                                                        Feedback
+                                                    </a>
+                                                    <a class="nav-link nav-link-faded has-icon"
+                                                        :class="{ active: selectedCategory === 'Lost and Found' }"
+                                                        @click="selectedCategory = 'Lost and Found'">
+                                                        Lost and Found
+                                                    </a>
                                                 </nav>
                                             </div>
-                                            <!-- </div> -->
-                                        </div>
-                                    </div>
-                                    <!-- <div class="simplebar-placeholder" style="width: 234px; height: 292px;"></div> -->
-                                </div>
-                            </div>
-                        </div>
-                        <!-- /Inner sidebar body -->
-                    </div>
-                    <!-- /Inner sidebar -->
-
-                    <!-- Inner main -->
-                    <div class="inner-main">
-
-                        <!-- Inner main body -->
-
-                        <!-- Forum List -->
-                        <div class="inner-main-body p-2 p-sm-3 collapse forum-content show">
-                            <div class="forum-post" v-for="post in filteredPosts" :key="post.id">
-                                <div class="card mb-2" style="border-color: black; padding: 20px;">
-                                    <!-- Like Button -->
-                                    <button :class="{'btn btn-light like-button': true, 'liked': post.isLiked}"
-                                        @click="toggleLike(post)" style="position: absolute; top: 10px; right: 10px;">
-                                        <i class="fas fa-thumbs-up"></i>
-                                    </button>
-
-                                    <h3>{{ post.title }}</h3>
-                                    <p><strong>Category:</strong> {{ post.category }}</p>
-                                    <p><strong>Author:</strong> {{ post.author }}</p>
-                                    <p>{{ post.content }}</p>
-
-                                    <!-- Comments Section -->
-                                    <div class="comments-section">
-                                        <h5>Comments</h5>
-                                        <button type="button" class="btn btn-primary buttonDisplay"
-                                            style="font-size: 15px; background-color: orangered; border-color: white; margin-left: 10px;"
-                                            @click="openCommentform(post.id)">
-                                            Add Comment
-                                        </button>
-                                        <!-- Check if comments exist -->
-                                        <div v-if="post.comments.length > 0">
-                                            <!-- Toggle Comments Button -->
-                                            <button class="btn btn-link"
-                                                @click="post.showComments = !post.showComments">
-                                                {{ post.showComments ? 'Hide Comments' : 'Show Comments' }}
-                                            </button>
-
-                                            <!-- Display Comments if toggle is active -->
-                                            <div v-if="post.showComments">
-                                                <div class="comment" v-for="comment in post.comments" :key="comment.id">
-                                                    <p><strong>Commenter:</strong> {{ comment.author }}</p>
-                                                    <p>{{ comment.content }}</p>
-                                                </div>
-                                            </div>
-                                        </div>
-                                        <!-- Display "No comments" if there are no comments -->
-                                        <div v-else>
-                                            <p>No comments</p>
                                         </div>
                                     </div>
                                 </div>
+                                <div class="simplebar-placeholder" style="width: 234px; height: 292px;"></div>
                             </div>
-
-                        </div>
-                        <!-- /Forum List -->
-
-                        <!-- /Inner main body -->
-                    </div>
-                    <!-- /Inner main -->
-
-
-
-                    <!-- Forum Form -->
-                    <div id="forumForm" v-show="!displayForumForm">
-                        <div class="topright">
-                            <button type="button" class="btn btn-light" style="padding: 10px;" @click="closeForm">
-                                <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor"
-                                    class="bi bi-x-lg" viewBox="0 0 16 16">
-                                    <path
-                                        d="M2.146 2.854a.5.5 0 1 1 .708-.708L8 7.293l5.146-5.147a.5.5 0 0 1 .708.708L8.707 8l5.147 5.146a.5.5 0 0 1-.708.708L8 8.707l-5.146 5.147a.5.5 0 0 1-.708-.708L7.293 8z" />
-                                </svg>
-                            </button>
-                        </div>
-                        <div class="card my-4">
-
-                            <div class="card-header">Create a New Post</div>
-                            <div class="card-body">
-                                <form>
-                                    <div class="mb-3">
-                                        <label for="category" class="form-label">Category</label>
-                                        <select class="form-select" id="category" name="category" v-model="category"
-                                            required>
-                                            <option value="General">General</option>
-                                            <option value="Feedback">Feedback</option>
-                                            <option value="Lost and Found">Lost and Found</option>
-                                        </select>
-                                    </div>
-                                    <div class="mb-3">
-                                        <label for="title" class="form-label">Title</label>
-                                        <input type="text" class="form-control" id="title" name="title" v-model="title"
-                                            required>
-                                    </div>
-                                    <div class="mb-3">
-                                        <label for="content" class="form-label">Content</label>
-                                        <textarea class="form-control" id="content" name="content" rows="4"
-                                            v-model="content" required></textarea>
-                                    </div>
-                                    <a style="margin-top: 25px;" class="btn btn-primary" @click="createPost">Submit</a>
-                                </form>
+                            <div class="simplebar-track simplebar-horizontal" style="visibility: hidden;">
+                                <div class="simplebar-scrollbar" style="width: 0px; display: none;"></div>
+                            </div>
+                            <div class="simplebar-track simplebar-vertical" style="visibility: visible;">
+                                <div class="simplebar-scrollbar"
+                                    style="height: 151px; display: block; transform: translate3d(0px, 0px, 0px);"></div>
                             </div>
                         </div>
                     </div>
+                    <!-- /Inner sidebar body -->
+                </div>
+                <!-- /Inner sidebar -->
 
-                    <!-- Comment Form-->
-                    <div id="commentForm" v-show="displayCommentForm">
-                        <div class="topright">
-                            <button type="button" class="btn btn-light" style="padding: 10px;"
-                                @click="closeCommentform()">
-                                <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor"
-                                    class="bi bi-x-lg" viewBox="0 0 16 16">
-                                    <path
-                                        d="M2.146 2.854a.5.5 0 1 1 .708-.708L8 7.293l5.146-5.147a.5.5 0 0 1 .708.708L8.707 8l5.147 5.146a.5.5 0 0 1-.708.708L8 8.707l-5.146 5.147a.5.5 0 0 1-.708-.708L7.293 8z" />
-                                </svg>
-                            </button>
-                        </div>
-                        <br><br>
-                        <div class="card my-4">
-                            <div class="card-header" style="text-align: center; font-size: 20px; font-weight: bold;">
-                                Create a Comment on this Post</div>
-                            <div class="card-body">
-                                <form>
-                                    <div class="mb-3">
-                                        <label for="commentDetails" class="form-label">Content</label>
-                                        <textarea class="form-control" id="commentDetails" name="commentDetails"
-                                            rows="4" v-model="commentDetails" required></textarea>
+                <!-- Inner main -->
+                <div class="inner-main">
+                    <!-- Inner main header -->
+                    <div class="inner-main-header">
+                        <span class="input-icon input-icon-sm ml-auto w-auto">
+                            <input type="text"
+                                class="form-control form-control-sm bg-gray-200 border-gray-200 shadow-none mb-4 mt-4"
+                                placeholder="Search forum" />
+                        </span>
+                    </div>
+                    <!-- /Inner main header -->
+
+                    <!-- Inner main body -->
+
+                    <!-- Forum List -->
+                    <div class="inner-main-body p-2 p-sm-3 collapse forum-content show">
+                        <div class="card mb-2" v-for="post in filteredPosts">
+                            <div class="card-body p-2 p-sm-3">
+                                <div class="media forum-item">
+                                    <a href="#" data-toggle="collapse" data-target=".forum-content"><img
+                                            src="https://bootdey.com/img/Content/avatar/avatar1.png"
+                                            class="mr-3 rounded-circle" width="50" alt="User" /></a>
+                                    <div class="media-body">
+                                        <h6><a href="#" data-toggle="collapse" data-target=".forum-content"
+                                                class="text-body" @click="showComments(post.id)">{{post.title}}</a></h6>
+                                        <p class="text-secondary">
+                                            {{post.content}}
+                                        </p>
+                                        <p v-if="post.comments.length != 0" class="text-muted">
+                                            <span style="color: blue;">{{ post.comments[0].author }}</span> commented
+                                        </p>
+                                        <p v-else class="text-muted">No Comments yet</p>
                                     </div>
-                                    <a class="btn btn-primary"
-                                        style="display: flex; justify-content: center; align-items: center; margin-top: 25px;"
-                                        @click="postComment()">
-                                        Submit Comment
+                                    <div class="text-muted small text-center align-self-center">
+                                        <!-- <span class="d-none d-sm-inline-block"><i class="far fa-heart"></i> 19</span> -->
+                                        <span style="padding: 5px;"><i class="far fa-comment ml-2"></i>
+                                            {{post.comments.length}}</span>
+                                        <a type="button" @click="liked(post.id)">
+                                            <span class="d-none d-sm-inline-block">
+                                                <!-- Dynamically bind the class for the heart icon based on the like status -->
+                                                <i
+                                                    :class="[heartStatus[post.id] ? 'fa fa-heart text-danger' : 'far fa-heart']"></i>
+                                                {{post.likedCount}}
+                                            </span>
+                                        </a>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    <!-- /Forum List -->
+
+                    <!-- Forum Detail -->
+                    <div class="inner-main-body p-2 p-sm-3 collapse forum-content">
+                        <a href="#" class="btn btn-light btn-sm mb-3 has-icon" data-toggle="collapse"
+                            data-target=".forum-content"><i class="fa fa-arrow-left mr-2"></i>Back</a>
+                        <a href="#" style="float: right;" class="btn btn-primary btn-sm mb-3 has-icon" type="button"
+                            data-toggle="modal" data-target="#threadModalComment" @click="openForm"><i
+                                class="fa fa-plus-left mr-2"></i>Add New Comment</a>
+                        <div class="card mb-2">
+                            <div class="card-body">
+                                <div class="media forum-item">
+                                    <a href="javascript:void(0)" class="card-link">
+                                        <img src="https://bootdey.com/img/Content/avatar/avatar1.png"
+                                            class="rounded-circle" width="50" alt="User" />
                                     </a>
-                                </form>
+                                    <div class="media-body ml-3">
+                                        <a href="javascript:void(0)" class="text-secondary">{{posts.author}}</a>
+                                        <!-- <small class="text-muted ml-2">1 hour ago</small> -->
+                                        <h5 class="mt-1">{{posts.title}}</h5>
+                                        <div class="mt-3 font-size-sm">
+                                            <p>
+                                                {{posts.content}}
+                                            </p>
+                                        </div>
+                                    </div>
+                                    <div class="text-muted small text-center">
+                                        <span style="padding: 5px;"><i class="far fa-comment ml-2"></i>
+                                            {{commentsCount}}</span>
+                                        <span class="d-none d-sm-inline-block"><i class="far fa-heart"></i> 19</span>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="card mb-2" v-for="c in posts.comments" style="width: 95%; float: right;">
+                            <div class="card-body">
+                                <div class="media forum-item">
+                                    <a href="javascript:void(0)" class="card-link">
+                                        <img src="https://bootdey.com/img/Content/avatar/avatar2.png"
+                                            class="rounded-circle" width="50" alt="User" />
+                                    </a>
+                                    <div class="media-body ml-3">
+                                        <a href="javascript:void(0)" class="text-secondary">{{c.author}}</a>
+                                        <div class="mt-3 font-size-sm">
+                                            <p>{{c.content}}</p>
+                                        </div>
+                                    </div>
+                                </div>
                             </div>
                         </div>
                     </div>
+                    <!-- /Forum Detail -->
 
+                    <!-- /Inner main body -->
+                </div>
+                <!-- /Inner main -->
+            </div>
+
+            <!-- New Thread Modal -->
+            <div class="modal fade" id="threadModal" tabindex="-1" role="dialog" aria-labelledby="threadModalLabel"
+                aria-hidden="true">
+                <div class="modal-dialog modal-lg" role="document">
+                    <div class="modal-content">
+                        <form>
+                            <div class="modal-header d-flex align-items-center bg-primary text-white">
+                                <h6 class="modal-title mb-0" id="threadModalLabel">New Discussion</h6>
+                                <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                                    <span aria-hidden="true">×</span>
+                                </button>
+                            </div>
+                            <div class="modal-body">
+                                <div class="form-group">
+                                    <label for="threadTitle">Category</label>
+                                    <select class="form-control" id="category" name="category" v-model="category"
+                                        required>
+                                        <option value="General">General</option>
+                                        <option value="Feedback">Feedback</option>
+                                        <option value="Lost and Found">Lost and Found</option>
+                                    </select>
+                                </div>
+                                <div class="form-group">
+                                    <label for="threadTitle">Title</label>
+                                    <input type="text" class="form-control" id="threadTitle" placeholder="Enter title"
+                                        autofocus="" v-model="title" />
+                                </div>
+
+                                <div class="form-group">
+                                    <label for="threadTitle">Content</label>
+                                    <!-- <input type="text" class="form-control" id="threadTitle" placeholder="Enter title"
+                                        autofocus="" /> -->
+                                    <textarea class="form-control" id="content" name="content" rows="4"
+                                        v-model="content" required></textarea>
+                                </div>
+                            </div>
+                            <div class="modal-footer">
+                                <button type="button" class="btn btn-light" data-dismiss="modal">Cancel</button>
+                                <button type="button" class="btn btn-primary" @click="createPost">Post</button>
+                            </div>
+                        </form>
+                    </div>
+                </div>
+            </div>
+
+            <!-- New Comment Modal -->
+            <div class="modal fade" id="threadModalComment" tabindex="-1" role="dialog"
+                aria-labelledby="threadModalCommentLabel" aria-hidden="true">
+                <div class="modal-dialog modal-lg" role="document">
+                    <div class="modal-content">
+                        <form>
+                            <div class="modal-header d-flex align-items-center bg-primary text-white">
+                                <h6 class="modal-title mb-0" id="threadModalCommentLabel">New Discussion</h6>
+                                <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                                    <span aria-hidden="true">×</span>
+                                </button>
+                            </div>
+                            <div class="modal-body">
+
+                                <div class="form-group">
+                                    <label for="threadTitle">Content</label>
+                                    <!-- <input type="text" class="form-control" id="threadTitle" placeholder="Enter title"
+                                        autofocus="" /> -->
+                                    <textarea class="form-control" id="content" name="content" rows="4"
+                                        v-model="commentDetails" required></textarea>
+                                </div>
+                            </div>
+                            <div class="modal-footer">
+                                <button type="button" class="btn btn-light" data-dismiss="modal">Cancel</button>
+                                <button type="button" class="btn btn-primary"
+                                    @click="postComment(posts.id)">Post</button>
+                            </div>
+                        </form>
+                    </div>
                 </div>
             </div>
         </div>
     </div>
 
+    <script src="https://code.jquery.com/jquery-1.10.2.min.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@4.4.1/dist/js/bootstrap.bundle.min.js"></script>
+    <script type="text/javascript">
 
+    </script>
 </body>
 
 </html>

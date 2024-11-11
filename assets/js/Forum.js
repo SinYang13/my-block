@@ -2,10 +2,36 @@ import { db } from '../js/config'
 import { createPost, postComment} from "../../db/forumCRUD"
 import {
     collection, getDocs, addDoc, query,
-    Timestamp, orderBy,
+    Timestamp, orderBy, where, deleteDoc
 } from "https://www.gstatic.com/firebasejs/10.14.0/firebase-firestore.js";
 
 // import { createPost, readPosts, updatePost, deletePost, postComment, deleteComment } from '../db/forumCRUD.js';
+
+// Function to handle link clicks
+function handleLinkClick(event) {
+    event.preventDefault(); // Prevent default link navigation
+
+    const url = event.currentTarget.href; // Get the destination URL
+
+    // Add fade-out class to trigger animation
+    document.body.classList.add("fade-out");
+
+    // Delay the navigation to allow the fade-out animation to complete
+    setTimeout(() => {
+        window.location.href = url;
+    }, 500); // Delay matches the duration of the fadeOut animation (0.5s)
+}
+
+// Apply the event listener to all <a> tags with class "animated-link"
+document.addEventListener("DOMContentLoaded", () => {
+    const links = document.querySelectorAll("a.animated-link");
+
+    // Add event listeners for the fade-out animation on link click
+    links.forEach(link => link.addEventListener("click", handleLinkClick));
+
+    // Trigger fade-in when the page loads
+    document.body.classList.add("fade-in");
+});
 
 
 // <div id='app'></div>
@@ -15,17 +41,17 @@ const app = Vue.createApp({
             // key: value
             displayForumForm: true,
             displayButton: true,
-            displayCommentButton: false,
-            displayCommentForm: false,
             title: "",
             category: "General",
             content: "",
             userName: sessionStorage.getItem("loggedInUserEmail"),
             forums: [],
-            commentDetails: "",
-            parentID: "",            
+            commentDetails: "",       
             selectedCategory: 'All', // Default category filter
-            isLiked: ""
+            posts: [],
+            commentsCount:0,
+            heart: "far fa-heart",
+            heartStatus: {}
         };
         
     }, // data
@@ -43,7 +69,7 @@ const app = Vue.createApp({
     // },
     async mounted() {
         this.forums = await this.getposts()
-        console.log(this.displayCommentForm)
+        this.showComments();
         const app = this;
         this.handleProfileLink();
         window.addEventListener('scroll', this.handleScroll);
@@ -105,6 +131,19 @@ const app = Vue.createApp({
                     });
                 });
 
+                const likedRef = collection(db, `forum/${docId}/liked`);
+                const likedSnapshot = await getDocs(likedRef);
+                const likedList = [];
+
+                likedSnapshot.forEach((likedDoc) => {
+                    if(likedDoc.data().user == this.userName){
+                        this.heartStatus[docId] = true;
+                    }
+                    likedList.push({
+                        ...likedDoc.data()
+                    });
+                });
+
                 forumList.push({
                     id: docId,
                     author: doc.data().author,
@@ -114,7 +153,7 @@ const app = Vue.createApp({
                     createdAt: doc.data().createdAt.toDate(),
                     showComments: false,
                     comments: comments,
-                    isLiked: doc.data().isLiked,
+                    likedCount : likedList.length
                 });
 
                 // Update the category count
@@ -144,7 +183,8 @@ const app = Vue.createApp({
         },
 
 
-        async postComment() {
+        async postComment(parentID) {
+            console.log(parentID)
             if (!this.commentDetails) {
                 alert("Please fill in all required fields before submitting.");
                 return; // Stop the function from proceeding further
@@ -155,19 +195,60 @@ const app = Vue.createApp({
                         createdAt: Timestamp.fromDate(new Date())}
 
                         try {
-                            const commentId = await postComment(this.parentID,commentData);
+                            const commentId = await postComment(parentID,commentData);
                             alert(`Comment created with ID: ${commentId}`);
                             this.closeForm()
                         }
                         catch (error) {
-                            console.error(`Error creating new comment ${this.parentID}`, error);
+                            console.error(`Error creating new comment ${parentID}`, error);
                         }
             }
         },
 
-        toggleLike(post) {
-            post.isLiked = !post.isLiked; // Toggle like status for the specific post
+        showComments(postID) {
+            this.forums.forEach(item =>{
+                if(item.id == postID){
+                    this.posts = item
+                    console.log(item)
+                }
+            })
+            this.commentsCount = this.posts.comments.length
+            console.log(this.posts.comments.length)
         },
+
+        async liked(parentID) {
+            const commentRef = collection(db, `forum/${parentID}/liked`);
+            const userEmail = this.userName; // Replace with dynamic user email
+            
+            // Query to find if the user has already liked the post
+            const userLikeQuery = query(commentRef, where("user", "==", userEmail));
+            const querySnapshot = await getDocs(userLikeQuery);
+
+            if (!querySnapshot.empty) {
+                // User has already liked the post, so remove the like
+                querySnapshot.forEach(async (doc) => {
+                    await deleteDoc(doc.ref);
+                    console.log("Like removed successfully for user:", userEmail);
+                });
+                this.heartStatus[parentID] = false; // Reset heart icon color
+                const post = this.forums.find(post => post.id === parentID);
+                if (post){
+                    post.likedCount--;
+                } 
+            } else {
+                // User has not liked the post, so add a like
+                await addDoc(commentRef, {
+                    user: userEmail,
+                });
+                console.log("Like added successfully for user:", userEmail);
+                this.heartStatus[parentID] = true; // Set heart icon color
+                const post = this.forums.find(post => post.id === parentID);
+                if (post){
+                    post.likedCount++;
+                } 
+            }
+        },
+
         handleScroll() {
             const scrollPosition = window.scrollY;
             const headerHeight = document.querySelector('header').offsetHeight;

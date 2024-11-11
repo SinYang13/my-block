@@ -252,7 +252,8 @@ p {
 }
 
 img {
-  width: 100%;
+  /* I hid this */
+  /* width: 100%; */
   overflow: hidden;
 }
 
