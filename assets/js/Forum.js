@@ -1,4 +1,4 @@
-import { db } from "../js/config";
+import { db } from "../js/config.js";
 import { createPost, postComment } from "../../db/forumCRUD.js";
 import {
   collection,
