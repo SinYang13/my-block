@@ -254,40 +254,44 @@ const app = Vue.createApp({
 
         handleScroll() {
             const scrollPosition = window.scrollY;
-            const headerHeight = document.querySelector('header').offsetHeight;
-            const headerElement = document.querySelector('header');
+            const headerHeight = document.querySelector("header").offsetHeight;
+            const headerElement = document.querySelector("header");
             if (scrollPosition >= headerHeight) {
-                headerElement.classList.add('background-header');
+              headerElement.classList.add("background-header");
             } else {
-                headerElement.classList.remove('background-header');
+              headerElement.classList.remove("background-header");
             }
-        },
-        handleProfileLink() {
-            const email = sessionStorage.getItem('loggedInUserEmail');
-            const userName = sessionStorage.getItem('loggedInUserName');
-            const userType = sessionStorage.getItem('loggedInUserType');
-            const profileLink = document.getElementById('profileLink');
-            
+          },
+          handleProfileLink() {
+            const email = sessionStorage.getItem("loggedInUserEmail");
+            const userName = sessionStorage.getItem("loggedInUserName");
+            const userType = sessionStorage.getItem("loggedInUserType");
+            const profileLink = document.getElementById("profileLink");
+      
             if (email && userType && userName) {
-                const profileLinkRedir = document.getElementById("profileLinkRedir");
-                profileLinkRedir.setAttribute("href", "profile.html");
-
-                const profileLinkImg = document.getElementById("profileLinkImg");
-                profileLinkImg.className = "fa fa-calendar";
-
-                const profileLinkText = document.getElementById("profileLinkText");
-                profileLinkText.textContent = "Profile"
+              const profileLinkRedir = document.getElementById("profileLinkRedir");
+              profileLinkRedir.setAttribute("href", "profile.html");
+      
+              const profileLinkImg = document.getElementById("profileLinkImg");
+              profileLinkImg.className = "fa fa-calendar";
+      
+              const profileLinkText = document.getElementById("profileLinkText");
+              profileLinkText.textContent = "Profile";
+      
+              // profileLink.innerHTML = `<a href="profile.html"><i class="fa fa-calendar"></i> Profile</a>`;
             } else {
-                const profileLinkRedir = document.getElementById("profileLinkRedir");
-                profileLinkRedir.setAttribute("href", "login.html");
-
-                const profileLinkImg = document.getElementById("profileLinkImg");
-                profileLinkImg.className = "fa fa-sign-in-alt";
-
-                const profileLinkText = document.getElementById("profileLinkText");
-                profileLinkText.textContent = "Login / Register"
+              const profileLinkRedir = document.getElementById("profileLinkRedir");
+              profileLinkRedir.setAttribute("href", "login.html");
+      
+              const profileLinkImg = document.getElementById("profileLinkImg");
+              profileLinkImg.className = "fa fa-sign-in-alt";
+      
+              const profileLinkText = document.getElementById("profileLinkText");
+              profileLinkText.textContent = "Login";
+      
+              // profileLink.innerHTML = `<a href="login.html"><i class="fa fa-sign-in-alt"></i> Login / Register</a>`;
             }
-        }
+          },
     } // methods
 });
 const vm = app.mount('#app'); 
