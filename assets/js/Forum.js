@@ -48,6 +48,7 @@ const app = Vue.createApp({
             forums: [],
             commentDetails: "",       
             selectedCategory: 'All', // Default category filter
+            searchQuery: '',
             posts: [],
             commentsCount:0,
             heart: "far fa-heart",
@@ -57,11 +58,13 @@ const app = Vue.createApp({
     }, // data
     computed: { 
         filteredPosts() {
-            if (this.selectedCategory === 'All') {
-                return this.forums; // Show all posts if 'All' is selected
-            } else {
-                return this.forums.filter(post => post.category === this.selectedCategory);
-            }
+            return this.forums.filter(post => {
+                const matchesCategory = this.selectedCategory === 'All' || post.category === this.selectedCategory;
+                const matchesSearch = post.title.toLowerCase().includes(this.searchQuery.toLowerCase()) ||
+                                      post.content.toLowerCase().includes(this.searchQuery.toLowerCase());
+    
+                return matchesCategory && matchesSearch;
+            });
         }
     
     }, // computed
