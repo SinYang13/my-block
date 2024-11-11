@@ -105,8 +105,8 @@ const app = Vue.createApp({
 
                 try {
                     const postID = await createPost(postData);
-                    alert(`Post created with ID: ${postID}`);
-                    this.closeForm()
+                    alert('Post created');
+                    window.location.reload()
                 }
                 catch (error) {
                     console.error(`Error creating new post`, error);
@@ -199,8 +199,8 @@ const app = Vue.createApp({
 
                         try {
                             const commentId = await postComment(parentID,commentData);
-                            alert(`Comment created with ID: ${commentId}`);
-                            this.closeForm()
+                            alert('Comment created')
+                            window.location.reload()
                         }
                         catch (error) {
                             console.error(`Error creating new comment ${parentID}`, error);
