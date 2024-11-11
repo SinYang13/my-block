@@ -126,9 +126,17 @@ const servicesApp = Vue.createApp({
         return;
       }
 
+      // console.log("Opening signup modal");
+
+      // Check if the user is logged in
       const userId = sessionStorage.getItem("loggedInUserEmail");
+
       if (!userId) {
-        alert("Please log in to bookmark services.");
+        // Show the login prompt modal for events instead of alert
+        const loginModal = new bootstrap.Modal(
+          document.getElementById("loginPromptModalEvents")
+        );
+        loginModal.show();
         return;
       }
 
