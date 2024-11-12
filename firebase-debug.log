@@ -1,0 +1,50 @@
+[debug] [2024-11-12T07:19:19.127Z] ----------------------------------------------------------------------
+[debug] [2024-11-12T07:19:19.130Z] Command:       C:\Program Files\nodejs\node.exe C:\Users\leesi\AppData\Roaming\npm\node_modules\firebase-tools\lib\bin\firebase.js init hosting
+[debug] [2024-11-12T07:19:19.130Z] CLI Version:   13.24.2
+[debug] [2024-11-12T07:19:19.131Z] Platform:      win32
+[debug] [2024-11-12T07:19:19.131Z] Node Version:  v20.18.0
+[debug] [2024-11-12T07:19:19.131Z] Time:          Tue Nov 12 2024 15:19:19 GMT+0800 (Singapore Standard Time)
+[debug] [2024-11-12T07:19:19.131Z] ----------------------------------------------------------------------
+[debug] 
+[debug] [2024-11-12T07:19:19.138Z] > command requires scopes: ["email","openid","https://www.googleapis.com/auth/cloudplatformprojects.readonly","https://www.googleapis.com/auth/firebase","https://www.googleapis.com/auth/cloud-platform"]
+[debug] [2024-11-12T07:19:19.138Z] > authorizing via signed-in user (sinyang.lee.2023@smu.edu.sg)
+[info] 
+     ######## #### ########  ######## ########     ###     ######  ########
+     ##        ##  ##     ## ##       ##     ##  ##   ##  ##       ##
+     ######    ##  ########  ######   ########  #########  ######  ######
+     ##        ##  ##    ##  ##       ##     ## ##     ##       ## ##
+     ##       #### ##     ## ######## ########  ##     ##  ######  ########
+
+You're about to initialize a Firebase project in this directory:
+
+  C:\wamp64\www\my-block
+
+Before we get started, keep in mind:
+
+  * You are currently outside your home directory
+
+[info] 
+=== Project Setup
+[info] 
+[info] First, let's associate this project directory with a Firebase project.
+[info] You can create multiple project aliases by running firebase use --add, 
+[info] but for now we'll just set up a default project.
+[info] 
+[debug] [2024-11-12T07:19:39.295Z] Checked if tokens are valid: true, expires at: 1731399446822
+[debug] [2024-11-12T07:19:39.295Z] Checked if tokens are valid: true, expires at: 1731399446822
+[debug] [2024-11-12T07:19:39.297Z] >>> [apiv2][query] GET https://firebase.googleapis.com/v1beta1/projects pageSize=100
+[debug] [2024-11-12T07:19:40.557Z] <<< [apiv2][status] GET https://firebase.googleapis.com/v1beta1/projects 200
+[debug] [2024-11-12T07:19:40.557Z] <<< [apiv2][body] GET https://firebase.googleapis.com/v1beta1/projects [omitted]
+[info] i  Using project myblock-wad (myBlock-WAD) 
+[info] 
+=== Hosting Setup
+[debug] [2024-11-12T07:19:41.976Z] Checked if tokens are valid: true, expires at: 1731399446822
+[debug] [2024-11-12T07:19:41.976Z] Checked if tokens are valid: true, expires at: 1731399446822
+[debug] [2024-11-12T07:19:41.977Z] >>> [apiv2][query] GET https://firebase.googleapis.com/v1beta1/projects/myblock-wad [none]
+[debug] [2024-11-12T07:19:42.284Z] <<< [apiv2][status] GET https://firebase.googleapis.com/v1beta1/projects/myblock-wad 200
+[debug] [2024-11-12T07:19:42.285Z] <<< [apiv2][body] GET https://firebase.googleapis.com/v1beta1/projects/myblock-wad {"projectId":"myblock-wad","projectNumber":"76059073822","displayName":"myBlock-WAD","name":"projects/myblock-wad","resources":{"hostingSite":"myblock-wad","storageBucket":"myblock-wad.appspot.com","locationId":"asia-southeast1"},"state":"ACTIVE","etag":"1_2d32f29f-f794-42bb-a835-05b4d3b98dfc"}
+[info] 
+[info] Your public directory is the folder (relative to your project directory) that
+[info] will contain Hosting assets to be uploaded with firebase deploy. If you
+[info] have a build process for your assets, use your build's output directory.
+[info] 
