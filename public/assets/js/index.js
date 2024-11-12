@@ -61,9 +61,30 @@ const eventsApp = Vue.createApp({
       selectedEvent: {}, // Track the event to show in the modal
       showSignupModal: false, // Track visibility of the signup modal
       attendeeForms: [], // Initialize attendee forms array
+
+      cardNumber: "",
+      cardLogo: "",
+      paymentReady: false,
     };
   },
   methods: {
+    checkCardType() {
+      const cardNum = this.cardNumber.replace(/\s+/g, "");
+      if (cardNum.startsWith("4")) {
+        this.cardLogo =
+          "https://upload.wikimedia.org/wikipedia/commons/4/41/Visa_Logo.png";
+      } else if (/^5[1-5]/.test(cardNum)) {
+        this.cardLogo =
+          "https://upload.wikimedia.org/wikipedia/commons/0/04/Mastercard-logo.png";
+      } else {
+        this.cardLogo = "";
+      }
+      console.log("Card Logo URL:", this.cardLogo); // Debugging line to check the logo URL
+    },
+    
+    togglePaymentReady() {
+      this.paymentReady = !this.paymentReady;
+    },
     async fetchEvents() {
       try {
         const eventsRef = collection(db, "events");
@@ -415,7 +436,9 @@ form.addEventListener("submit", function (event) {
       function (response) {
         // alert("Email Send Successfully")
         // look here
-        const successModal = new bootstrap.Modal(document.getElementById('successModal'));
+        const successModal = new bootstrap.Modal(
+          document.getElementById("successModal")
+        );
         successModal.show();
         document.getElementById("name").value = "";
         document.getElementById("email").value = "";
