@@ -189,7 +189,8 @@ const servicesApp = Vue.createApp({
         const userRef = collection(db, "users", userId, "selectedServices");
         await addDoc(userRef, bookmarkData);
 
-        alert("Service bookmarked successfully!");
+        const successModal = new bootstrap.Modal(document.getElementById('successModal'));
+          successModal.show();
       } catch (error) {
         console.error("Error bookmarking service:", error.message);
         alert("Failed to bookmark the service. Please try again.");

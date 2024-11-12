@@ -165,9 +165,8 @@ const eventsApp = Vue.createApp({
           registrationData
         );
 
-        alert(
-          "Registration successful! Payment will be collected on site (If Any)"
-        );
+        const successModal = new bootstrap.Modal(document.getElementById('successModal'));
+        successModal.show();
         this.closeSignupModal(); // Close the modal after successful submission
       } catch (error) {
         console.error("Error adding registration:", error);
@@ -418,7 +417,8 @@ const eventsApp = Vue.createApp({
         if (event.error) {
           console.error("Error creating event", event.error);
         } else {
-          window.alert("Event has been added to your google calendar");
+          const successModal = new bootstrap.Modal(document.getElementById('successModal2'));
+          successModal.show();
           console.info("Event created: " + event.htmlLink);
         }
       });

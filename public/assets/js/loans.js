@@ -211,7 +211,8 @@ const app = Vue.createApp({
             };
             if (!this.collectionVenue) {
                 // If collectionVenue is missing, show alert
-                alert("Please go to your profile to select your preferred Community Club for collection before reserving an item.");
+                const successModal = new bootstrap.Modal(document.getElementById('successModal'));
+                successModal.show();
                 return;
             };
         
@@ -431,8 +432,9 @@ const app = Vue.createApp({
               if (event.error) {
                   console.error("Error creating event", event.error);
               } else {
-                  window.alert("Event has been added to your google calendar");
-                  window.location.reload();
+                const successModal = new bootstrap.Modal(document.getElementById('successModal2'));
+                successModal.show();
+                
               }
             });
         },

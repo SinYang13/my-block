@@ -413,7 +413,10 @@ form.addEventListener("submit", function (event) {
     })
     .then(
       function (response) {
-        alert("Email sent successfully!");
+        // alert("Email Send Successfully")
+        // look here
+        const successModal = new bootstrap.Modal(document.getElementById('successModal'));
+        successModal.show();
         document.getElementById("name").value = "";
         document.getElementById("email").value = "";
         document.getElementById("subject").value = "";
