@@ -58,10 +58,11 @@ const app = Vue.createApp({
 
         if (this.userid != null) {
             this.showProfile = true
+            this.getuser();
+            this.getEvents();
+            this.getServices();
         };
-        this.getuser();
-        this.getEvents();
-        this.getServices();
+
     },
     methods: {
         async getRentals() {
