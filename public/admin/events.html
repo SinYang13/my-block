@@ -174,6 +174,7 @@
                             </div>
                             <div class="card-body d-flex flex-column gap-2 text-start">
                                 <h4 class="card-title">Number of Attendees: {{this.attendees.number}}</h4>
+                                <h4 class="card-title">Revenue: ${{this.event.revenue}}</h4>
                                 <hr>
 
                                 <p><strong>Dietary Restrictions</strong></p>
@@ -359,17 +360,74 @@
                     </div>
                     <div class="row">
                         <div class="visualization-tile large" style="padding-left: 0px; padding-right: 0px;">
+
                             <div class="row" style="height:100%; margin:5px;">
-                                <div v-for="event in events" :key="event.id" class="col-12 mb-5 mb-xxl-3">
+                                <div class="mb-2">
+                                    <button class="btn btn-warning me-2" style="width: 80px" @click="sortEvents('r')"
+                                        id="sort-r">
+                                        <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16"
+                                            fill="currentColor" class="bi bi-people" viewBox="0 0 16 16">
+                                            <path
+                                                d="M15 14s1 0 1-1-1-4-5-4-5 3-5 4 1 1 1 1zm-7.978-1L7 12.996c.001-.264.167-1.03.76-1.72C8.312 10.629 9.282 10 11 10c1.717 0 2.687.63 3.24 1.276.593.69.758 1.457.76 1.72l-.008.002-.014.002zM11 7a2 2 0 1 0 0-4 2 2 0 0 0 0 4m3-2a3 3 0 1 1-6 0 3 3 0 0 1 6 0M6.936 9.28a6 6 0 0 0-1.23-.247A7 7 0 0 0 5 9c-4 0-5 3-5 4q0 1 1 1h4.216A2.24 2.24 0 0 1 5 13c0-1.01.377-2.042 1.09-2.904.243-.294.526-.569.846-.816M4.92 10A5.5 5.5 0 0 0 4 13H1c0-.26.164-1.03.76-1.724.545-.636 1.492-1.256 3.16-1.275ZM1.5 5.5a3 3 0 1 1 6 0 3 3 0 0 1-6 0m3-2a2 2 0 1 0 0 4 2 2 0 0 0 0-4" />
+                                        </svg>
+
+                                        <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16"
+                                            fill="currentColor" class="bi bi-sort-down" viewBox="0 0 16 16">
+                                            <path
+                                                d="M3.5 2.5a.5.5 0 0 0-1 0v8.793l-1.146-1.147a.5.5 0 0 0-.708.708l2 1.999.007.007a.497.497 0 0 0 .7-.006l2-2a.5.5 0 0 0-.707-.708L3.5 11.293zm3.5 1a.5.5 0 0 1 .5-.5h7a.5.5 0 0 1 0 1h-7a.5.5 0 0 1-.5-.5M7.5 6a.5.5 0 0 0 0 1h5a.5.5 0 0 0 0-1zm0 3a.5.5 0 0 0 0 1h3a.5.5 0 0 0 0-1zm0 3a.5.5 0 0 0 0 1h1a.5.5 0 0 0 0-1z" />
+                                        </svg>
+                                    </button>
+                                    <button class="btn btn-success" style="width: 80px" @click="sortEvents('$')"
+                                        id="sort-$">
+                                        <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16"
+                                            fill="currentColor" class="bi bi-currency-dollar" viewBox="0 0 16 16">
+                                            <path
+                                                d="M4 10.781c.148 1.667 1.513 2.85 3.591 3.003V15h1.043v-1.216c2.27-.179 3.678-1.438 3.678-3.3 0-1.59-.947-2.51-2.956-3.028l-.722-.187V3.467c1.122.11 1.879.714 2.07 1.616h1.47c-.166-1.6-1.54-2.748-3.54-2.875V1H7.591v1.233c-1.939.23-3.27 1.472-3.27 3.156 0 1.454.966 2.483 2.661 2.917l.61.162v4.031c-1.149-.17-1.94-.8-2.131-1.718zm3.391-3.836c-1.043-.263-1.6-.825-1.6-1.616 0-.944.704-1.641 1.8-1.828v3.495l-.2-.05zm1.591 1.872c1.287.323 1.852.859 1.852 1.769 0 1.097-.826 1.828-2.2 1.939V8.73z" />
+                                        </svg>
+                                        <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16"
+                                            fill="currentColor" class="bi bi-sort-down" viewBox="0 0 16 16">
+                                            <path
+                                                d="M3.5 2.5a.5.5 0 0 0-1 0v8.793l-1.146-1.147a.5.5 0 0 0-.708.708l2 1.999.007.007a.497.497 0 0 0 .7-.006l2-2a.5.5 0 0 0-.707-.708L3.5 11.293zm3.5 1a.5.5 0 0 1 .5-.5h7a.5.5 0 0 1 0 1h-7a.5.5 0 0 1-.5-.5M7.5 6a.5.5 0 0 0 0 1h5a.5.5 0 0 0 0-1zm0 3a.5.5 0 0 0 0 1h3a.5.5 0 0 0 0-1zm0 3a.5.5 0 0 0 0 1h1a.5.5 0 0 0 0-1z" />
+                                        </svg>
+                                    </button>
+                                </div>
+                                <div v-for="(event, index) in events" :key="event.id" class="col-12 mb-5 mb-xxl-3">
                                     <div class="card" style="padding-right:10px">
                                         <div class="row g-0">
                                             <div class="col-2">
                                                 <img :src="event.image" class="img-fluid rounded-start"
                                                     alt="Announcement Image" style="max-height:200px">
                                             </div>
-                                            <div class="col-10 col-lg-8" style="display: flex; flex-direction: column; justify-content: space-between;">
+                                            <div class="col-10 col-lg-8"
+                                                style="display: flex; flex-direction: column; justify-content: space-between;">
                                                 <div class="row" style="padding: 10px">
-                                                    <h5 class="">{{ event.title }}</h5>
+                                                    <h5 class="">
+                                                        <svg v-if="index==0" xmlns="http://www.w3.org/2000/svg"
+                                                            width="24" height="24" fill="gold" class="bi bi-award"
+                                                            viewBox="0 0 16 16">
+                                                            <path
+                                                                d="M9.669.864 8 0 6.331.864l-1.858.282-.842 1.68-1.337 1.32L2.6 6l-.306 1.854 1.337 1.32.842 1.68 1.858.282L8 12l1.669-.864 1.858-.282.842-1.68 1.337-1.32L13.4 6l.306-1.854-1.337-1.32-.842-1.68zm1.196 1.193.684 1.365 1.086 1.072L12.387 6l.248 1.506-1.086 1.072-.684 1.365-1.51.229L8 10.874l-1.355-.702-1.51-.229-.684-1.365-1.086-1.072L3.614 6l-.25-1.506 1.087-1.072.684-1.365 1.51-.229L8 1.126l1.356.702z" />
+                                                            <path
+                                                                d="M4 11.794V16l4-1 4 1v-4.206l-2.018.306L8 13.126 6.018 12.1z" />
+                                                        </svg>
+                                                        <svg v-if="index==1" xmlns="http://www.w3.org/2000/svg"
+                                                            width="24" height="24" fill="silver" class="bi bi-award"
+                                                            viewBox="0 0 16 16">
+                                                            <path
+                                                                d="M9.669.864 8 0 6.331.864l-1.858.282-.842 1.68-1.337 1.32L2.6 6l-.306 1.854 1.337 1.32.842 1.68 1.858.282L8 12l1.669-.864 1.858-.282.842-1.68 1.337-1.32L13.4 6l.306-1.854-1.337-1.32-.842-1.68zm1.196 1.193.684 1.365 1.086 1.072L12.387 6l.248 1.506-1.086 1.072-.684 1.365-1.51.229L8 10.874l-1.355-.702-1.51-.229-.684-1.365-1.086-1.072L3.614 6l-.25-1.506 1.087-1.072.684-1.365 1.51-.229L8 1.126l1.356.702z" />
+                                                            <path
+                                                                d="M4 11.794V16l4-1 4 1v-4.206l-2.018.306L8 13.126 6.018 12.1z" />
+                                                        </svg>
+                                                        <svg v-if="index==2" xmlns="http://www.w3.org/2000/svg"
+                                                            width="24" height="24" fill="brown" class="bi bi-award"
+                                                            viewBox="0 0 16 16">
+                                                            <path
+                                                                d="M9.669.864 8 0 6.331.864l-1.858.282-.842 1.68-1.337 1.32L2.6 6l-.306 1.854 1.337 1.32.842 1.68 1.858.282L8 12l1.669-.864 1.858-.282.842-1.68 1.337-1.32L13.4 6l.306-1.854-1.337-1.32-.842-1.68zm1.196 1.193.684 1.365 1.086 1.072L12.387 6l.248 1.506-1.086 1.072-.684 1.365-1.51.229L8 10.874l-1.355-.702-1.51-.229-.684-1.365-1.086-1.072L3.614 6l-.25-1.506 1.087-1.072.684-1.365 1.51-.229L8 1.126l1.356.702z" />
+                                                            <path
+                                                                d="M4 11.794V16l4-1 4 1v-4.206l-2.018.306L8 13.126 6.018 12.1z" />
+                                                        </svg>
+                                                        {{ event.title }}
+                                                    </h5>
                                                     <p class="">{{ event.description }}</p>
                                                 </div>
                                                 <div class="row" style="padding: 10px; ">
@@ -385,7 +443,9 @@
                                             </div>
                                             <div class="col-12 col-lg-2 d-flex align-items-center justify-content-end">
                                                 <button v-if="event.registrations" class="btn btn-outline-primary  me-2"
-                                                    @click="showRegistrationsModal(event.registrations)">
+                                                    @click="showRegistrationsModal(event.registrations, event)"
+                                                    style="width: 80px">
+                                                    {{event.registrations.length}}
                                                     <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16"
                                                         fill="currentColor" class="bi bi-people" viewBox="0 0 16 16">
                                                         <path
@@ -444,7 +504,8 @@
                         cat: '',
                         place: '',
                         postal: '',
-                        price: ''
+                        price: '',
+                        revenue: '',
                     },
                     registrations: {},
                     events: [],
@@ -505,7 +566,8 @@
                 },
 
 
-                showRegistrationsModal(registrations) {
+                showRegistrationsModal(registrations, eventObj) {
+                    this.event = { ...eventObj };
                     console.log(registrations);
                     this.registrations = registrations;
                     this.parseAttendees(this.registrations);
@@ -531,7 +593,8 @@
                         cat: '',
                         place: '',
                         postal: '',
-                        price: ''
+                        price: '',
+                        revenue: ''
                     };
 
                     this.registrations = {};
@@ -706,11 +769,39 @@
                 async loadEvents() {
                     try {
                         this.events = await readEvents();
+                        this.events.sort((a, b) => b.revenue - a.revenue);
+
                         console.log(this.events);
                     } catch (error) {
                         console.error("Error loading events:", error);
                     }
+                },
+                sortEvents(method) {
+                    const btn_r = document.getElementById("sort-r");
+                    const btn_$ = document.getElementById("sort-$");
+
+                    if (method === "$") {
+                        this.events.sort((a, b) => b.revenue - a.revenue);
+                        btn_r.className = "btn btn-warning me-2";
+                        btn_$.className = "btn btn-success";
+                    }
+
+                    if (method === "r") {
+                        this.events.sort((a, b) => {
+                            // Check if either event is missing the `registrations` attribute
+                            if (!a.registrations && !b.registrations) return 0; // Both missing, keep original order
+                            if (!a.registrations) return 1; // Push `a` to the end
+                            if (!b.registrations) return -1; // Push `b` to the end
+
+                            // Both have `registrations`, compare by their lengths
+                            return b.registrations.length - a.registrations.length;
+                        });
+
+                        btn_r.className = "btn btn-success me-2";
+                        btn_$.className = "btn btn-warning";
+                    }
                 }
+
             },
             async mounted() {
                 this.handleProfileLink();

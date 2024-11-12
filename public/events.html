@@ -201,7 +201,7 @@
     </div>
 
     <!-- Modal (Popup) -->
-    <div class="modal" id="eventModal" tabindex="-1" aria-labelledby="eventModalLabel" aria-hidden="true">
+    <div class="modal fade" id="eventModal" tabindex="-1" aria-labelledby="eventModalLabel" aria-hidden="true">
       <div class="modal-dialog modal-md">
         <div class="modal-content" v-if="selectedEvent">
           <div class="modal-header">
@@ -227,7 +227,7 @@
     </div>
 
     <!-- Signup Modal -->
-    <div class="modal" id="signupModal" tabindex="-1" aria-labelledby="signupModalLabel" aria-hidden="true"
+    <div class="modal fade" id="signupModal" tabindex="-1" aria-labelledby="signupModalLabel" aria-hidden="true"
       v-if="showSignupModal" style="background: rgba(0,0,0,0.5);">
       <div class="modal-dialog modal-lg">
         <div class="modal-content">
@@ -318,7 +318,7 @@
             <button type="button" class="btn btn-secondary" @click="closeSignupModal">Cancel</button>
             <button v-if="selectedEvent.price === 'Free!'" type="button" class="btn btn-primary"
               @click="submitRegistration">Submit Registration</button>
-            <button v-if="paymentReady === true" class="btn btn-success" @click="submitRegistration(); togglePaymentReady()">Pay Now</button>
+            <button v-else-if="paymentReady === true" class="btn btn-success" @click="submitRegistration(); togglePaymentReady()">Pay Now</button>
             <button v-else class="btn btn-primary" type="button" data-bs-toggle="collapse"
               data-bs-target="#collapseExample" aria-expanded="false" aria-controls="collapseExample" @click="togglePaymentReady()">
               Proceed to Payment

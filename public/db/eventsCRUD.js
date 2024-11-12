@@ -41,7 +41,31 @@ async function readEvents() {
                 }
             } catch (error) {
                 console.error(`Error reading registrations for event ${doc.id}:`, error);
+
             }
+
+            
+            
+
+            try {
+                // Check if data.price is in the correct format with a '$' symbol
+                if (data.price && data.price.includes('$')) {
+                    let price = parseFloat(data.price.split('$')[1]); // parseFloat to handle numerical values
+                    if (!isNaN(price)) {
+                        data.revenue = price * data.registrations.length;
+                    } else {
+                        console.log("Price is not a valid number.");
+                        data.revenue = 0;
+                    }
+                } else {
+                    console.log("Price format is incorrect or missing.");
+                    data.revenue = 0;
+                }
+            } catch (error) {
+                console.log("Error calculating revenue:", error);
+                data.revenue = 0;
+            }
+            
 
             events.push({ id: doc.id, ...data });
         }
