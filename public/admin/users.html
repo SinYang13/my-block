@@ -572,7 +572,7 @@
 
                     } else {
                         const profileLinkRedir = document.getElementById("profileLinkRedir");
-                        profileLinkRedir.setAttribute("href", "login.html");
+                        profileLinkRedir.setAttribute("href", "../login.html");
 
                         const profileLinkImg = document.getElementById("profileLinkImg");
                         profileLinkImg.className = "fa fa-sign-in-alt";
@@ -596,11 +596,27 @@
                 },
 
                 async handleCreateUser() {
-                    const userData = this.user;
+                    const userData = { password: this.user.password, type: this.user.type };
 
                     console.log(userData)
-
-                    await createUser(this.user.email, userData);
+                    try {
+                        await createUser(this.user.email, userData, this.user.firstName, this.user.lastName, this.user.phoneNumber);
+                        const userDataCombined = {
+                            id: this.user.email,
+                            password: this.user.password, 
+                            type: this.user.type,
+                            firstName: this.user.firstName,
+                            lastName: this.user.lastName,
+                            phoneNumber: this.user.lastName,
+                            registerDate: new Date()
+                        }
+                        this.users.push(userDataCombined)
+                        alert('User created successfully');
+                    } catch(error) {
+                        console.error('Error creating user:', error);
+                        alert('Failed to create user.');
+                    }
+                    
                 }
             },
             async mounted() {

@@ -233,11 +233,11 @@
                 const datetimeSnapshot = await getDocs(datetimeCollectionRef);
                 const data = [];
 
-                console.log('Fetched datetime snapshot:', datetimeSnapshot);
-                console.log('Number of documents in datetime snapshot:', datetimeSnapshot.size);
+                // console.log('Fetched datetime snapshot:', datetimeSnapshot);
+                // console.log('Number of documents in datetime snapshot:', datetimeSnapshot.size);
 
                 datetimeSnapshot.forEach(doc => {
-                    console.log('Document data:', doc.data());
+                    // console.log('Document data:', doc.data());
                     const { datetime } = doc.data();
                     const parsedDate = datetime.toDate();
                     if (!isNaN(parsedDate)) {
@@ -248,7 +248,7 @@
                     }
                 });
 
-                console.log('Raw datetime data:', data);
+                // console.log('Raw datetime data:', data);
 
                 // Generate a list of all dates in the range from 7 days ago until today
                 const startDate = d3.timeDay.offset(new Date(), -7);
