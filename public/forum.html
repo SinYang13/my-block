@@ -347,7 +347,7 @@
                     <!-- Inner sidebar header -->
                     <div class="inner-sidebar-header justify-content-center">
                         <button class="btn btn-primary has-icon btn-block" type="button" data-toggle="modal"
-                            data-target="#threadModal" @click="openForm">
+                            @click="openForm">
                             <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24"
                                 fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"
                                 stroke-linejoin="round" class="feather feather-plus mr-2">
@@ -471,7 +471,7 @@
                             data-target=".forum-content"><i class="fa fa-arrow-left mr-2"
                                 style="margin-right: 5px;"></i>Back</a>
                         <a href="#" style="float: right;" class="btn btn-primary btn-sm mb-3 has-icon" type="button"
-                            data-toggle="modal" data-target="#threadModalComment" @click="openForm"><i
+                            data-toggle="modal" @click="openFormcomment"><i
                                 class="fa fa-plus-left mr-2"></i>Add New Comment</a>
                         <div class="card mb-2">
                             <div class="card-body">
@@ -605,6 +605,72 @@
                 </div>
             </div>
         </div>
+        <div class="modal fade" id="loginPromptModal" tabindex="-1" aria-labelledby="loginPromptLabel" aria-hidden="true">
+            <div class="modal-dialog">
+              <div class="modal-content">
+                <div class="modal-header">
+                  <h5 class="modal-title" id="loginPromptLabel">Please Log In</h5>
+                  <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                </div>
+                <div class="modal-body">
+                  <p>You need to log in to continue</p>
+                </div>
+                <div class="modal-footer">
+                  <button type="button" class="btn btn-secondary" data-dismiss="modal">Cancel</button>
+                  <a href="login.html" class="btn btn-primary">Log In</a> <!-- Redirect to login page -->
+                </div>
+              </div>
+            </div>
+          </div>
+
+          <div class="modal fade" id="successModal" tabindex="-1" aria-labelledby="successModalLabel" aria-hidden="true">
+            <div class="modal-dialog">
+                <div class="modal-content">
+                    <div class="modal-header">
+                        <h5 class="modal-title" id="successModalLabel">Success</h5>
+                    </div>
+                    <div class="modal-body">
+                        <p>Post created successfully.</p>
+                    </div>
+                    <div class="modal-footer">
+                        <button type="button" class="btn btn-primary" data-dismiss="modal" onclick="window.location.reload()">OK</button>
+                    </div>
+                </div>
+            </div>
+        </div>
+        <div class="modal fade" id="successModal2" tabindex="-1" aria-labelledby="successModalLabel2" aria-hidden="true">
+            <div class="modal-dialog">
+                <div class="modal-content">
+                    <div class="modal-header">
+                        <h5 class="modal-title" id="successModalLabel">Success</h5>
+                    </div>
+                    <div class="modal-body">
+                        <p>Comment created successfully.</p>
+                    </div>
+                    <div class="modal-footer">
+                        <button type="button" class="btn btn-primary" data-dismiss="modal" onclick="window.location.reload()">OK</button>
+                    </div>
+                </div>
+            </div>
+        </div>
+        <div class="modal fade" id="successModal3" tabindex="-1" aria-labelledby="successModalLabel3" aria-hidden="true">
+            <div class="modal-dialog">
+                <div class="modal-content">
+                    <div class="modal-header">
+                        <h5 class="modal-title" id="successModalLabel">Success</h5>
+                    </div>
+                    <div class="modal-body">
+                        <p>Please fill in all required fields before submitting.</p>
+                    </div>
+                    <div class="modal-footer">
+                        <button type="button" class="btn btn-primary" data-dismiss="modal">OK</button>
+                    </div>
+                </div>
+            </div>
+        </div>
+        
+
+
     </div>
 
     <script src="https://code.jquery.com/jquery-1.10.2.min.js"></script>

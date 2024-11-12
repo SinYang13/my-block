@@ -17,6 +17,8 @@ import {
 // Initialize Firebase storage
 const storage = getStorage();
 
+
+
 // Function to handle link clicks
 function handleLinkClick(event) {
   event.preventDefault(); // Prevent default link navigation

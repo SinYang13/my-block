@@ -58,6 +58,8 @@ const app = Vue.createApp({
       commentsCount: 0,
       heart: "far fa-heart",
       heartStatus: {},
+      success:false,
+      fillup:false,
       avatarImages: [
         "https://bootdey.com/img/Content/avatar/avatar1.png",
         "https://bootdey.com/img/Content/avatar/avatar2.png",
@@ -111,6 +113,33 @@ const app = Vue.createApp({
     },
     openForm() {
       console.log("opening form...");
+      const userId = sessionStorage.getItem("loggedInUserEmail");
+
+        if (userId) {
+            // If logged in, open the New Discussion modal
+            const newDiscussionModal = new bootstrap.Modal(document.getElementById("threadModal"));
+            newDiscussionModal.show();
+        } else {
+            // If not logged in, show the Login Prompt modal
+            const loginModal = new bootstrap.Modal(document.getElementById("loginPromptModal"));
+            loginModal.show();
+        };
+      this.displayForumForm = false;
+      this.displayButton = false;
+    },
+    openFormcomment() {
+      console.log("opening form...");
+      const userId = sessionStorage.getItem("loggedInUserEmail");
+
+        if (userId) {
+            // If logged in, open the New Discussion modal
+            const newDiscussionModal = new bootstrap.Modal(document.getElementById("threadModalComment"));
+            newDiscussionModal.show();
+        } else {
+            // If not logged in, show the Login Prompt modal
+            const loginModal = new bootstrap.Modal(document.getElementById("loginPromptModal"));
+            loginModal.show();
+        };
       this.displayForumForm = false;
       this.displayButton = false;
     },
@@ -121,7 +150,8 @@ const app = Vue.createApp({
     },
     async createPost() {
       if (!this.category || !this.content || !this.title) {
-        alert("Please fill in all required fields before submitting.");
+        const successModal = new bootstrap.Modal(document.getElementById('successModal3'));
+        successModal.show();
         return; // Stop the function from proceeding further
       } else {
         const postData = {
@@ -135,8 +165,9 @@ const app = Vue.createApp({
 
         try {
           const postID = await createPost(postData);
-          alert("Post created");
-          window.location.reload();
+          // alert("Post created");
+          const successModal = new bootstrap.Modal(document.getElementById('successModal'));
+          successModal.show();
         } catch (error) {
           console.error(`Error creating new post`, error);
         }
@@ -217,7 +248,8 @@ const app = Vue.createApp({
     async postComment(parentID) {
       console.log(parentID);
       if (!this.commentDetails) {
-        alert("Please fill in all required fields before submitting.");
+        const successModal = new bootstrap.Modal(document.getElementById('successModal3'));
+        successModal.show();
         return; // Stop the function from proceeding further
       } else {
         const commentData = {
@@ -228,8 +260,8 @@ const app = Vue.createApp({
 
         try {
           const commentId = await postComment(parentID, commentData);
-          alert("Comment created");
-          window.location.reload();
+          const successModal = new bootstrap.Modal(document.getElementById('successModal2'));
+          successModal.show();
         } catch (error) {
           console.error(`Error creating new comment ${parentID}`, error);
         }
