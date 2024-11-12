@@ -1,149 +1,210 @@
-<div class="dashboard-container">
-    <div class="row">
-        <div class="col-12 col-lg-3 p-4">
-            <div class="dashboard-menu">
-                <ul>
-                    <li><a href="announcements.html">Announcements</a></li>
-                    <li><a href="events.html">Events</a></li>
-                    <li><a href="forum.html">Forum</a></li>
-                    <li><a href="loans.html">Loans</a></li>
-                    <li style="background-color: lightcoral"><a href="services.html">Services</a></li>
-                    <li><a href="users.html">Users</a></li>
-                </ul>
-            </div>
-        </div>
-        <div class="col-12 col-lg-9 p-4">
-            <div class="row" style="margin-bottom:20px">
-                <!-- small tile form-->
-                <div class="col-12 col-lg-9" style="padding:0px">
-                    <div class="dashboard-visualization">
-                        <div class="visualization-tile small">
-                            <form id="createServiceForm">
-                                <div class="row">
-                                    <div class="mb-3 col-4">
-                                        <label for="serviceName" class="form-label">Service</label>
-                                        <input type="text" class="form-control" id="serviceName"
-                                            v-model="service.serviceName" required>
-                                    </div>
-                                    <div class="mb-3 col-8">
-                                        <label for="serviceProviderInformation" class="form-label">Provider
-                                            Information (Name, Contact)</label>
-                                        <input type="text" class="form-control" id="serviceProviderInformation"
-                                            v-model="service.serviceProviderInformation" required>
-                                    </div>
-                                </div>
-                                <div class="row">
-                                    <div class="mb-3 col-4">
-                                        <label for="servicePrice" class="form-label">Price</label>
-                                        <input type="text" class="form-control" id="servicePrice"
-                                            v-model="service.price" required>
-                                    </div>
-                                    <div class="mb-3 col-4">
-                                        <label for="serviceDuration" class="form-label">Duration</label>
-                                        <input type="text" class="form-control" id="serviceDuration"
-                                            v-model="service.serviceDuration" required>
-                                    </div>
-                                    <div class="mb-3 col-4">
-                                        <label for="serviceImg" class="form-label">Image</label>
-                                        <input type="file" class="form-control" id="serviceImg"
-                                            @change="handleFileUpload" required>
-                                    </div>
-                                </div>
-                                <div class="row">
-                                    <div class="mb-3 col-12">
-                                        <label for="serviceDescription" class="form-label">Description</label>
-                                        <textarea class="form-control" id="serviceDescription"
-                                            v-model="service.description" rows="1" required></textarea>
-                                    </div>
-                                </div>
-                                <div class="row">
-                                    <div class="mb-3 col-12">
-                                        <label for="detailedServiceDescription" class="form-label">Detailed
-                                            Description</label>
-                                        <textarea class="form-control" id="detailedServiceDescription"
-                                            v-model="service.detailedServiceDescription" rows="2" required></textarea>
-                                    </div>
-                                </div>
+<!DOCTYPE html>
+<html lang="en">
 
-                                <button type="button" class="btn btn-primary" @click="handlecreateService">Create
-                                    Service</button>
-                            </form>
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Payment Modal</title>
+    <style>
+        /* CSS for Payment Modal */
+        body {
+            font-family: Arial, sans-serif;
+        }
+
+        #openModal {
+            padding: 10px 20px;
+            font-size: 16px;
+            cursor: pointer;
+        }
+
+        /* Modal Container */
+        #modal {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background-color: rgba(0, 0, 0, 0.5);
+            z-index: 1000;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            opacity: 0;
+            transition: opacity 0.3s ease;
+            pointer-events: none;
+        }
+
+        /* Show the modal when isModalOpen is true */
+        #modal.show {
+            opacity: 1;
+            pointer-events: auto;
+        }
+
+        /* Modal Content */
+        #modalContent {
+            background-color: white;
+            padding: 20px;
+            width: 90%;
+            max-width: 400px;
+            border-radius: 8px;
+            box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2);
+            text-align: center;
+        }
+
+        /* Close Button */
+        #close {
+            color: #aaa;
+            float: right;
+            font-size: 24px;
+            font-weight: bold;
+            cursor: pointer;
+        }
+
+        #close:hover,
+        #close:focus {
+            color: #333;
+        }
+
+        /* Form Styling */
+        .form-group {
+            margin-bottom: 15px;
+            text-align: left;
+        }
+
+        label {
+            font-size: 14px;
+            margin-bottom: 5px;
+            display: block;
+        }
+
+        input[type="text"] {
+            width: 100%;
+            padding: 10px;
+            font-size: 16px;
+            border: 1px solid #ddd;
+            border-radius: 5px;
+            box-sizing: border-box;
+        }
+
+        .form-row {
+            display: flex;
+            gap: 10px;
+        }
+
+        #payBtn {
+            width: 100%;
+            padding: 12px;
+            font-size: 16px;
+            background-color: #28a745;
+            color: white;
+            border: none;
+            border-radius: 5px;
+            cursor: pointer;
+        }
+
+        #payBtn:hover {
+            background-color: #218838;
+        }
+
+        /* Card Logo Styling */
+        #cardNumberContainer {
+            position: relative;
+            display: flex;
+            align-items: center;
+        }
+
+        #cardLogo {
+            height: 25px;
+            position: absolute;
+            right: 10px;
+        }
+    </style>
+</head>
+
+<body>
+    <div id="app">
+        <!-- Payment Modal Trigger -->
+        <button id="openModal" @click="openModal">Open Payment Modal</button>
+
+        <!-- Payment Modal -->
+        <div id="modal" :class="{ show: isModalOpen }">
+            <div id="modalContent">
+                <span id="close" @click="closeModal">&times;</span>
+                <h2>Complete Your Payment</h2>
+                <form @submit.prevent="submitPayment">
+                    <div class="form-group">
+                        <label for="cardName">Name on Card</label>
+                        <input type="text" v-model="cardName" placeholder="John Doe">
+                    </div>
+                    <div class="form-group">
+                        <label for="cardNumber">Card Number</label>
+                        <div id="cardNumberContainer">
+                            <input type="text" v-model="cardNumber" placeholder="1234 5678 9012 3456" maxlength="16"
+                                @input="checkCardType">
+                            <img :src="cardLogo" id="cardLogo" alt="Card Logo" v-if="cardLogo">
                         </div>
                     </div>
-                </div>
-                <!-- small tile count -->
-                <div class="col-12 col-lg-3">
-                    <div class="visualization-tile small h-100 container"
-                        style="padding: 0px; display: flex; flex-direction: column; align-items: center; max-width:1200px">
-                        <span>Services Count:</span>
-                        <div class="visitor-count" style="font-size: 1.5em;">
-                            {{ services.length }}
+                    <div class="form-row">
+                        <div class="form-group">
+                            <label for="expiryDate">Expiry Date</label>
+                            <input type="text" v-model="expiryDate" placeholder="MM/YY" maxlength="5">
+                        </div>
+                        <div class="form-group">
+                            <label for="cvc">CVC</label>
+                            <input type="text" v-model="cvc" placeholder="123" maxlength="3">
                         </div>
                     </div>
-                </div>
-            </div>
-            <div class="row">
-                <div class="visualization-tile large" style="padding-left: 0px; padding-right: 0px;">
-                    <div class="row" style="height:100%; margin:5px;">
-                        <div v-for="service in services" :key="service.id" class="col-12 mb-5 mb-xxl-3">
-                            <!-- {{service}} -->
-                            <div class="card" style="padding-right:10px">
-                                <div class="row g-0">
-                                    <div class="col-2">
-                                        <img :src="service.serviceImage" class="img-fluid rounded-start"
-                                            alt="Announcement Image" style="max-height:200px">
-                                    </div>
-                                    <div class="col-10 col-lg-8"
-                                        style="display: flex; flex-direction: column; justify-content: space-between;">
-                                        <div class="row" style="padding: 10px">
-                                            <h5 class="">{{ service.serviceName }}</h5>
-                                            <p class="">{{ service.serviceProviderInformation }}</p>
-                                            <p class="">{{ service.description }}</p>
-                                            <p class="">{{ service.detailedServiceDescription }}</p>
-                                        </div>
-                                        <div class="row" style="padding: 10px; ">
-                                            <p class=""><small class="text-muted">Duration: {{ service.serviceDuration
-                                                    }}
-                                                    |
-                                                    Price: {{
-                                                    service.price }}
-                                                    | Rating: {{ service.rating }} </small></p>
-                                        </div>
-                                    </div>
-                                    <div class="col-12 col-lg-2 d-flex align-items-center justify-content-end">
-                                        <button v-if="service.registrations" class="btn btn-outline-primary  me-2"
-                                            @click="showRegistrationsModal(service.registrations)">
-                                            <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16"
-                                                fill="currentColor" class="bi bi-people" viewBox="0 0 16 16">
-                                                <path
-                                                    d="M15 14s1 0 1-1-1-4-5-4-5 3-5 4 1 1 1 1zm-7.978-1L7 12.996c.001-.264.167-1.03.76-1.72C8.312 10.629 9.282 10 11 10c1.717 0 2.687.63 3.24 1.276.593.69.758 1.457.76 1.72l-.008.002-.014.002zM11 7a2 2 0 1 0 0-4 2 2 0 0 0 0 4m3-2a3 3 0 1 1-6 0 3 3 0 0 1 6 0M6.936 9.28a6 6 0 0 0-1.23-.247A7 7 0 0 0 5 9c-4 0-5 3-5 4q0 1 1 1h4.216A2.24 2.24 0 0 1 5 13c0-1.01.377-2.042 1.09-2.904.243-.294.526-.569.846-.816M4.92 10A5.5 5.5 0 0 0 4 13H1c0-.26.164-1.03.76-1.724.545-.636 1.492-1.256 3.16-1.275ZM1.5 5.5a3 3 0 1 1 6 0 3 3 0 0 1-6 0m3-2a2 2 0 1 0 0 4 2 2 0 0 0 0-4" />
-                                            </svg>
-                                        </button>
-                                        <button type="button" class="btn btn-warning me-2"
-                                            @click="handleUpdateService(service)">
-                                            <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16"
-                                                fill="currentColor" class="bi bi-pen" viewBox="0 0 16 16">
-                                                <path
-                                                    d="m13.498.795.149-.149a1.207 1.207 0 1 1 1.707 1.708l-.149.148a1.5 1.5 0 0 1-.059 2.059L4.854 14.854a.5.5 0 0 1-.233.131l-4 1a.5.5 0 0 1-.606-.606l1-4a.5.5 0 0 1 .131-.232l9.642-9.642a.5.5 0 0 0-.642.056L6.854 4.854a.5.5 0 1 1-.708-.708L9.44.854A1.5 1.5 0 0 1 11.5.796a1.5 1.5 0 0 1 1.998-.001m-.644.766a.5.5 0 0 0-.707 0L1.95 11.756l-.764 3.057 3.057-.764L14.44 3.854a.5.5 0 0 0 0-.708z" />
-                                            </svg>
-                                        </button>
-                                        <button type="button" class="btn btn-danger"
-                                            @click="showDeleteModal(service.id)">
-                                            <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16"
-                                                fill="currentColor" class="bi bi-trash" viewBox="0 0 16 16">
-                                                <path
-                                                    d="M5.5 5.5A.5.5 0 0 1 6 6v6a.5.5 0 0 1-1 0V6a.5.5 0 0 1 .5-.5m2.5 0a.5.5 0 0 1 .5.5v6a.5.5 0 0 1-1 0V6a.5.5 0 0 1 .5-.5m3 .5a.5.5 0 0 0-1 0v6a.5.5 0 0 0 1 0z" />
-                                                <path
-                                                    d="M14.5 3a1 1 0 0 1-1 1H13v9a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2V4h-.5a1 1 0 0 1-1-1V2a1 1 0 0 1 1-1H6a1 1 0 0 1 1-1h2a1 1 0 0 1 1 1h3.5a1 1 0 0 1 1 1zM4.118 4 4 4.059V13a1 1 0 0 0 1 1h6a1 1 0 0 0 1-1V4.059L11.882 4zM2.5 3h11V2h-11z" />
-                                            </svg>
-                                        </button>
-                                    </div>
-                                </div>
-                            </div>
-                        </div>
+                    <div class="form-group">
+                        <label for="amount">Amount</label>
+                        <input type="text" v-model="amount" readonly>
                     </div>
-                </div>
+                    <button id="payBtn" type="submit">Pay Now</button>
+                </form>
             </div>
         </div>
     </div>
-</div>
+
+    <script src="https://cdn.jsdelivr.net/npm/vue@3.2.45/dist/vue.global.min.js"></script>
+    <script>
+        Vue.createApp({
+            data() {
+                return {
+                    isModalOpen: false,
+                    cardName: '',
+                    cardNumber: '',
+                    expiryDate: '',
+                    cvc: '',
+                    amount: '$20.00',
+                    cardLogo: ''
+                }
+            },
+            methods: {
+                openModal() {
+                    console.log("Opening modal...");
+                    this.isModalOpen = true;
+                },
+                closeModal() {
+                    console.log("Closing modal...");
+                    this.isModalOpen = false;
+                },
+                submitPayment() {
+                    alert("Payment Submitted!");
+                    this.closeModal();
+                },
+                checkCardType() {
+                    const cardNum = this.cardNumber.replace(/\s+/g, '');
+                    if (cardNum.startsWith("4")) {
+                        this.cardLogo = "https://upload.wikimedia.org/wikipedia/commons/4/41/Visa_Logo.png";
+                    } else if (/^5[1-5]/.test(cardNum)) {
+                        this.cardLogo = "https://upload.wikimedia.org/wikipedia/commons/0/04/Mastercard-logo.png";
+                    } else {
+                        this.cardLogo = '';
+                    }
+                    console.log("Card Logo URL:", this.cardLogo); // Debugging line to check the logo URL
+                }
+            }
+        }).mount('#app');
+    </script>
+</body>
+
+</html>

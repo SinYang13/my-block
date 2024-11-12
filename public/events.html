@@ -187,7 +187,7 @@
                 <span class="category">{{ event.cat }}</span>
                 <h6>{{ event.price }}</h6>
                 <h4 class="card-title">{{ event.title }}</h4>
-                <h4>{{event.date.toDate().toLocaleString()}}</h4>
+                <h4><small>{{event.date.toDate().toLocaleString()}}</small></h4>
                 <p class="card-text">{{ event.description }}</p>
               </div>
               <div class="main-button text-center">
@@ -285,10 +285,45 @@
             <button class="btn btn-outline-primary mb-3" @click="addAttendeeForm">
               <i class="fas fa-user-plus"></i> Add Another Attendee
             </button>
+            <div class="collapse" id="collapseExample">
+              <div class="card card-body">
+
+                <form>
+                  <label for="cardName" class="form-label">Name on Card</label>
+                  <input type="text" placeholder="John Doe" class="form-control">
+
+                  <label for="cardNumber" class="form-label">Card Number</label>
+                  <div id="cardNumberContainer" style="position: relative;">
+                    <input type="text" v-model="cardNumber" placeholder="1234 5678 9012 3456" maxlength="16"
+                      @input="checkCardType" class="form-control" style="padding-right: 40px;">
+                    <img :src="cardLogo" id="cardLogo" alt="Card Logo" v-if="cardLogo" style="position: absolute; right: 10px; top: 50%; transform: translateY(-50%); max-width: 30px;">
+                  </div>
+                  
+                  
+
+                  <label for="expiryDate" class="form-label">Expiry Date</label>
+                  <input type="text" placeholder="MM/YY" maxlength="5" class="form-control">
+
+                  <label for="cvc" class="form-label">CVC</label>
+                  <input type="text" placeholder="123" maxlength="3" class="form-control">
+                </form>
+              </div>
+            </div>
           </div>
           <div class="modal-footer">
+            <div v-if="selectedEvent.price !== 'Free!'">
+              <h6>Total Cost: ${{attendeeForms.length * selectedEvent.price.split('$')[1]}}</h6>
+            </div>
+
             <button type="button" class="btn btn-secondary" @click="closeSignupModal">Cancel</button>
-            <button type="button" class="btn btn-primary" @click="submitRegistration">Submit Registration</button>
+            <button v-if="selectedEvent.price === 'Free!'" type="button" class="btn btn-primary"
+              @click="submitRegistration">Submit Registration</button>
+            <button v-if="paymentReady === true" class="btn btn-success" @click="submitRegistration(); togglePaymentReady()">Pay Now</button>
+            <button v-else class="btn btn-primary" type="button" data-bs-toggle="collapse"
+              data-bs-target="#collapseExample" aria-expanded="false" aria-controls="collapseExample" @click="togglePaymentReady()">
+              Proceed to Payment
+            </button>
+            
 
           </div>
         </div>
@@ -337,9 +372,6 @@
           </div>
         </div>
       </div>
-
-
-
     </div>
   </div>
 

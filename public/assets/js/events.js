@@ -66,6 +66,9 @@ const eventsApp = Vue.createApp({
       tokenClient: null,
       gapiInited: false,
       gisInited: false,
+      cardNumber: '',
+      cardLogo: '',
+      paymentReady: false,
     };
   },
   methods: {
@@ -118,6 +121,9 @@ const eventsApp = Vue.createApp({
     togglePastEvents() {
       this.showPastEvents = !this.showPastEvents;
     },
+    togglePaymentReady() {
+      this.paymentReady = !this.paymentReady;
+    },
     async submitRegistration() {
       const userId = sessionStorage.getItem("loggedInUserEmail");
 
@@ -167,6 +173,18 @@ const eventsApp = Vue.createApp({
       }
     },
 
+    checkCardType() {
+      const cardNum = this.cardNumber.replace(/\s+/g, '');
+      if (cardNum.startsWith("4")) {
+          this.cardLogo = "https://upload.wikimedia.org/wikipedia/commons/4/41/Visa_Logo.png";
+      } else if (/^5[1-5]/.test(cardNum)) {
+          this.cardLogo = "https://upload.wikimedia.org/wikipedia/commons/0/04/Mastercard-logo.png";
+      } else {
+          this.cardLogo = '';
+      }
+      console.log("Card Logo URL:", this.cardLogo); // Debugging line to check the logo URL
+  },
+
     // Update the filter when a button is clicked
     setFilter(category) {
       this.filter = category;
@@ -188,6 +206,7 @@ const eventsApp = Vue.createApp({
         specialRequests: "",
       };
       this.attendeeForms.push(attendeeForm);
+      console.log(this.attendeeForms);
     },
     removeAttendeeForm(index) {
       this.attendeeForms.splice(index, 1);
@@ -198,14 +217,17 @@ const eventsApp = Vue.createApp({
         ...event,
         date: event.date.toDate().toLocaleString(), // Convert Firestore timestamp to readable date
       };
-      console.log({
-        ...event,
-        date: event.date.toDate().toLocaleString(), // Convert Firestore timestamp to readable date
-      });
+      // console.log({
+      //   ...event,
+      //   date: event.date.toDate().toLocaleString(), // Convert Firestore timestamp to readable date
+      // });
+
+      console.log(this.selectedEvent);
       this.showSignupModal = false;
     },
 
     openSignupModal() {
+
       console.log("Opening signup modal");
 
       // Check if the user is logged in
@@ -227,6 +249,8 @@ const eventsApp = Vue.createApp({
         this.addAttendeeForm(); // Ensure at least one form is available initially
       }
 
+      
+
       // Manually show the signup modal using Bootstrap's JavaScript API
       this.$nextTick(() => {
         const signupModalInstance = new bootstrap.Modal(
@@ -234,6 +258,8 @@ const eventsApp = Vue.createApp({
         );
         signupModalInstance.show();
       });
+
+      console.log(this.selectedEvent);
     },
 
     closeSignupModal() {
