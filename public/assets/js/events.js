@@ -170,7 +170,7 @@ const eventsApp = Vue.createApp({
         if (this.selectedEvent.price != "Free!") {
           localStorage.setItem('orderAmount', this.selectedEvent.price);
           console.log(this.selectedEvent.price)
-          window.location.href = 'indexPayment.html';
+          window.location.href = 'payment.html';
         }
         else{
           window.alert("Event has been successfully saved")
