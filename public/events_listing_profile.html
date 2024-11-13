@@ -637,8 +637,8 @@
 
                                 <a class="list-group-item" href="profile.html"><i
                                         class="fa fa-user text-muted"></i>&nbsp;Profile Settings</a>
-                                <a class="list-group-item" href="#"><i
-                                        class="fa fa-map-marker text-muted"></i>&nbsp;Addresses</a>
+                                <!-- <a class="list-group-item" href="#"><i
+                                        class="fa fa-map-marker text-muted"></i>&nbsp;Addresses</a> -->
                                 <a class="list-group-item active" href="events_listing_profile.html">
                                     <div class="d-flex justify-content-between align-items-center">
                                         <div><i class="fa fa-ticket mr-1 text-muted"></i>
@@ -681,7 +681,7 @@
                     <div class="col-lg-8 pb-5" v-else-if="eventsList.length !=0">
                         
                         <!-- insert table instead -->
-                        <div class="event-card" v-for="i in eventsList">
+                        <div class="event-card animate__animated animate__fadeInUp" v-for="i in eventsList">
                             <button class="close-btn" @click="deleteEvent(i.id)">X</button>
                             <div class="event-date">
                                 <span class="event-day">{{i.date}}</span>

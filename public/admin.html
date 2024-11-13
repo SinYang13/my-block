@@ -305,7 +305,7 @@
                 );
 
             g.append('g')
-                .call(d3.axisLeft(y).ticks(Math.ceil(d3.max(data, d => d.count) / 5)).tickFormat(d => d))
+                .call(d3.axisLeft(y).ticks(Math.ceil(d3.max(data, d => d.count) / 20)).tickFormat(d => d))
                 .selectAll("line")
                 .attr("x2", width)
                 .attr("stroke-dasharray", "2,2"); // Optional: dashed grid lines

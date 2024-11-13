@@ -375,8 +375,8 @@
 
                                 <a class="list-group-item" href="profile.html"><i
                                         class="fa fa-user text-muted"></i>&nbsp;Profile Settings</a>
-                                <a class="list-group-item" href="#"><i
-                                        class="fa fa-map-marker text-muted"></i>&nbsp;Addresses</a>
+                                <!-- <a class="list-group-item" href="#"><i
+                                        class="fa fa-map-marker text-muted"></i>&nbsp;Addresses</a> -->
                                 <a class="list-group-item" href="events_listing_profile.html">
                                     <div class="d-flex justify-content-between align-items-center">
                                         <div><i class="fa fa-ticket mr-1 text-muted"></i>
@@ -418,7 +418,7 @@
                      
                     <div class="col-lg-8 pb-5" v-else-if="serviceList.length != 0">
             
-                            <div class="container my-5" v-for="items in serviceList">
+                            <div class="container my-5 animate__animated animate__fadeInUp" v-for="items in serviceList">
                                 <div class="card" style="position: relative;">
                                     <button class="close-btn" @click="deleteService(items.id)">X</button>
                                     <div class="row no-gutters">
@@ -450,7 +450,7 @@
                       
                     </div>
                     <div class="col-lg-8 pb-5" v-else>
-                        <h1>You have not Booked Mark any services</h1>
+                        <h1>You have not bookmarked any services</h1>
                     </div>
                 </div>
             </div>
