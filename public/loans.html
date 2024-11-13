@@ -22,7 +22,7 @@
   <link rel="stylesheet" href="assets/css/fontawesome.css">
   <link rel="stylesheet" href="assets/css/templatemo-villa-agency.css">
   <link rel="stylesheet" href="assets/css/owl.css">
-  <link rel="stylesheet" href="assets/css/animate.css">
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/animate.css/4.1.1/animate.min.css" />
   <link rel="stylesheet" href="https://unpkg.com/swiper@7/swiper-bundle.min.css" />
 </head>
 
@@ -247,7 +247,7 @@
         <!-- Bootstrap card structure for events while keeping your classes -->
         <div class="row row-cols-1 row-cols-md-3 g-4">
           <div class="col" v-for="i in filteredLoans" :key="i.id">
-            <div class="item card h-100">
+            <div class="item card h-100 animate__animated animate__fadeInUp">
               <a>
                 <img :src="i.image" class="card-img-top" alt="#" style="object-fit: cover; height: 300px; width: 100%;">
               </a>

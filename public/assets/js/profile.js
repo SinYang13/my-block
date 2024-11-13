@@ -115,49 +115,69 @@ const app = Vue.createApp({
             const weekday = ["Sunday", "Monday", "Tuesday", "Wednesday", "Thursday", "Friday", "Saturday"];
             const month = ["January", "February", "March", "April", "May", "June", "July", "August", "September", "October", "November", "December"];
             const shortmonth = ["Jan", "Feb", "Mar", "Apr", "May", "Jun", "Jul", "Aug", "Sep", "Oct", "Nov", "Dec"];
-            const colRef = collection(db, 'users/' + this.userid + '/registrations')
-
-            //get collection data
+            const colRef = collection(db, 'users/' + this.userid + '/registrations');
+        
+            // Custom date parser function
+            function parseCustomDate(dateString) {
+                const [datePart, timePart] = dateString.split(", ");
+                const [day, month, year] = datePart.split("/").map(Number);
+                const [time, period] = timePart.split(" ");
+                let [hours, minutes, seconds] = time.split(":").map(Number);
+        
+                // Adjust hours based on AM/PM
+                if (period.toLowerCase() === "pm" && hours !== 12) {
+                    hours += 12;
+                } else if (period.toLowerCase() === "am" && hours === 12) {
+                    hours = 0;
+                }
+        
+                return new Date(year, month - 1, day, hours, minutes, seconds);
+            }
+        
+            // Get collection data
             getDocs(colRef)
                 .then((snapshot) => {
-                    let event = []
+                    let event = [];
                     snapshot.docs.forEach((doc) => {
-                        let eventDate = doc.data().eventDate
-                        eventDate = new Date(eventDate)
-                        console.log(eventDate)
-
-                        // let date = eventDate.getDate();
+                        console.log(doc.data());
+                        
+                        // Parse eventDate with the custom date parser
+                        let eventDate = parseCustomDate(doc.data().eventDate);
+                        console.log(eventDate);
+        
+                        if (isNaN(eventDate.getTime())) {
+                            console.warn(`Invalid date found in document with ID: ${doc.id}`);
+                            return; // Skip this document if date parsing fails
+                        }
+        
                         let longmth = month[eventDate.getMonth()];
                         let shortmth = shortmonth[eventDate.getMonth()];
                         let dd = eventDate.getDate();
                         let day = weekday[eventDate.getDay()];
                         let yyyy = eventDate.getFullYear();
-
-                        let fulldate = day + " " + dd + " " + longmth + " " + yyyy
-
+                        let fulldate = `${day} ${dd} ${longmth} ${yyyy}`;
+        
                         const time = eventDate.toLocaleTimeString('en-US', { hour: 'numeric', minute: 'numeric', second: 'numeric', hour12: true });
                         console.log(time);
-
+        
                         event.push({
                             ...doc.data(),
                             id: doc.id,
                             "fulldate": fulldate,
-                            "date": dd, "shortmth": shortmth, "time": time
-                        })
-
-                        // event.push({"fulldate":fulldate, "date":dd, "shortmth":shortmth})
-
-                    })
-                    console.log(event)
+                            "date": dd,
+                            "shortmth": shortmth,
+                            "time": time
+                        });
+                    });
+                    console.log(event);
                     this.eventsList = event;
                     this.events_loading = false;
                 })
                 .catch(err => {
-                    console.log(err.message)
-                })
-
-
+                    console.log(err.message);
+                });
         },
+        
         deleteEvent(eventId) {
             console.log(eventId);
             const docRef = doc(db, 'users/' + this.userid + '/registrations', eventId);
