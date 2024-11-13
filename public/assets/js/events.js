@@ -165,9 +165,20 @@ const eventsApp = Vue.createApp({
           registrationData
         );
 
-        const successModal = new bootstrap.Modal(document.getElementById('successModal'));
-        successModal.show();
         this.closeSignupModal(); // Close the modal after successful submission
+
+        if (this.selectedEvent.price != "Free!") {
+          localStorage.setItem('orderAmount', this.selectedEvent.price);
+          console.log(this.selectedEvent.price)
+          window.location.href = 'payment.html';
+        }
+        else{
+          window.alert("Event has been successfully saved")
+        }
+
+        // const successModal = new bootstrap.Modal(document.getElementById('successModal'));
+        // successModal.show();
+        // this.closeSignupModal(); // Close the modal after successful submission
       } catch (error) {
         console.error("Error adding registration:", error);
         alert("Failed to register. Please try again.");
@@ -284,7 +295,7 @@ const eventsApp = Vue.createApp({
       }
     },
     handleScroll() {
-      const scrollPosition = window.scrollY;
+      const scrollPosition = window.scrollY + 60;
       const headerHeight = document.querySelector("header").offsetHeight;
       const headerElement = document.querySelector("header");
       if (scrollPosition >= headerHeight) {
