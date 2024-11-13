@@ -127,75 +127,82 @@ const eventsApp = Vue.createApp({
       this.paymentReady = !this.paymentReady;
     },
     async submitRegistration() {
-      const userId = sessionStorage.getItem("loggedInUserEmail");
+      let status = true
+      this.attendeeForms.forEach(item => {
+        if (!item.name || !item.email || !item.phone) {
+          console.log("error")
+          
+          status = false
+          alert("Attendee's Details not filled in correctly")
+          // const successModal = new bootstrap.Modal(document.getElementById('successModal3'));
+          // successModal.show();
 
-      if (!userId) {
-        alert("Please log in to register for events.");
-        return;
-      }
-
-      const registrationData = {
-        eventId: this.selectedEvent.id,
-        eventTitle: this.selectedEvent.title,
-        eventDate: this.selectedEvent.date,
-        eventLocation: this.selectedEvent.place,
-        attendees: this.attendeeForms.map((form) => ({
-          name: form.name,
-          email: form.email,
-          phone: form.phone,
-          dietaryRestrictions: form.dietaryRestrictions,
-          specialRequests: form.specialRequests,
-        })),
-        userInfo: {
-          email: userId, // Include user information in the registration data
-        },
-        timestamp: new Date(), // Optional: add a timestamp
-      };
-
-      try {
-        // Add registration to user's "registrations" subcollection
-        await addDoc(
-          collection(db, "users", userId, "registrations"),
-          registrationData
-        );
-
-        // Add registration to the event's "registrations" subcollection
-        await addDoc(
-          collection(db, "events", this.selectedEvent.id, "registrations"),
-          registrationData
-        );
-
-        this.closeSignupModal(); // Close the modal after successful submission
-
-        if (this.selectedEvent.price != "Free!") {
-          localStorage.setItem('orderAmount', this.selectedEvent.price);
-          console.log(this.selectedEvent.price)
-          window.location.href = 'payment.html';
-        }
-        else{
-          window.alert("Event has been successfully saved")
+          return; // Stop the function from proceeding further
         }
 
-        // const successModal = new bootstrap.Modal(document.getElementById('successModal'));
-        // successModal.show();
-        // this.closeSignupModal(); // Close the modal after successful submission
-      } catch (error) {
-        console.error("Error adding registration:", error);
-        alert("Failed to register. Please try again.");
+      })
+
+      if (status == true) {
+        const userId = sessionStorage.getItem("loggedInUserEmail");
+
+        if (!userId) {
+          alert("Please log in to register for events.");
+          return;
+        }
+
+        const registrationData = {
+          eventId: this.selectedEvent.id,
+          eventTitle: this.selectedEvent.title,
+          eventDate: this.selectedEvent.date,
+          eventLocation: this.selectedEvent.place,
+          attendees: this.attendeeForms.map((form) => ({
+            name: form.name,
+            email: form.email,
+            phone: form.phone,
+            dietaryRestrictions: form.dietaryRestrictions,
+            specialRequests: form.specialRequests,
+          })),
+          userInfo: {
+            email: userId, // Include user information in the registration data
+          },
+          timestamp: new Date(), // Optional: add a timestamp
+        };
+
+        try {
+          // Add registration to user's "registrations" subcollection
+          await addDoc(
+            collection(db, "users", userId, "registrations"),
+            registrationData
+          );
+
+          // Add registration to the event's "registrations" subcollection
+          await addDoc(
+            collection(db, "events", this.selectedEvent.id, "registrations"),
+            registrationData
+          );
+
+          const successModal = new bootstrap.Modal(document.getElementById('successModal'));
+          successModal.show();
+          this.closeSignupModal(); // Close the modal after successful submission
+        } catch (error) {
+          console.error("Error adding registration:", error);
+          alert("Failed to register. Please try again.");
+        }
       }
+
     },
 
     checkCardType() {
       const cardNum = this.cardNumber.replace(/\s+/g, '');
       if (cardNum.startsWith("4")) {
-          this.cardLogo = "https://upload.wikimedia.org/wikipedia/commons/4/41/Visa_Logo.png";
+        this.cardLogo = "https://upload.wikimedia.org/wikipedia/commons/4/41/Visa_Logo.png";
       } else if (/^5[1-5]/.test(cardNum)) {
-          this.cardLogo = "https://upload.wikimedia.org/wikipedia/commons/0/04/Mastercard-logo.png";
+        this.cardLogo = "https://upload.wikimedia.org/wikipedia/commons/0/04/Mastercard-logo.png";
       } else {
-          this.cardLogo = '';
+        this.cardLogo = '';
       }
       console.log("Card Logo URL:", this.cardLogo); // Debugging line to check the logo URL
-  },
+    },
 
     // Update the filter when a button is clicked
     setFilter(category) {
@@ -261,7 +268,7 @@ const eventsApp = Vue.createApp({
         this.addAttendeeForm(); // Ensure at least one form is available initially
       }
 
-      
+
 
       // Manually show the signup modal using Bootstrap's JavaScript API
       this.$nextTick(() => {
@@ -295,7 +302,7 @@ const eventsApp = Vue.createApp({
       }
     },
     handleScroll() {
-      const scrollPosition = window.scrollY + 60;
+      const scrollPosition = window.scrollY;
       const headerHeight = document.querySelector("header").offsetHeight;
       const headerElement = document.querySelector("header");
       if (scrollPosition >= headerHeight) {
