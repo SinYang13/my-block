@@ -180,7 +180,7 @@
                     <label for="locationInput" class="form-label">Set Your Location (Postal Code)</label>
                     <div class="input-group">
                         <input type="text" id="locationInput" class="form-control" v-model="postalCode"
-                            @change="updateMap" pattern="[0-9]{6}"
+                            v-on:keyup="updateMap" pattern="[0-9]{6}"
                             title="Please enter a valid 6-digit Singapore postal code." required>
                         <button class="btn btn-outline-secondary" @click="updateMap">Set Location</button>
                     </div>
@@ -423,6 +423,18 @@
                                 }
                             })
                             .catch(error => console.error('Error fetching location:', error));
+                    }
+
+                    this.filteredAnnouncements = [];
+                    this.otherAnnouncements = [];
+
+                    for (let announcement of this.announcements) {
+                        console.log(announcement);
+                        if (announcement.location.startsWith(this.postalCode)) {
+                            this.filteredAnnouncements.push(announcement);
+                        } else {
+                            this.otherAnnouncements.push(announcement);
+                        }
                     }
                 },
                 updateMarker(location) {

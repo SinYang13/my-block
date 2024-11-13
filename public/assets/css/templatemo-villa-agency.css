@@ -158,7 +158,6 @@ reset
 
 
 .carousel {
-  max-width: 80%;
   overflow: hidden;
   margin: auto;
   background-color: grey; /* Set the background color for the entire carousel */
