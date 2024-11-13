@@ -3,172 +3,174 @@
 
 <head>
 
-  <meta charset="utf-8">
-  <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
-  <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@100;200;300;400;500;600;700;800;900&display=swap"
-    rel="stylesheet">
+	<meta charset="utf-8">
+	<meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
+	<link href="https://fonts.googleapis.com/css2?family=Poppins:wght@100;200;300;400;500;600;700;800;900&display=swap"
+		rel="stylesheet">
 
-  <title>MyBlock</title>
-  <link rel="icon" type="image/png" href="assets/favicon.png">
+	<title>MyBlock</title>
+	<link rel="icon" type="image/png" href="assets/favicon.png">
 
-  <!-- Bootstrap core CSS -->
-  <link href="vendor/bootstrap/css/bootstrap.min.css" rel="stylesheet">
+	<!-- Bootstrap core CSS -->
+	<link href="vendor/bootstrap/css/bootstrap.min.css" rel="stylesheet">
 
 
-  <!-- Additional CSS Files -->
-  <link rel="stylesheet" href="assets/css/fontawesome.css">
-  <link rel="stylesheet" href="assets/css/templatemo-villa-agency.css">
-  <link rel="stylesheet" href="assets/css/owl.css">
+	<!-- Additional CSS Files -->
+	<link rel="stylesheet" href="assets/css/fontawesome.css">
+	<link rel="stylesheet" href="assets/css/templatemo-villa-agency.css">
+	<link rel="stylesheet" href="assets/css/owl.css">
 
-  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/animate.css/4.1.1/animate.min.css" />
+	<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/animate.css/4.1.1/animate.min.css" />
 
-  <link rel="stylesheet" href="https://unpkg.com/swiper@7/swiper-bundle.min.css" />
+	<link rel="stylesheet" href="https://unpkg.com/swiper@7/swiper-bundle.min.css" />
 
-  <script src="https://unpkg.com/vue@3/dist/vue.global.js"></script>
-  <script type="module" src="assets/js/index.js"></script>
-  <!-- Import your JavaScript file -->
+	<script src="https://unpkg.com/vue@3/dist/vue.global.js"></script>
+	<script type="module" src="assets/js/index.js"></script>
+	<!-- Import your JavaScript file -->
 
-  <style>
-    .carousel-caption {
-      background-color: white;
-    }
+	<style>
+		.carousel-caption {
+			background-color: white;
+		}
 
-    /* Main section container */
-    .sector {
-      position: relative;
-      width: 100vw;
-      /* background-color: #f0f0f0; */
-      overflow: hidden;
-      /* Prevents overflow */
-    }
+		/* Main section container */
+		.sector {
+			position: relative;
+			width: 100vw;
+			/* background-color: #f0f0f0; */
+			overflow: hidden;
+			/* Prevents overflow */
+		}
 
-    /* Full-width background image */
-    .sector-left {
-      width: 100vw;
-      height: 500px;
-      /* Adjust height as needed */
-      background-image: url("assets/images/video-bg.jpg");
-      /* Replace with your image path */
-      background-size: cover;
-      background-position: center;
-      position: relative;
-      z-index: 0;
-      display: flex;
-      align-items: center;
-      justify-content: center;
-      text-align: center;
-      /* color: white; Text color for readability */
-    }
+		/* Full-width background image */
+		.sector-left {
+			width: 100vw;
+			height: 500px;
+			/* Adjust height as needed */
+			background-image: url("assets/images/video-bg.jpg");
+			/* Replace with your image path */
+			background-size: cover;
+			background-position: center;
+			position: relative;
+			z-index: 0;
+			display: flex;
+			align-items: center;
+			justify-content: center;
+			text-align: center;
+			/* color: white; Text color for readability */
+		}
 
-    /* Centered text container with upward adjustment */
-    .sector-left .text-overlay {
-      font-size: 24px;
-      font-weight: bold;
-      padding: 20px;
-      max-width: 80%;
-      line-height: 1.5;
-      margin-top: -200px;
-      /* Adjust this value to move the text up or down */
-    }
+		/* Centered text container with upward adjustment */
+		.sector-left .text-overlay {
+			font-size: 24px;
+			font-weight: bold;
+			padding: 20px;
+			max-width: 80%;
+			line-height: 1.5;
+			margin-top: -200px;
+			/* Adjust this value to move the text up or down */
+		}
 
-    /* Centered content container */
-    .sector-content {
-      width: 100%;
-      max-width: 90%;
-      /* background-color: #2f3d3c; */
-      /* color: white; */
-      padding: 20px;
-      border-radius: 8px;
-      /* box-shadow: 0px 4px 8px rgba(0, 0, 0, 0.2); */
-      position: relative;
-      z-index: 1;
-      margin: -250px auto 0 auto;
-      /* Moves content up slightly for overlap */
-      /* text-align: center; */
-    }
+		/* Centered content container */
+		.sector-content {
+			width: 100%;
+			max-width: 90%;
+			/* background-color: #2f3d3c; */
+			/* color: white; */
+			padding: 20px;
+			border-radius: 8px;
+			/* box-shadow: 0px 4px 8px rgba(0, 0, 0, 0.2); */
+			position: relative;
+			z-index: 1;
+			margin: -250px auto 0 auto;
+			/* Moves content up slightly for overlap */
+			/* text-align: center; */
+		}
 
-    .sector-content h1 {
-      font-size: 24px;
-      font-weight: lighter;
-    }
+		.sector-content h1 {
+			font-size: 24px;
+			font-weight: lighter;
+		}
 
-    .sector-content p {
-      margin: 10px 0;
-      font-weight: 500;
-      line-height: 1.6;
-    }
-  </style>
+		.sector-content p {
+			margin: 10px 0;
+			font-weight: 500;
+			line-height: 1.6;
+		}
+	</style>
 
-  <script type="text/javascript" src="https://cdn.jsdelivr.net/npm/@emailjs/browser@4/dist/email.min.js"></script>
-  <script type="text/javascript">
-    (function () {
-      emailjs.init("Mg4b_D7UoMg-vHCYE"); // Replace with your EmailJS User ID
-    })();
-  </script>
+	<script type="text/javascript" src="https://cdn.jsdelivr.net/npm/@emailjs/browser@4/dist/email.min.js"></script>
+	<script type="text/javascript">
+		(function () {
+			emailjs.init("Mg4b_D7UoMg-vHCYE"); // Replace with your EmailJS User ID
+		})();
+	</script>
 
 </head>
 
 
 <body>
 
-  <div class="sub-header">
-    <div class="container">
-      <div class="row">
-        <div class="col-lg-8 col-md-8">
-          <ul class="info">
-            <li><i class="fa fa-envelope"></i> my-block.com</li>
-            <li><i class="fa fa-map"></i> Singapore</li>
-          </ul>
-        </div>
-        <div class="col-lg-4 col-md-4">
-          <ul class="social-links">
-            <li><a href="https://www.facebook.com/sgsmu/" target="_blank"><i class="fab fa-facebook"></i></a></li>
-            <li><a href="https://x.com/sgSMU" target="_blank"><i class="fab fa-twitter"></i></a></li>
-            <li><a href="https://www.linkedin.com/school/singapore-management-university/posts/?feedView=all"
-                target="_blank"><i class="fab fa-linkedin"></i></a></li>
-            <li><a href="https://www.instagram.com/sgsmu/?hl=en" target="_blank"><i class="fab fa-instagram"></i></a>
-            </li>
-          </ul>
-        </div>
-      </div>
-    </div>
-  </div>
+	<div class="sub-header">
+		<div class="container">
+			<div class="row">
+				<div class="col-lg-8 col-md-8">
+					<ul class="info">
+						<li><i class="fa fa-envelope"></i> my-block.com</li>
+						<li><i class="fa fa-map"></i> Singapore</li>
+					</ul>
+				</div>
+				<div class="col-lg-4 col-md-4">
+					<ul class="social-links">
+						<li><a href="https://www.facebook.com/sgsmu/" target="_blank"><i
+									class="fab fa-facebook"></i></a></li>
+						<li><a href="https://x.com/sgSMU" target="_blank"><i class="fab fa-twitter"></i></a></li>
+						<li><a href="https://www.linkedin.com/school/singapore-management-university/posts/?feedView=all"
+								target="_blank"><i class="fab fa-linkedin"></i></a></li>
+						<li><a href="https://www.instagram.com/sgsmu/?hl=en" target="_blank"><i
+									class="fab fa-instagram"></i></a>
+						</li>
+					</ul>
+				</div>
+			</div>
+		</div>
+	</div>
 
-  <!-- Header Area Start -->
-  <header class="header-area header-sticky">
-    <div class="container">
-      <div class="row">
-        <div class="col-12">
-          <nav class="main-nav">
-            <a href="index.html" class="logo">
-              <h1>
-                <span>
-                  <inline>MyBlock</inline>
-                </span>
-              </h1>
-            </a>
-            <ul class="nav">
-              <li><a href="announcements.html">Announcements</a></li>
-              <li><a href="events.html">Events</a></li>
-              <li><a href="forum.html">Forum</a></li>
-              <li><a href="loans.html">Loans</a></li>
-              <li><a href="services.html">Services</a></li>
-              <li id="profileLink">
-                <a href="profile.html" id="profileLinkRedir">
-                  <i class="fa fa-calendar" id="profileLinkImg"></i>
-                  <span id="profileLinkText">Profile</span>
-                </a>
-              </li>
-            </ul>
-            <a class="menu-trigger"><span>Menu</span></a>
-          </nav>
-        </div>
-      </div>
-    </div>
-  </header>
+	<!-- Header Area Start -->
+	<header class="header-area header-sticky">
+		<div class="container">
+			<div class="row">
+				<div class="col-12">
+					<nav class="main-nav">
+						<a href="index.html" class="logo">
+							<h1>
+								<span>
+									<inline>MyBlock</inline>
+								</span>
+							</h1>
+						</a>
+						<ul class="nav">
+							<li><a href="announcements.html">Announcements</a></li>
+							<li><a href="events.html">Events</a></li>
+							<li><a href="forum.html">Forum</a></li>
+							<li><a href="loans.html">Loans</a></li>
+							<li><a href="services.html">Services</a></li>
+							<li id="profileLink">
+								<a href="profile.html" id="profileLinkRedir">
+									<i class="fa fa-calendar" id="profileLinkImg"></i>
+									<span id="profileLinkText">Profile</span>
+								</a>
+							</li>
+						</ul>
+						<a class="menu-trigger"><span>Menu</span></a>
+					</nav>
+				</div>
+			</div>
+		</div>
+	</header>
 
-  <!-- ***** Header Area End ***** -->
-  <!-- <div class="container">
+	<!-- ***** Header Area End ***** -->
+	<!-- <div class="container">
     <div class="row">
       <div class="col-12">
         <div class="section-heading text-center">
@@ -179,387 +181,398 @@
     </div>
   </div> -->
 
-  <div id="app" v-cloak class="animate__animated">
-    <!-- look here -->
-    <div class="modal fade" id="successModal" tabindex="-1" aria-labelledby="successModalLabel" aria-hidden="true">
-      <div class="modal-dialog">
-        <div class="modal-content">
-          <div class="modal-header">
-            <h5 class="modal-title" id="successModalLabel">Success</h5>
-          </div>
-          <div class="modal-body">
-            <p>Email Sent Successfully</p>
-          </div>
-          <div class="modal-footer">
-            <button type="button" class="btn btn-primary" data-bs-dismiss="modal">OK</button>
-          </div>
-        </div>
-      </div>
-    </div>
-    <!-- BS carousel: start -->
-    <section class="sector">
-      <div class="sector-left">
-        <div class="text-overlay">
-          <h6 style=" color: #ee626b;
+	<div id="app" v-cloak class="animate__animated">
+		<!-- look here -->
+		<div class="modal fade" id="successModal" tabindex="-1" aria-labelledby="successModalLabel" aria-hidden="true">
+			<div class="modal-dialog">
+				<div class="modal-content">
+					<div class="modal-header">
+						<h5 class="modal-title" id="successModalLabel">Success</h5>
+					</div>
+					<div class="modal-body">
+						<p>Email Sent Successfully</p>
+					</div>
+					<div class="modal-footer">
+						<button type="button" class="btn btn-primary" data-bs-dismiss="modal">OK</button>
+					</div>
+				</div>
+			</div>
+		</div>
+		<!-- BS carousel: start -->
+		<section class="sector">
+			<div class="sector-left">
+				<div class="text-overlay">
+					<h6 style=" color: #ee626b;
             font-size: 15px;
             text-transform: uppercase;
             font-weight: 700;">Announcements</h6>
-          <h2 class="animate__animated animate__bounce" style="  font-size: 40px; color: white;
+					<h2 class="animate__animated animate__bounce" style="  font-size: 40px; color: white;
             font-weight: 700;
             text-transform: capitalize;
             margin-top: 20px;
             line-height: 56px;">Do not miss out on the latest news!</h2>
-        </div>
-      </div>
-      <div class="sector-content">
-        <div id="carouselExampleControls" class="carousel slide" data-bs-ride="carousel"
-          v-if="announcements.length > 0">
-          <div class="carousel-inner">
-            <div class="carousel-item active">
-              <img :src="announcements[0].img" class="d-block" style="max-height:50%; max-width: 100%; margin:auto"
-                alt="...">
-              <div class="carousel-caption d-none d-md-block">
-                <h3>{{announcements[0].title}}</h3>
-                <p>{{announcements[0].content}}</p>
-              </div>
-            </div>
-            <div class="carousel-item" v-for="announcement in announcements.slice(1)">
-              <img :src="announcement.img" class="d-block" style="max-height:50%; max-width: 100%; margin:auto"
-                alt="...">
-              <div class="carousel-caption d-none d-md-block">
-                <h3>{{announcement.title}}</h3>
-                <p>{{announcement.content}}</p>
-              </div>
-            </div>
-          </div>
-          <button class="carousel-control-prev" type="button" data-bs-target="#carouselExampleControls"
-            data-bs-slide="prev">
-            <span class="carousel-control-prev-icon" aria-hidden="true"></span>
-            <span class="visually-hidden">Previous</span>
-          </button>
-          <button class="carousel-control-next" type="button" data-bs-target="#carouselExampleControls"
-            data-bs-slide="next">
-            <span class="carousel-control-next-icon" aria-hidden="true"></span>
-            <span class="visually-hidden">Next</span>
-          </button>
-        </div>
-      </div>
-    </section>
+				</div>
+			</div>
+			<div class="sector-content">
+				<div id="carouselExampleControls" class="carousel slide" data-bs-ride="carousel"
+					v-if="announcements.length > 0">
+					<div class="carousel-inner">
+						<div class="carousel-item active">
+							<img :src="announcements[0].img" class="d-block"
+								style="max-height:50%; max-width: 100%; margin:auto" alt="...">
+							<div class="carousel-caption d-none d-md-block">
+								<h3>{{announcements[0].title}}</h3>
+								<p>{{announcements[0].content}}</p>
+							</div>
+						</div>
+						<div class="carousel-item" v-for="announcement in announcements.slice(1)">
+							<img :src="announcement.img" class="d-block"
+								style="max-height:50%; max-width: 100%; margin:auto" alt="...">
+							<div class="carousel-caption d-none d-md-block">
+								<h3>{{announcement.title}}</h3>
+								<p>{{announcement.content}}</p>
+							</div>
+						</div>
+					</div>
+					<button class="carousel-control-prev" type="button" data-bs-target="#carouselExampleControls"
+						data-bs-slide="prev">
+						<span class="carousel-control-prev-icon" aria-hidden="true"></span>
+						<span class="visually-hidden">Previous</span>
+					</button>
+					<button class="carousel-control-next" type="button" data-bs-target="#carouselExampleControls"
+						data-bs-slide="next">
+						<span class="carousel-control-next-icon" aria-hidden="true"></span>
+						<span class="visually-hidden">Next</span>
+					</button>
+				</div>
+			</div>
+		</section>
 
 
 
 
-    <div class="properties section ">
-      <section class="sector">
-        <div class="sector-left">
-          <div class="text-overlay">
-            <h6 style=" color: #ee626b;
+		<div class="properties section ">
+			<section class="sector">
+				<div class="sector-left">
+					<div class="text-overlay">
+						<h6 style=" color: #ee626b;
             font-size: 15px;
             text-transform: uppercase;
             font-weight: 700;">Events</h6>
-            <h2 style="  font-size: 40px; color: white;
+						<h2 style="  font-size: 40px; color: white;
             font-weight: 700;
             text-transform: capitalize;
             margin-top: 20px;
             line-height: 56px;">Come Join Us for some events</h2>
 
-          </div>
-        </div>
-        <div class="sector-content">
-          <div class="row row-cols-1 row-cols-md-3 g-4">
-            <div class="col" v-for="event in events" :key="event.id">
-              <div class="item card h-100">
-                <a :href="event.link">
-                  <img :src="event.imageURL" class="card-img-top" alt="Event Image" />
-                </a>
-                <div class="card-body">
-                  <span class="category">{{ event.cat }}</span>
-                  <h6>{{ event.price }}</h6>
-                  <h4 class="card-title">{{ event.place }}</h4>
-                  <h4><small>{{event.date.toDate().toLocaleString()}}</small></h4>
-                  <p class="card-text">{{ event.description }}</p>
-                </div>
-                <div class="main-button text-center">
-                  <a :href="event.link" class="btn btn-primary" @click="openEventModal(event)" data-bs-toggle="modal"
-                    data-bs-target="#eventModal">See more!</a>
-                </div>
-              </div>
-            </div>
-          </div>
-        </div>
-      </section>
-    </div>
-    <!-- Modal (Popup) -->
-    <div class="modal fade" id="eventModal" tabindex="-1" aria-labelledby="eventModalLabel" aria-hidden="true">
-      <div class="modal-dialog modal-md">
-        <div class="modal-content" v-if="selectedEvent">
-          <div class="modal-header">
-            <h5 class="modal-title" id="eventModalLabel">{{ selectedEvent.title }}</h5>
-            <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"
-              @click="closeEventModal"></button>
-          </div>
-          <div class="modal-body">
-            <!-- Make the image take the full width of the modal -->
-            <img :src="selectedEvent.imageURL" class="img-fluid w-100 mb-3" alt="Event Image">
-            <p><strong>Date:</strong> {{ selectedEvent.date }}</p>
-            <p><strong>Price:</strong> {{ selectedEvent.price }}</p>
-            <p><strong>Description:</strong> {{ selectedEvent.description }}</p>
-            <p><strong>Location:</strong> {{ selectedEvent.place }} (Postal Code: {{ selectedEvent.postal }})</p>
-          </div>
-          <div class="modal-footer">
-            <button type="button" class="btn btn-primary" @click="googleCreateEvent">Add to Calendar</button>
-            <button type="button" class="btn btn-success" @click="openSignupModal">Sign up</button>
-            <button type="button" class="btn btn-danger" data-bs-dismiss="modal" @click="closeEventModal">Close</button>
-          </div>
-        </div>
-      </div>
-    </div>
+					</div>
+				</div>
+				<div class="sector-content">
+					<div class="row row-cols-1 row-cols-md-3 g-4">
+						<div class="col" v-for="event in events" :key="event.id">
+							<div class="item card h-100">
+								<a :href="event.link">
+									<img :src="event.imageURL" class="card-img-top" alt="Event Image" />
+								</a>
+								<div class="card-body">
+									<span class="category">{{ event.cat }}</span>
+									<h6>{{ event.price }}</h6>
+									<h4 class="card-title">{{ event.place }}</h4>
+									<h4><small>{{event.date.toDate().toLocaleString()}}</small></h4>
+									<p class="card-text">{{ event.description }}</p>
+								</div>
+								<div class="main-button text-center">
+									<a :href="event.link" class="btn btn-primary" @click="openEventModal(event)"
+										data-bs-toggle="modal" data-bs-target="#eventModal">See more!</a>
+								</div>
+							</div>
+						</div>
+					</div>
+				</div>
+			</section>
+		</div>
+		<!-- Modal (Popup) -->
+		<div class="modal fade" id="eventModal" tabindex="-1" aria-labelledby="eventModalLabel" aria-hidden="true">
+			<div class="modal-dialog modal-md">
+				<div class="modal-content" v-if="selectedEvent">
+					<div class="modal-header">
+						<h5 class="modal-title" id="eventModalLabel">{{ selectedEvent.title }}</h5>
+						<button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"
+							@click="closeEventModal"></button>
+					</div>
+					<div class="modal-body">
+						<!-- Make the image take the full width of the modal -->
+						<img :src="selectedEvent.imageURL" class="img-fluid w-100 mb-3" alt="Event Image">
+						<p><strong>Date:</strong> {{ selectedEvent.date }}</p>
+						<p><strong>Price:</strong> {{ selectedEvent.price }}</p>
+						<p><strong>Description:</strong> {{ selectedEvent.description }}</p>
+						<p><strong>Location:</strong> {{ selectedEvent.place }} (Postal Code: {{ selectedEvent.postal
+							}})</p>
+					</div>
+					<div class="modal-footer">
+						<button type="button" class="btn btn-primary" @click="googleCreateEvent">Add to
+							Calendar</button>
+						<button type="button" class="btn btn-success" @click="openSignupModal">Sign up</button>
+						<button type="button" class="btn btn-danger" data-bs-dismiss="modal"
+							@click="closeEventModal">Close</button>
+					</div>
+				</div>
+			</div>
+		</div>
 
-    <div class="modal fade" id="signupModal" tabindex="-1" aria-labelledby="signupModalLabel" aria-hidden="true"
-      v-if="showSignupModal" style="background: rgba(0,0,0,0.5);">
-      <div class="modal-dialog modal-lg">
-        <div class="modal-content">
-          <div class="modal-header">
-            <h5 class="modal-title" id="signupModalLabel">Sign Up for {{ selectedEvent.title }}</h5>
-            <button type="button" class="btn-close" @click="closeSignupModal"></button>
-          </div>
-          <div class="modal-body">
-            <!-- Event Details Summary -->
-            <div class="event-details-container row mb-4 p-3 bg-light rounded">
-              <div class="col-md-4">
-                <img :src="selectedEvent.imageURL" class="img-fluid rounded" alt="Event Image">
-              </div>
-              <div class="col-md-8">
-                <h6>Event Details</h6>
-                <p class="mb-1"><small><strong>Event:</strong> {{ selectedEvent.title }}</small></p>
-                <p class="mb-1"><small><strong>Date:</strong> {{ selectedEvent.date }}</small></p>
-                <p class="mb-1"><small><strong>Location:</strong> {{ selectedEvent.place }}</small></p>
-                <p class="mb-1"><small><strong>Price:</strong> {{ selectedEvent.price }}</small></p>
-              </div>
-            </div>
+		<div class="modal fade" id="signupModal" tabindex="-1" aria-labelledby="signupModalLabel" aria-hidden="true"
+			v-if="showSignupModal" style="background: rgba(0,0,0,0.5);">
+			<div class="modal-dialog modal-lg">
+				<div class="modal-content">
+					<div class="modal-header">
+						<h5 class="modal-title" id="signupModalLabel">Sign Up for {{ selectedEvent.title }}</h5>
+						<button type="button" class="btn-close" @click="closeSignupModal"></button>
+					</div>
+					<div class="modal-body">
+						<!-- Event Details Summary -->
+						<div class="event-details-container row mb-4 p-3 bg-light rounded">
+							<div class="col-md-4">
+								<img :src="selectedEvent.imageURL" class="img-fluid rounded" alt="Event Image">
+							</div>
+							<div class="col-md-8">
+								<h6>Event Details</h6>
+								<p class="mb-1"><small><strong>Event:</strong> {{ selectedEvent.title }}</small></p>
+								<p class="mb-1"><small><strong>Date:</strong> {{ selectedEvent.date }}</small></p>
+								<p class="mb-1"><small><strong>Location:</strong> {{ selectedEvent.place }}</small></p>
+								<p class="mb-1"><small><strong>Price:</strong> {{ selectedEvent.price }}</small></p>
+							</div>
+						</div>
 
-            <!-- Attendee Forms Container -->
-            <div id="attendeeForms">
-              <div v-for="(form, index) in attendeeForms" :key="index" class="attendee-form mb-4">
-                <h6>Attendee {{ index + 1 }} Details</h6>
-                <div class="row g-3">
-                  <div class="col-md-6">
-                    <input type="text" class="form-control" v-model="form.name" placeholder="Full Name">
-                  </div>
-                  <div class="col-md-6">
-                    <input type="email" class="form-control" v-model="form.email" placeholder="Email">
-                  </div>
-                  <div class="col-md-6">
-                    <input type="tel" class="form-control" v-model="form.phone" placeholder="Phone Number">
-                  </div>
-                  <div class="col-md-6">
-                    <input type="text" class="form-control" v-model="form.dietaryRestrictions"
-                      placeholder="Dietary Restrictions">
-                  </div>
-                  <div class="col-12">
-                    <textarea class="form-control" v-model="form.specialRequests" rows="2"
-                      placeholder="Special Requests or Notes"></textarea>
-                  </div>
-                  <div class="col-12 text-end mt-2">
-                    <button type="button" class="btn btn-danger btn-sm" @click="removeAttendeeForm(index)">Remove
-                      Attendee</button>
-                  </div>
-                </div>
-              </div>
+						<!-- Attendee Forms Container -->
+						<div id="attendeeForms">
+							<div v-for="(form, index) in attendeeForms" :key="index" class="attendee-form mb-4">
+								<h6>Attendee {{ index + 1 }} Details</h6>
+								<div class="row g-3">
+									<div class="col-md-6">
+										<input type="text" class="form-control" v-model="form.name"
+											placeholder="Full Name">
+									</div>
+									<div class="col-md-6">
+										<input type="email" class="form-control" v-model="form.email"
+											placeholder="Email">
+									</div>
+									<div class="col-md-6">
+										<input type="tel" class="form-control" v-model="form.phone"
+											placeholder="Phone Number">
+									</div>
+									<div class="col-md-6">
+										<input type="text" class="form-control" v-model="form.dietaryRestrictions"
+											placeholder="Dietary Restrictions">
+									</div>
+									<div class="col-12">
+										<textarea class="form-control" v-model="form.specialRequests" rows="2"
+											placeholder="Special Requests or Notes"></textarea>
+									</div>
+									<div class="col-12 text-end mt-2">
+										<button type="button" class="btn btn-danger btn-sm"
+											@click="removeAttendeeForm(index)">Remove
+											Attendee</button>
+									</div>
+								</div>
+							</div>
 
-            </div>
+						</div>
 
-            <!-- Add Another Attendee Button -->
-            <button class="btn btn-outline-primary mb-3" @click="addAttendeeForm">
-              <i class="fas fa-user-plus"></i> Add Another Attendee
-            </button>
-            <div class="collapse" id="collapseExample">
-              <div class="card card-body">
+						<!-- Add Another Attendee Button -->
+						<button class="btn btn-outline-primary mb-3" @click="addAttendeeForm">
+							<i class="fas fa-user-plus"></i> Add Another Attendee
+						</button>
+						<div class="collapse" id="collapseExample">
+							<div class="card card-body">
 
-                <form>
-                  <label for="cardName" class="form-label">Name on Card</label>
-                  <input type="text" placeholder="John Doe" class="form-control">
+								<form>
+									<label for="cardName" class="form-label">Name on Card</label>
+									<input type="text" placeholder="John Doe" class="form-control">
 
-                  <label for="cardNumber" class="form-label">Card Number</label>
-                  <div id="cardNumberContainer" style="position: relative;">
-                    <input type="text" v-model="cardNumber" placeholder="1234 5678 9012 3456" maxlength="16"
-                      @input="checkCardType" class="form-control" style="padding-right: 40px;">
-                    <img :src="cardLogo" id="cardLogo" alt="Card Logo" v-if="cardLogo"
-                      style="position: absolute; right: 10px; top: 50%; transform: translateY(-50%); max-width: 30px;">
-                  </div>
-
-
-
-                  <label for="expiryDate" class="form-label">Expiry Date</label>
-                  <input type="text" placeholder="MM/YY" maxlength="5" class="form-control">
-
-                  <label for="cvc" class="form-label">CVC</label>
-                  <input type="text" placeholder="123" maxlength="3" class="form-control">
-                </form>
-              </div>
-            </div>
-          </div>
-          <div class="modal-footer">
-            <div v-if="selectedEvent.price !== 'Free!'">
-              <h6>Total Cost: ${{attendeeForms.length * selectedEvent.price.split('$')[1]}}</h6>
-            </div>
-
-            <button type="button" class="btn btn-secondary" @click="closeSignupModal">Cancel</button>
-            <button v-if="selectedEvent.price === 'Free!'" type="button" class="btn btn-primary"
-              @click="submitRegistration">Submit Registration</button>
-            <button v-else-if="paymentReady === true" class="btn btn-success"
-              @click="submitRegistration(); togglePaymentReady()">Pay Now</button>
-            <button v-else class="btn btn-primary" type="button" data-bs-toggle="collapse"
-              data-bs-target="#collapseExample" aria-expanded="false" aria-controls="collapseExample"
-              @click="togglePaymentReady()">
-              Proceed to Payment
-            </button>
-
-
-          </div>
-        </div>
-      </div>
-    </div>
-    <!-- Custom Login Prompt Modal for Events -->
-    <div class="modal fade" id="loginPromptModalEvents" tabindex="-1" aria-labelledby="loginPromptLabelEvents"
-      aria-hidden="true">
-      <div class="modal-dialog">
-        <div class="modal-content">
-          <div class="modal-header">
-            <h5 class="modal-title" id="loginPromptLabelEvents">Please Log In</h5>
-            <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
-          </div>
-          <div class="modal-body">
-            <p>You need to log in to register for this event. Please log in to continue.</p>
-          </div>
-          <div class="modal-footer">
-            <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Cancel</button>
-            <a href="login.html" class="btn btn-primary">Log In</a> <!-- Redirect to login page -->
-          </div>
-        </div>
-      </div>
-    </div>
-  </div>
+									<label for="cardNumber" class="form-label">Card Number</label>
+									<div id="cardNumberContainer" style="position: relative;">
+										<input type="text" v-model="cardNumber" placeholder="1234 5678 9012 3456"
+											maxlength="16" @input="checkCardType" class="form-control"
+											style="padding-right: 40px;">
+										<img :src="cardLogo" id="cardLogo" alt="Card Logo" v-if="cardLogo"
+											style="position: absolute; right: 10px; top: 50%; transform: translateY(-50%); max-width: 30px;">
+									</div>
 
 
 
-  <div class="video section">
-    <div class="container">
-      <div class="row">
-        <div class="col-lg-4 offset-lg-4">
-          <div class="section-heading text-center">
-            <h6>Video View</h6>
-            <h2>Take a look at our last event!</h2>
-          </div>
-        </div>
-      </div>
-    </div>
-  </div>
+									<label for="expiryDate" class="form-label">Expiry Date</label>
+									<input type="text" placeholder="MM/YY" maxlength="5" class="form-control">
 
-  <div class="video-content">
-    <div class="container">
-      <div class="row">
-        <div class="col-lg-10 offset-lg-1">
-          <div class="video-frame">
-            <img style="width: 100%;" src="assets/images/img/youtube.png " alt="">
-            <a href="https://www.youtube.com/watch?v=z5ewiHBwcm4&ab_channel=beINSPORTSAsia" target="_blank"><i class="fa fa-play"></i></a>
-          </div>
-        </div>
-      </div>
-    </div>
-  </div>
+									<label for="cvc" class="form-label">CVC</label>
+									<input type="text" placeholder="123" maxlength="3" class="form-control">
+								</form>
+							</div>
+						</div>
+					</div>
+					<div class="modal-footer">
+						<div v-if="selectedEvent.price !== 'Free!'">
+							<h6>Total Cost: ${{attendeeForms.length * selectedEvent.price.split('$')[1]}}</h6>
+						</div>
 
-  <div class="contact section">
-    <div class="container">
-      <div class="row">
-        <div class="col-8 offset-2">
-          <div class="section-heading text-center">
-            <h6>Contact Us</h6>
-            <h2>Get In Touch With Us</h2>
-          </div>
-        </div>
-      </div>
-    </div>
-  </div>
+						<button type="button" class="btn btn-secondary" @click="closeSignupModal">Cancel</button>
+						<button v-if="selectedEvent.price === 'Free!'" type="button" class="btn btn-primary"
+							@click="submitRegistration">Submit Registration</button>
+						<button v-else-if="paymentReady === true" class="btn btn-success"
+							@click="submitRegistration(); togglePaymentReady()">Pay Now</button>
+						<button v-else class="btn btn-primary" type="button" data-bs-toggle="collapse"
+							data-bs-target="#collapseExample" aria-expanded="false" aria-controls="collapseExample"
+							@click="togglePaymentReady()">
+							Proceed to Payment
+						</button>
 
-  <div class="contact-content">
-    <div class="container">
-      <div class="row">
-        <div class="col-lg-7">
-          <div id="map" class="map-container"
-            style="height: 500px; width: 100%; border: 0; border-radius: 10px; box-shadow: 0px 0px 15px rgba(0, 0, 0, 0.15); background-color: #f0f0f0;">
-          </div>
-          <div class="row">
-            <div class="col-lg-6">
-              <div class="item phone">
-                <img src="assets/images/phone-icon.png" alt="" style="max-width: 52px;">
-                <h6>90934389<br><span>Phone Number</span></h6>
-              </div>
-            </div>
-            <div class="col-lg-6">
-              <div class="item email">
-                <img src="assets/images/email-icon.png" alt="" style="max-width: 52px;">
-                <h6>myblockwad2<br><span>Business Email</span></h6>
-              </div>
-            </div>
-          </div>
-        </div>
-        <div class="col-lg-5">
-          <form id="contact-form" method="post">
-            <div class="row">
-              <div class="col-lg-12">
-                <fieldset>
-                  <label for="name">Full Name</label>
-                  <input type="name" name="name" id="name" placeholder="Your Name..." autocomplete="on" required>
-                </fieldset>
-              </div>
-              <div class="col-lg-12">
-                <fieldset>
-                  <label for="email">Email Address</label>
-                  <input type="text" name="email" id="email" pattern="[^ @]*@[^ @]*" placeholder="Your E-mail..."
-                    required="">
-                </fieldset>
-              </div>
-              <div class="col-lg-12">
-                <fieldset>
-                  <label for="subject">Subject</label>
-                  <input type="subject" name="subject" id="subject" placeholder="Subject..." autocomplete="on">
-                </fieldset>
-              </div>
-              <div class="col-lg-12">
-                <fieldset>
-                  <label for="message">Message</label>
-                  <textarea name="message" id="message" placeholder="Your Message"></textarea>
-                </fieldset>
-              </div>
-              <div class="col-lg-12">
-                <fieldset>
-                  <button type="submit" id="form-submit" class="orange-button">Send Message</button>
-                </fieldset>
-              </div>
-            </div>
-          </form>
-        </div>
-      </div>
-    </div>
-  </div>
-  </div>
+
+					</div>
+				</div>
+			</div>
+		</div>
+		<!-- Custom Login Prompt Modal for Events -->
+		<div class="modal fade" id="loginPromptModalEvents" tabindex="-1" aria-labelledby="loginPromptLabelEvents"
+			aria-hidden="true">
+			<div class="modal-dialog">
+				<div class="modal-content">
+					<div class="modal-header">
+						<h5 class="modal-title" id="loginPromptLabelEvents">Please Log In</h5>
+						<button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+					</div>
+					<div class="modal-body">
+						<p>You need to log in to register for this event. Please log in to continue.</p>
+					</div>
+					<div class="modal-footer">
+						<button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Cancel</button>
+						<a href="login.html" class="btn btn-primary">Log In</a> <!-- Redirect to login page -->
+					</div>
+				</div>
+			</div>
+		</div>
+	</div>
 
 
 
+	<div class="video section">
+		<div class="container">
+			<div class="row">
+				<div class="col-lg-4 offset-lg-4">
+					<div class="section-heading text-center">
+						<h6>Video View</h6>
+						<h2>Take a look at our last event!</h2>
+					</div>
+				</div>
+			</div>
+		</div>
+	</div>
 
-  <br>
-  <br>
+	<div class="video-content">
+		<div class="container">
+			<div class="row">
+				<div class="col-lg-10 offset-lg-1">
+					<div class="video-frame">
+						<img style="width: 100%;" src="assets/images/img/youtube.png " alt="">
+						<a href="https://www.youtube.com/watch?v=z5ewiHBwcm4&ab_channel=beINSPORTSAsia"
+							target="_blank"><i class="fa fa-play"></i></a>
+					</div>
+				</div>
+			</div>
+		</div>
+	</div>
 
-  <!-- Scripts -->
-  <!-- Bootstrap core JavaScript -->
-  <script src="vendor/jquery/jquery.min.js"></script>
-  <script src="vendor/bootstrap/js/bootstrap.min.js"></script>
-  <script src="assets/js/isotope.min.js"></script>
-  <script src="assets/js/owl-carousel.js"></script>
-  <script src="assets/js/counter.js"></script>
-  <script src="assets/js/custom.js"></script>
-  <!-- <script type="module" src="assets/js/index.js"></script> -->
+	<div class="contact section">
+		<div class="container">
+			<div class="row">
+				<div class="col-8 offset-2">
+					<div class="section-heading text-center">
+						<h6>Contact Us</h6>
+						<h2>Get In Touch With Us</h2>
+					</div>
+				</div>
+			</div>
+		</div>
+	</div>
+
+	<div class="contact-content">
+		<div class="container">
+			<div class="row">
+				<div class="col-lg-7">
+					<div id="map" class="map-container"
+						style="height: 500px; width: 100%; border: 0; border-radius: 10px; box-shadow: 0px 0px 15px rgba(0, 0, 0, 0.15); background-color: #f0f0f0;">
+					</div>
+					<div class="row">
+						<div class="col-lg-6">
+							<div class="item phone">
+								<img src="assets/images/phone-icon.png" alt="" style="max-width: 52px;">
+								<h6>90934389<br><span>Phone Number</span></h6>
+							</div>
+						</div>
+						<div class="col-lg-6">
+							<div class="item email">
+								<img src="assets/images/email-icon.png" alt="" style="max-width: 52px;">
+								<h6>myblockwad2<br><span>Business Email</span></h6>
+							</div>
+						</div>
+					</div>
+				</div>
+				<div class="col-lg-5">
+					<form id="contact-form" method="post">
+						<div class="row">
+							<div class="col-lg-12">
+								<fieldset>
+									<label for="name">Full Name</label>
+									<input type="name" name="name" id="name" placeholder="Your Name..."
+										autocomplete="on" required>
+								</fieldset>
+							</div>
+							<div class="col-lg-12">
+								<fieldset>
+									<label for="email">Email Address</label>
+									<input type="text" name="email" id="email" pattern="[^ @]*@[^ @]*"
+										placeholder="Your E-mail..." required="">
+								</fieldset>
+							</div>
+							<div class="col-lg-12">
+								<fieldset>
+									<label for="subject">Subject</label>
+									<input type="subject" name="subject" id="subject" placeholder="Subject..."
+										autocomplete="on">
+								</fieldset>
+							</div>
+							<div class="col-lg-12">
+								<fieldset>
+									<label for="message">Message</label>
+									<textarea name="message" id="message" placeholder="Your Message"></textarea>
+								</fieldset>
+							</div>
+							<div class="col-lg-12">
+								<fieldset>
+									<button type="submit" id="form-submit" class="orange-button">Send Message</button>
+								</fieldset>
+							</div>
+						</div>
+					</form>
+				</div>
+			</div>
+		</div>
+	</div>
+	</div>
+
+
+
+
+	<br>
+	<br>
+
+	<!-- Scripts -->
+	<!-- Bootstrap core JavaScript -->
+	<script src="vendor/jquery/jquery.min.js"></script>
+	<script src="vendor/bootstrap/js/bootstrap.min.js"></script>
+	<script src="assets/js/isotope.min.js"></script>
+	<script src="assets/js/owl-carousel.js"></script>
+	<script src="assets/js/counter.js"></script>
+	<script src="assets/js/custom.js"></script>
+	<!-- <script type="module" src="assets/js/index.js"></script> -->
 
 </body>
 
