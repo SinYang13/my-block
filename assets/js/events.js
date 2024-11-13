@@ -157,14 +157,25 @@ const eventsApp = Vue.createApp({
           registrationData
         );
 
-        alert(
-          "Registration successful! Payment will be collected on site (If Any)"
-        );
+        // alert(
+        //   "Registration successful! Payment will be collected on site (If Any)"
+        // );
         this.closeSignupModal(); // Close the modal after successful submission
+
+        if (this.selectedEvent.price != "Free!") {
+          localStorage.setItem('orderAmount', this.selectedEvent.price);
+          console.log(this.selectedEvent.price)
+          window.location.href = 'indexPayment.html';
+        }
+        else{
+          window.alert("Event has been successfully saved")
+        }
+
       } catch (error) {
         console.error("Error adding registration:", error);
         alert("Failed to register. Please try again.");
       }
+
     },
 
     // Update the filter when a button is clicked
