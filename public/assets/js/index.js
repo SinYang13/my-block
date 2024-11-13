@@ -426,7 +426,7 @@ const eventsApp = Vue.createApp({
     },
 
     handleScroll() {
-      const scrollPosition = window.scrollY;
+      const scrollPosition = window.scrollY + 60;
       const headerHeight = document.querySelector("header").offsetHeight;
       const headerElement = document.querySelector("header");
       if (scrollPosition >= headerHeight) {

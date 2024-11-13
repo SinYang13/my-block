@@ -197,13 +197,13 @@
                                 alt="Announcement Image" class="img-fluid" style="height: 200px; object-fit: cover;">
                             <span class="category" v-if="new Date(announcement.expiry) < new Date()">Expired!</span>
                             <span class="category" v-else>{{ announcement?.expiry }}</span>
-                            <h6>{{ announcement?.from }}</h6>
+                            <h6 style="font-size: small;">{{ announcement?.from }}</h6>
                             <svg v-if="announcement.pinned" xmlns="http://www.w3.org/2000/svg" width="16" height="16"
                                 fill="currentColor" class="bi bi-pin" viewBox="0 0 16 16">
                                 <path
                                     d="M4.146.146A.5.5 0 0 1 4.5 0h7a.5.5 0 0 1 .5.5c0 .68-.342 1.174-.646 1.479-.126.125-.25.224-.354.298v4.431l.078.048c.203.127.476.314.751.555C12.36 7.775 13 8.527 13 9.5a.5.5 0 0 1-.5.5h-4v4.5c0 .276-.224 1.5-.5 1.5s-.5-1.224-.5-1.5V10h-4a.5.5 0 0 1-.5-.5c0-.973.64-1.725 1.17-2.189A6 6 0 0 1 5 6.708V2.277a3 3 0 0 1-.354-.298C4.342 1.674 4 1.179 4 .5a.5.5 0 0 1 .146-.354m1.58 1.408-.002-.001zm-.002-.001.002.001A.5.5 0 0 1 6 2v5a.5.5 0 0 1-.276.447h-.002l-.012.007-.054.03a5 5 0 0 0-.827.58c-.318.278-.585.596-.725.936h7.792c-.14-.34-.407-.658-.725-.936a5 5 0 0 0-.881-.61l-.012-.006h-.002A.5.5 0 0 1 10 7V2a.5.5 0 0 1 .295-.458 1.8 1.8 0 0 0 .351-.271c.08-.08.155-.17.214-.271H5.14q.091.15.214.271a1.8 1.8 0 0 0 .37.282" />
                             </svg>
-                            <h4><a href="announcement-details.html">{{ announcement?.title }}</a></h4>
+                            <h4>{{ announcement?.title }}</h4>
                             <p class="card-content">{{ announcement?.content }}</p>
                             <p class="card-location"><strong>Location:</strong> {{ announcement?.location }}</p>
                             <p class="card-location"><strong>Date Posted:</strong> {{ announcement?.date }}</p>
@@ -229,13 +229,13 @@
                                     style="height: 200px; object-fit: cover;">
                                 <span class="category" v-if="new Date(announcement.expiry) < new Date()">Expired!</span>
                                 <span class="category" v-else>{{ announcement?.expiry }}</span>
-                                <h6>{{ announcement?.from }}</h6>
+                                <h6 style="font-size: small;">{{ announcement?.from }}</h6>
                                 <svg v-if="announcement.pinned" xmlns="http://www.w3.org/2000/svg" width="16"
                                     height="16" fill="currentColor" class="bi bi-pin" viewBox="0 0 16 16">
                                     <path
                                         d="M4.146.146A.5.5 0 0 1 4.5 0h7a.5.5 0 0 1 .5.5c0 .68-.342 1.174-.646 1.479-.126.125-.25.224-.354.298v4.431l.078.048c.203.127.476.314.751.555C12.36 7.775 13 8.527 13 9.5a.5.5 0 0 1-.5.5h-4v4.5c0 .276-.224 1.5-.5 1.5s-.5-1.224-.5-1.5V10h-4a.5.5 0 0 1-.5-.5c0-.973.64-1.725 1.17-2.189A6 6 0 0 1 5 6.708V2.277a3 3 0 0 1-.354-.298C4.342 1.674 4 1.179 4 .5a.5.5 0 0 1 .146-.354m1.58 1.408-.002-.001zm-.002-.001.002.001A.5.5 0 0 1 6 2v5a.5.5 0 0 1-.276.447h-.002l-.012.007-.054.03a5 5 0 0 0-.827.58c-.318.278-.585.596-.725.936h7.792c-.14-.34-.407-.658-.725-.936a5 5 0 0 0-.881-.61l-.012-.006h-.002A.5.5 0 0 1 10 7V2a.5.5 0 0 1 .295-.458 1.8 1.8 0 0 0 .351-.271c.08-.08.155-.17.214-.271H5.14q.091.15.214.271a1.8 1.8 0 0 0 .37.282" />
                                 </svg>
-                                <h4><a href="announcement-details.html">{{ announcement?.title }}</a></h4>
+                                <h4>{{ announcement?.title }}</h4>
                                 <p class="card-content">{{ announcement?.content }}</p>
                                 <p class="card-location"><strong>Location:</strong> {{ announcement?.location }}</p>
                                 <p class="card-location"><strong>Date Posted:</strong> {{ announcement?.date }}</p>
@@ -261,7 +261,7 @@
                     </div>
                     <div class="modal-body">
                         <img v-if="modalContent?.img" :src="modalContent.img" alt="Announcement Image"
-                            class="img-fluid my-3" style="object-fit: cover;">
+                            class="img-fluid my-3" style="width: 100%; max-height: 500px; object-fit: cover;">
                         <div style="display: flex; justify-content: space-between; align-items: center;">
                             <h3>{{ modalContent?.title }}</h3>
                             <div style="text-align: right;">
@@ -451,7 +451,7 @@
                     }
                 },
                 handleScroll() {
-                    const scrollPosition = window.scrollY;
+                    const scrollPosition = window.scrollY + 60;
                     const headerHeight = document.querySelector('header').offsetHeight;
                     const headerElement = document.querySelector('header');
                     if (scrollPosition >= headerHeight) {
