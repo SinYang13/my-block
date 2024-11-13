@@ -14,7 +14,7 @@
     <link rel="stylesheet" href="assets/css/fontawesome.css">
     <link rel="stylesheet" href="assets/css/templatemo-villa-agency.css">
     <link rel="stylesheet" href="assets/css/owl.css">
-    <link rel="stylesheet" href="assets/css/animate.css">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/animate.css/4.1.1/animate.min.css" />
     <link rel="stylesheet" href="https://unpkg.com/swiper@7/swiper-bundle.min.css" />
     <style>
         .card {
@@ -192,7 +192,7 @@
                     style="margin-top: 0px">
                     <div class="col-xl-4 col-lg-6 col-md-6 mb-4" v-for="announcement in filteredAnnouncements"
                         :key="announcement?.id">
-                        <div class="item">
+                        <div class="item animate__animated animate__fadeInUp">
                             <img v-if="announcement?.img && announcement.img !== ''" :src="announcement.img"
                                 alt="Announcement Image" class="img-fluid" style="height: 200px; object-fit: cover;">
                             <span class="category" v-if="new Date(announcement.expiry) < new Date()">Expired!</span>
@@ -223,7 +223,7 @@
                     <div class="row properties-box section properties g-3 mt-3" v-if="showOtherAnnouncements">
                         <div class="col-xl-4 col-lg-6 col-md-6 mb-4" v-for="announcement in otherAnnouncements"
                             :key="announcement?.id">
-                            <div class="item">
+                            <div class="item animate__animated animate__fadeInUp">
                                 <img v-if="announcement?.img && announcement.img !== ''" :src="announcement.img"
                                     alt="Announcement Image" class="img-fluid"
                                     style="height: 200px; object-fit: cover;">

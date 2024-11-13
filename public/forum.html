@@ -15,7 +15,7 @@
     <link rel="stylesheet" href="assets/css/fontawesome.css">
     <link rel="stylesheet" href="assets/css/templatemo-villa-agency.css">
     <link rel="stylesheet" href="assets/css/owl.css">
-    <link rel="stylesheet" href="assets/css/animate.css">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/animate.css/4.1.1/animate.min.css" />
     <link rel="icon" type="image/png" href="assets/favicon.png">
     <style type="text/css">
         body {
@@ -427,8 +427,8 @@
 
                     <!-- Forum List -->
                     <div class="inner-main-body p-2 p-sm-3 collapse forum-content show">
-                        <div class="card mb-2" v-for="post in filteredPosts">
-                            <div class="card-body p-2 p-sm-3">
+                        <div class="card mb-2 animate__animated animate__fadeInUp" v-for="post in filteredPosts">
+                            <div class="card-body p-2 p-sm-3 ">
                                 <div class="media forum-item">
                                     <a href="#" data-toggle="collapse" data-target=".forum-content"
                                         @click="showComments(post.id)">
@@ -505,7 +505,7 @@
                                 </div>
                             </div>
                         </div>
-                        <div class="card mb-2" v-for="c in posts.comments" style="width: 95%; float: right;">
+                        <div class="card mb-2 animate__animated animate__fadeInUp" v-for="c in posts.comments" style="width: 95%; float: right;">
                             <div class="card-body">
                                 <div class="media forum-item">
                                     <a href="javascript:void(0)" class="card-link">
