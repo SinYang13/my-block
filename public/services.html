@@ -19,116 +19,119 @@
   <link rel="stylesheet" href="assets/css/owl.css">
   <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/animate.css/4.1.1/animate.min.css" />
   <link rel="stylesheet" href="https://unpkg.com/swiper@7/swiper-bundle.min.css" />
+  <script type="module" src="assets/js/services.js"></script>
   <style>
-  .category-button {
-  background-color: #ffffff;
-  border: 1px solid #ddd;
-  color: #333;
-  padding: 12px;
-  width: 100%;
-  text-align: left;
-  font-weight: 500;
-  border-radius: 8px;
-  margin-bottom: 8px;
-  transition: all 0.3s ease;
-  box-shadow: 0px 2px 5px rgba(0, 0, 0, 0.1);
-}
+    .category-button {
+      background-color: #ffffff;
+      border: 1px solid #ddd;
+      color: #333;
+      padding: 12px;
+      width: 100%;
+      text-align: left;
+      font-weight: 500;
+      border-radius: 8px;
+      margin-bottom: 8px;
+      transition: all 0.3s ease;
+      box-shadow: 0px 2px 5px rgba(0, 0, 0, 0.1);
+    }
 
-.category-button:hover {
-  background-color: #0056b3;
-  color: white;
-  box-shadow: 0px 4px 10px rgba(0, 86, 179, 0.2);
-}
+    .category-button:hover {
+      background-color: #0056b3;
+      color: white;
+      box-shadow: 0px 4px 10px rgba(0, 86, 179, 0.2);
+    }
 
-.category-button.active {
-  background-color: #007bff;
-  color: white;
-  border-color: #007bff;
-  box-shadow: 0px 4px 10px rgba(0, 123, 255, 0.3);
-}
+    .category-button.active {
+      background-color: #007bff;
+      color: white;
+      border-color: #007bff;
+      box-shadow: 0px 4px 10px rgba(0, 123, 255, 0.3);
+    }
 
-/* Add top margin to the category button container */
-.category-container {
-  margin-top: 100px; /* Adjust this value to control spacing */
-}
+    /* Add top margin to the category button container */
+    .category-container {
+      margin-top: 100px;
+      /* Adjust this value to control spacing */
+    }
 
-/* Adjust the alignment of the card container */
-.services-section {
-  display: flex;
-  align-items: flex-start;
-}
+    /* Adjust the alignment of the card container */
+    .services-section {
+      display: flex;
+      align-items: flex-start;
+    }
 
-.category-buttons {
-  flex: 0 0 200px; /* Adjust width if needed */
-}
+    .category-buttons {
+      flex: 0 0 200px;
+      /* Adjust width if needed */
+    }
 
-.cards-container {
-  flex: 1;
-  margin-left: 20px; /* Space between buttons and cards */
-  margin-top: -20px; /* Align cards with the first button */
-}
-
-
-    
+    .cards-container {
+      flex: 1;
+      margin-left: 20px;
+      /* Space between buttons and cards */
+      margin-top: -20px;
+      /* Align cards with the first button */
+    }
   </style>
 </head>
 
 <body>
 
-  
+
   <div class="sub-header">
     <div class="container">
-        <div class="row">
-            <div class="col-lg-8 col-md-8">
-                <ul class="info">
-                    <li><i class="fa fa-envelope"></i> my-block.com</li>
-                    <li><i class="fa fa-map"></i> Singapore</li>
-                </ul>
-            </div>
-            <div class="col-lg-4 col-md-4">
-                <ul class="social-links">
-                  <li><a href="https://www.facebook.com/sgsmu/"><i class="fab fa-facebook"></i></a></li>
-                  <li><a href="https://x.com/sgSMU" target="_blank"><i class="fab fa-twitter"></i></a></li>
-                  <li><a href="https://www.linkedin.com/school/singapore-management-university/posts/?feedView=all"><i class="fab fa-linkedin"></i></a></li>
-                  <li><a href="https://www.instagram.com/sgsmu/?hl=en"><i class="fab fa-instagram"></i></a></li>
-                </ul>
-            </div>
+      <div class="row">
+        <div class="col-lg-8 col-md-8">
+          <ul class="info">
+            <li><i class="fa fa-envelope"></i> my-block.com</li>
+            <li><i class="fa fa-map"></i> Singapore</li>
+          </ul>
         </div>
+        <div class="col-lg-4 col-md-4">
+          <ul class="social-links">
+            <li><a href="https://www.facebook.com/sgsmu/"><i class="fab fa-facebook"></i></a></li>
+            <li><a href="https://x.com/sgSMU" target="_blank"><i class="fab fa-twitter"></i></a></li>
+            <li><a href="https://www.linkedin.com/school/singapore-management-university/posts/?feedView=all"><i
+                  class="fab fa-linkedin"></i></a></li>
+            <li><a href="https://www.instagram.com/sgsmu/?hl=en"><i class="fab fa-instagram"></i></a></li>
+          </ul>
+        </div>
+      </div>
     </div>
-</div>
+  </div>
 
   <!-- Header Area Start -->
-<header class="header-area header-sticky">
+  <header class="header-area header-sticky">
     <div class="container">
-        <div class="row">
-            <div class="col-12">
-                <nav class="main-nav">
-                    <a href="index.html" class="logo">
-                        <h1>
-                            <span>
-                                <inline>MyBlock</inline>
-                            </span>
-                        </h1>
-                    </a>
-                    <ul class="nav">
-                      <li><a href="announcements.html">Announcements</a></li>
-                      <li><a href="events.html">Events</a></li>
-                      <li><a href="forum.html">Forum</a></li>
-                      <li><a href="loans.html">Loans</a></li>
-                      <li><a href="services.html" class="active">Services</a></li>
-                        <li id="profileLink">
-                            <a href="profile.html" id="profileLinkRedir">
-                                <i class="fa fa-user" id="profileLinkImg"></i> 
-                                <span id="profileLinkText">Profile</span>
-                            </a>
-                        </li>
-                    </ul>
-                    <a class="menu-trigger"><span>Menu</span></a>
-                </nav>
-            </div>
+      <div class="row">
+        <div class="col-12">
+          <nav class="main-nav">
+            <a href="index.html" class="logo">
+              <h1>
+                <span>
+                  <inline>MyBlock</inline>
+                </span>
+              </h1>
+            </a>
+            <ul class="nav">
+              <li><a href="announcements.html">Announcements</a></li>
+              <li><a href="events.html">Events</a></li>
+              <li><a href="forum.html">Forum</a></li>
+              <li><a href="loans.html">Loans</a></li>
+              <li><a href="services.html" class="active">Services</a></li>
+              <li id="profileLink">
+                <a href="profile.html" id="profileLinkRedir">
+                  <i class="fa fa-user" id="profileLinkImg"></i>
+                  <span id="profileLinkText">Profile</span>
+                </a>
+              </li>
+            </ul>
+            <a class="menu-trigger"><span>Menu</span></a>
+          </nav>
         </div>
+      </div>
     </div>
-</header>
+  </header>
 
 
   <div class="page-heading header-text">
@@ -148,9 +151,9 @@
         <!-- Left Sidebar for Categories -->
         <div class="col-md-3 category-container">
           <div class="category-buttons">
-            <button v-for="category in uniqueCategories" :key="category" 
-                    :class="['category-button', { 'active': category === selectedCategory }]" 
-                    @click="showProviders(category)">
+            <button v-for="category in uniqueCategories" :key="category"
+              :class="['category-button', { 'active': category === selectedCategory }]"
+              @click="showProviders(category)">
               {{ category }}
             </button>
           </div>
@@ -172,7 +175,8 @@
                       <p class="card-text">{{ service.description }}</p>
                     </div>
                     <div class="main-button text-center">
-                      <a class="btn btn-primary" @click="openServiceModal(service)" data-bs-toggle="modal" data-bs-target="#serviceModal">See more!</a>
+                      <a class="btn btn-primary" @click="openServiceModal(service)" data-bs-toggle="modal"
+                        data-bs-target="#serviceModal">See more!</a>
                     </div>
                   </div>
                 </div>
@@ -196,52 +200,53 @@
             <p><strong>Price:</strong> {{ selectedService.price }}</p>
             <p><strong>Description:</strong> {{ selectedService.detailedServiceDescription }}</p>
             <p><strong>Rating:</strong> {{ selectedService.rating }}</p>
-            <p style="color: rgb(246, 143, 143);"><strong>Provider:</strong> {{ selectedService.serviceProviderInformation }}</p>
+            <p style="color: rgb(246, 143, 143);"><strong>Provider:</strong> {{
+              selectedService.serviceProviderInformation }}</p>
             <p><strong>Duration:</strong> {{ selectedService.serviceDuration }}</p>
           </div>
           <div class="modal-footer">
-            <button type="button" class="btn btn-primary" @click="bookmarkService" >Bookmark</button>
+            <button type="button" class="btn btn-primary" @click="bookmarkService">Bookmark</button>
             <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Close</button>
           </div>
         </div>
       </div>
     </div>
     <div class="modal fade" id="loginPromptModalEvents" tabindex="-1" aria-labelledby="loginPromptLabelEvents"
-    aria-hidden="true">
-    <div class="modal-dialog">
-      <div class="modal-content">
-        <div class="modal-header">
-          <h5 class="modal-title" id="loginPromptLabelEvents">Please Log In</h5>
-          <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+      aria-hidden="true">
+      <div class="modal-dialog">
+        <div class="modal-content">
+          <div class="modal-header">
+            <h5 class="modal-title" id="loginPromptLabelEvents">Please Log In</h5>
+            <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+          </div>
+          <div class="modal-body">
+            <p>You need to log in to bookmark this service. Please log in to continue.</p>
+          </div>
+          <div class="modal-footer">
+            <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Cancel</button>
+            <a href="login.html" class="btn btn-primary">Log In</a> <!-- Redirect to login page -->
+          </div>
         </div>
-        <div class="modal-body">
-          <p>You need to log in to bookmark this service. Please log in to continue.</p>
-        </div>
-        <div class="modal-footer">
-          <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Cancel</button>
-          <a href="login.html" class="btn btn-primary">Log In</a> <!-- Redirect to login page -->
+      </div>
+    </div>
+    <div class="modal fade" id="successModal" tabindex="-1" aria-labelledby="successModalLabel" aria-hidden="true">
+      <div class="modal-dialog">
+        <div class="modal-content">
+          <div class="modal-header">
+            <h5 class="modal-title" id="successModalLabel">Success</h5>
+          </div>
+          <div class="modal-body">
+            <p>Service bookmarked successfully!</p>
+          </div>
+          <div class="modal-footer">
+            <button type="button" class="btn btn-primary" data-bs-dismiss="modal">OK</button>
+          </div>
         </div>
       </div>
     </div>
   </div>
-  <div class="modal fade" id="successModal" tabindex="-1" aria-labelledby="successModalLabel" aria-hidden="true">
-    <div class="modal-dialog">
-        <div class="modal-content">
-            <div class="modal-header">
-                <h5 class="modal-title" id="successModalLabel">Success</h5>
-            </div>
-            <div class="modal-body">
-                <p>Service bookmarked successfully!</p>
-            </div>
-            <div class="modal-footer">
-                <button type="button" class="btn btn-primary" data-bs-dismiss="modal">OK</button>
-            </div>
-        </div>
-    </div>
-</div>
-</div>
-<br>
-<br>
+  <br>
+  <br>
 
   <!-- <div id="app">
     <div class="section-heading text-center">
@@ -303,9 +308,11 @@
   <!-- Scripts -->
   <script src="vendor/jquery/jquery.min.js"></script>
   <script src="vendor/bootstrap/js/bootstrap.min.js"></script>
-  <!-- <script src="assets/js/custom.js"></script> -->
+  <script src="assets/js/owl-carousel.js"></script>
+  <script src="assets/js/custom.js"></script>
   <script src="https://unpkg.com/vue@3/dist/vue.global.js"></script>
-  <script type="module" src="assets/js/services.js"></script>
+  <script src="assets/js/isotope.min.js"></script>
+
 </body>
 
 </html>
