@@ -127,52 +127,69 @@ const eventsApp = Vue.createApp({
       }
     },
     async submitRegistration() {
-      const userId = sessionStorage.getItem("loggedInUserEmail");
+      let status = true
+      this.attendeeForms.forEach(item => {
+        if (!item.name || !item.email || !item.phone) {
+          console.log("error")
+          
+          status = false
+          alert("Attendee's Details not filled in correctly")
+          // const successModal = new bootstrap.Modal(document.getElementById('successModal3'));
+          // successModal.show();
 
-      if (!userId) {
-        alert("Please log in to register for events.");
-        return;
+          return; // Stop the function from proceeding further
+        }
+
+      })
+
+      if (status == true) {
+        const userId = sessionStorage.getItem("loggedInUserEmail");
+
+        if (!userId) {
+          alert("Please log in to register for events.");
+          return;
+        }
+
+        const registrationData = {
+          eventId: this.selectedEvent.id,
+          eventTitle: this.selectedEvent.title,
+          eventDate: this.selectedEvent.date,
+          eventLocation: this.selectedEvent.place,
+          attendees: this.attendeeForms.map((form) => ({
+            name: form.name,
+            email: form.email,
+            phone: form.phone,
+            dietaryRestrictions: form.dietaryRestrictions,
+            specialRequests: form.specialRequests,
+          })),
+          userInfo: {
+            email: userId, // Include user information in the registration data
+          },
+          timestamp: new Date(), // Optional: add a timestamp
+        };
+
+        try {
+          // Add registration to user's "registrations" subcollection
+          await addDoc(
+            collection(db, "users", userId, "registrations"),
+            registrationData
+          );
+
+          // Add registration to the event's "registrations" subcollection
+          await addDoc(
+            collection(db, "events", this.selectedEvent.id, "registrations"),
+            registrationData
+          );
+
+          const successModal = new bootstrap.Modal(document.getElementById('successModal'));
+          successModal.show();
+          this.closeSignupModal(); // Close the modal after successful submission
+        } catch (error) {
+          console.error("Error adding registration:", error);
+          alert("Failed to register. Please try again.");
+        }
       }
 
-      const registrationData = {
-        eventId: this.selectedEvent.id,
-        eventTitle: this.selectedEvent.title,
-        eventDate: this.selectedEvent.date,
-        eventLocation: this.selectedEvent.place,
-        attendees: this.attendeeForms.map((form) => ({
-          name: form.name,
-          email: form.email,
-          phone: form.phone,
-          dietaryRestrictions: form.dietaryRestrictions,
-          specialRequests: form.specialRequests,
-        })),
-        userInfo: {
-          email: userId, // Include user information in the registration data
-        },
-        timestamp: new Date(), // Optional: add a timestamp
-      };
-
-      try {
-        // Add registration to user's "registrations" subcollection
-        await addDoc(
-          collection(db, "users", userId, "registrations"),
-          registrationData
-        );
-
-        // Add registration to the event's "registrations" subcollection
-        await addDoc(
-          collection(db, "events", this.selectedEvent.id, "registrations"),
-          registrationData
-        );
-
-        alert(
-          "Registration successful! Payment will be collected on site (If Any)"
-        );
-        this.closeSignupModal(); // Close the modal after successful submission
-      } catch (error) {
-        console.error("Error adding registration:", error);
-        alert("Failed to register. Please try again.");
-      }
     },
 
     closeEventModal() {
