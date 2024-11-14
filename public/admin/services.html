@@ -158,6 +158,36 @@
             </div>
         </div>
 
+        <div class="modal fade" id="bookmarkedByModal" tabindex="-1" aria-labelledby="bookmarkedByModal"
+            aria-hidden="true">
+            <div class="modal-dialog modal-lg">
+                <div class="modal-content">
+                    <div class="modal-header">
+                        <h5 class="modal-title" id="deleteConfirmationModalLabel">User Bookmarks</h5>
+                        <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"
+                            @click="clear()"></button>
+                    </div>
+                    <div class="modal-body">
+                        <p>Total bookmarks: {{bookmarkedBy.length}}</p>
+                        <table class="table">
+                            <thead>
+                                <th scope="col">User</th>
+                            </thead>
+                            <tbody>
+                                <tr v-for="user in bookmarkedBy">
+                                    <td>{{user.userId}}</td>
+                                </tr>
+                            </tbody>
+                        </table>
+                    </div>
+
+                    <div class="modal-footer">
+                        <button type="button" class="btn btn-secondary" data-bs-dismiss="modal"
+                            @click="clear()">Close</button>
+                    </div>
+                </div>
+            </div>
+        </div>
 
 
 
@@ -262,9 +292,11 @@
                                                 style="display: flex; flex-direction: column; justify-content: space-between;">
                                                 <div class="row" style="padding: 10px">
                                                     <h5 class="">{{ service.serviceName }}</h5>
-                                                    <p class="">{{ service.serviceProviderInformation }}</p>
+                                                    <p class="">{{ service.serviceProviderInformation }}
+                                                    </p>
                                                     <p class="">{{ service.description }}</p>
-                                                    <p class="">{{ service.detailedServiceDescription }}</p>
+                                                    <p class="">{{ service.detailedServiceDescription }}
+                                                    </p>
                                                 </div>
                                                 <div class="row" style="padding: 10px; ">
                                                     <p class=""><small class="text-muted">Duration: {{
