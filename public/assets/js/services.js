@@ -217,7 +217,7 @@ const servicesApp = Vue.createApp({
         profileLinkRedir.setAttribute("href", "profile.html");
 
         const profileLinkImg = document.getElementById("profileLinkImg");
-        profileLinkImg.className = "fa fa-calendar";
+        profileLinkImg.className = "fa fa-user";
 
         const profileLinkText = document.getElementById("profileLinkText");
         profileLinkText.textContent = "Profile";

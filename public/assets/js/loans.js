@@ -321,7 +321,7 @@ const app = Vue.createApp({
               profileLinkRedir.setAttribute("href", "profile.html");
       
               const profileLinkImg = document.getElementById("profileLinkImg");
-              profileLinkImg.className = "fa fa-calendar";
+              profileLinkImg.className = "fa fa-user";
       
               const profileLinkText = document.getElementById("profileLinkText");
               profileLinkText.textContent = "Profile";
@@ -434,7 +434,6 @@ const app = Vue.createApp({
               } else {
                 const successModal = new bootstrap.Modal(document.getElementById('successModal2'));
                 successModal.show();
-                
               }
             });
         },
