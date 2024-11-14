@@ -796,7 +796,7 @@ Header Style
     border-top: 1px solid #ddd;
     background-color: #f1f0fe;
     height: 50px;
-    border-radius: 0px 0px 25px 25px;
+    /* border-radius: 0px 0px 25px 25px; */
   }
   .header-area .main-nav .nav {
     height: auto;
@@ -1870,7 +1870,9 @@ body {
     margin: 5px;
   }
   .header-area .main-nav .nav li:last-child {
-    display: none;
+    background-color: rgb(172, 169, 169);
+    /* color: black;
+    border-radius: 20px; */
   }
 }
 
