@@ -228,7 +228,11 @@ const eventsApp = Vue.createApp({
       console.log(this.attendeeForms);
     },
     removeAttendeeForm(index) {
-      this.attendeeForms.splice(index, 1);
+      if (this.attendeeForms.length > 1) {
+        this.attendeeForms.splice(index, 1);
+      } else {
+        alert("At least one attendee is required.");
+      }
     },
 
     openEventModal(event) {

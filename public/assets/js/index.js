@@ -127,7 +127,23 @@ const eventsApp = Vue.createApp({
       }
     },
     async submitRegistration() {
-      const userId = sessionStorage.getItem("loggedInUserEmail");
+      let status = true
+      this.attendeeForms.forEach(item => {
+        if (!item.name || !item.email || !item.phone) {
+          console.log("error")
+          
+          status = false
+          alert("Attendee's Details not filled in correctly")
+          // const successModal = new bootstrap.Modal(document.getElementById('successModal3'));
+          // successModal.show();
+
+          return; // Stop the function from proceeding further
+        }
+
+      })
+
+      if (status == true) {
+        const userId = sessionStorage.getItem("loggedInUserEmail");
 
       if (!userId) {
         alert("Please log in to register for events.");
@@ -173,7 +189,7 @@ const eventsApp = Vue.createApp({
         console.error("Error adding registration:", error);
         alert("Failed to register. Please try again.");
       }
-    },
+    }},
 
     closeEventModal() {
       console.log("close");
@@ -193,9 +209,12 @@ const eventsApp = Vue.createApp({
       this.attendeeForms.push(attendeeForm);
     },
     removeAttendeeForm(index) {
-      this.attendeeForms.splice(index, 1);
+      if (this.attendeeForms.length > 1) {
+        this.attendeeForms.splice(index, 1);
+      } else {
+        alert("At least one attendee is required.");
+      }
     },
-
     openEventModal(event) {
       this.selectedEvent = {
         ...event,
