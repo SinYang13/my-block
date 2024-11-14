@@ -278,6 +278,7 @@ const eventsApp = Vue.createApp({
       if (signupModalInstance) {
         signupModalInstance.hide();
       }
+      this.paymentReady = false;
     },
     async fetchAnnouncements() {
       try {
