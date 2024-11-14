@@ -106,9 +106,9 @@
         }
 
         @media (max-width: 767.98px) {
-            .inner-sidebar {
-                left: -235px;
-            }
+            /* .inner-sidebar {
+                left: -100px;
+            } */
 
             .inner-main {
                 left: 0;
@@ -253,6 +253,10 @@
 
         /* Responsive adjustments */
         @media (max-width: 576px) {
+            .inner-sidebar {
+                width: 10px;
+                padding: 15px;
+            }
             .inner-main-body {
                 padding: 15px;
             }
@@ -342,7 +346,10 @@
     <div class="container" id="app" v-cloak>
         <div class="main-body p-0">
             <div class="inner-wrapper">
-                <!-- Inner sidebar -->
+                <div class="container">
+                    <div class="row">
+                        <div class="col-12 col-md-3 col-sm-3 col-3 p-0">
+                            <!-- Inner sidebar -->
                 <div class="inner-sidebar">
                     <!-- Inner sidebar header -->
                     <div class="inner-sidebar-header justify-content-center">
@@ -410,8 +417,9 @@
                     <!-- /Inner sidebar body -->
                 </div>
                 <!-- /Inner sidebar -->
-
-                <!-- Inner main -->
+                        </div>
+                        <div class="col-12 col-md-9 col-9 ">
+                                            <!-- Inner main -->
                 <div class="inner-main">
                     <!-- Inner main header -->
                     <div class="inner-main-header">
@@ -528,6 +536,13 @@
                     <!-- /Inner main body -->
                 </div>
                 <!-- /Inner main -->
+                        </div>
+                    </div>
+
+                </div>
+                
+
+
             </div>
 
             <!-- New Thread Modal -->
