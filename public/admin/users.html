@@ -281,7 +281,7 @@
                                         <div class="row">
                                             <div class="mb-3 col-4">
                                                 <label for="email" class="form-label">Email</label>
-                                                <input type="text" class="form-control" id="email" v-model="user.email"
+                                                <input type="email" class="form-control" id="email" v-model="user.email"
                                                     required>
                                             </div>
                                             <div class="mb-3 col-4">
@@ -303,20 +303,22 @@
                                             </div>
                                             <div class="mb-3 col-4">
                                                 <label for="password" class="form-label">Password</label>
-                                                <input type="text" class="form-control" id="password"
+                                                <input type="password" class="form-control" id="password"
                                                     v-model="user.password" required>
                                             </div>
                                             <div class="mb-3 col-4">
                                                 <label for="type" class="form-label">Account Type</label>
                                                 <select id="type" class="form-control" v-model="user.type" required>
+                                                    <option value="">Select Type</option>
                                                     <option value="admin">Admin</option>
                                                     <option value="user">User</option>
                                                 </select>
                                             </div>
                                         </div>
-                                        <button type="button" class="btn btn-primary" @click="handleCreateUser">Create
-                                            User</button>
+                                        <button type="button" class="btn btn-primary" :disabled="!formValid"
+                                            @click="handleCreateUser">Create User</button>
                                     </form>
+
                                 </div>
                             </div>
                         </div>
@@ -613,7 +615,8 @@
                             phoneNumber: this.user.lastName,
                             registerDate: new Date()
                         }
-                        this.users.push(userDataCombined)
+                        this.users.push(userDataCombined);
+                        this.clear();
                         alert('User created successfully');
                     } catch (error) {
                         console.error('Error creating user:', error);
@@ -626,7 +629,24 @@
                 this.handleProfileLink();
                 window.addEventListener('scroll', this.handleScroll);
                 await this.loadUsers();
-            }
+            },
+            computed: {
+                validEmail() {
+                    // Simple email regex for basic validation
+                    const emailPattern = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
+                    return emailPattern.test(this.user.email);
+                },
+                formValid() {
+                    return (
+                        this.user.firstName &&
+                        this.user.lastName &&
+                        this.user.phoneNumber &&
+                        this.user.password &&
+                        this.user.type &&
+                        this.validEmail // Email must be valid
+                    );
+                }
+            },
         }).mount('#app');
     </script>
 </body>

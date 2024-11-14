@@ -97,28 +97,40 @@
 			font-weight: 500;
 			line-height: 1.6;
 		}
-    .carousel-caption {
-    background: white;
-    color: #fff; /* White text color for contrast */
-    padding: 15px 20px; /* Padding for spacing */
-    border-radius: 10px; /* Rounded corners */
-    text-align: center; /* Align text to the left */
-    max-width: 70%; /* Restrict width so it doesn't span too wide */
-    bottom: 20px; /* Position slightly above the bottom */
-}
 
-.carousel-caption h3 {
-    font-size: 1.5rem; /* Larger heading */
-    font-weight: bold; /* Bold heading */
-    margin-bottom: 5px; /* Spacing below the title */
-}
+		.carousel-caption {
+			background: white;
+			color: #fff;
+			/* White text color for contrast */
+			padding: 15px 20px;
+			/* Padding for spacing */
+			border-radius: 10px;
+			/* Rounded corners */
+			text-align: center;
+			/* Align text to the left */
+			max-width: 70%;
+			/* Restrict width so it doesn't span too wide */
+			bottom: 20px;
+			/* Position slightly above the bottom */
+		}
 
-.carousel-caption p {
-    font-size: 1rem; /* Slightly smaller font for content */
-    line-height: 1.4; /* Improve readability */
-    margin-bottom: 0; /* Remove extra margin */
-}
+		.carousel-caption h3 {
+			font-size: 1.5rem;
+			/* Larger heading */
+			font-weight: bold;
+			/* Bold heading */
+			margin-bottom: 5px;
+			/* Spacing below the title */
+		}
 
+		.carousel-caption p {
+			font-size: 1rem;
+			/* Slightly smaller font for content */
+			line-height: 1.4;
+			/* Improve readability */
+			margin-bottom: 0;
+			/* Remove extra margin */
+		}
 	</style>
 
 	<script type="text/javascript" src="https://cdn.jsdelivr.net/npm/@emailjs/browser@4/dist/email.min.js"></script>
@@ -240,20 +252,25 @@
 					v-if="announcements.length > 0">
 					<div class="carousel-inner">
 						<div class="carousel-item active">
-							<img :src="announcements[0].img" class="d-block"
-								style="max-height:50%; max-width: 100%; margin:auto" alt="...">
-							<div class="carousel-caption d-none d-md-block">
-								<h3>{{announcements[0].title}}</h3>
-								<p>{{announcements[0].content}}</p>
-							</div>
+							<a href="announcements.html">
+								<img :src="announcements[0].img" class="d-block"
+									style="max-height:50%; max-width: 100%; margin:auto" alt="...">
+								<div class="carousel-caption d-none d-md-block">
+									<h3>{{announcements[0].title}}</h3>
+									<p>{{announcements[0].content}}</p>
+								</div>
+							</a>
 						</div>
 						<div class="carousel-item" v-for="announcement in announcements.slice(1)">
-							<img :src="announcement.img" class="d-block"
-								style="max-height:50%; max-width: 100%; margin:auto" alt="...">
-							<div class="carousel-caption d-none d-md-block">
-								<h3>{{announcement.title}}</h3>
-								<p>{{announcement.content}}</p>
-							</div>
+							<a href="announcements.html">
+								<img :src="announcement.img" class="d-block"
+									style="max-height:50%; max-width: 100%; margin:auto" alt="...">
+								<div class="carousel-caption d-none d-md-block">
+									<h3>{{announcement.title}}</h3>
+									<p>{{announcement.content}}</p>
+								</div>
+							</a>
+
 						</div>
 					</div>
 					<button class="carousel-control-prev" type="button" data-bs-target="#carouselExampleControls"
