@@ -279,7 +279,7 @@ const app = Vue.createApp({
               this.commentsCount = this.posts.comments.length;
             //   console.log(this.posts.comments.length);
         } catch {
-            console.log("failed");
+            // console.log("failed");
         }
       
     },
