@@ -125,6 +125,11 @@ const eventsApp = Vue.createApp({
     },
     togglePaymentReady() {
       this.paymentReady = !this.paymentReady;
+      console.log("paymentStatus:" + this.paymentReady);
+    },
+
+    revokePaymentReady() {
+      this.paymentReady = false;
     },
     async submitRegistration() {
       let status = true
@@ -136,6 +141,8 @@ const eventsApp = Vue.createApp({
           // alert("Attendee's Details not filled in correctly")
           const successModal = new bootstrap.Modal(document.getElementById('successModal3'));
           successModal.show();
+
+          this.paymentReady = true;
 
           return; // Stop the function from proceeding further
         }
@@ -299,7 +306,9 @@ const eventsApp = Vue.createApp({
       );
       if (signupModalInstance) {
         signupModalInstance.hide();
-      }
+      };
+
+      this.paymentReady = false;
     },
     handleScroll() {
       const scrollPosition = window.scrollY;
