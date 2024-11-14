@@ -89,7 +89,7 @@
         </div>
     </header>
 
-    <div id="app" class="register-container animate__animated animate__bounceInDown">
+    <div id="app" class="register-container animate__animated animate__bounceInDown" v-cloak>
         <h2 class="text-center" style="margin-bottom: 20px;">Register</h2>
         <div v-if="error" class="alert alert-danger">{{ error }}</div>
         <form @submit.prevent="register">

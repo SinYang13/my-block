@@ -102,8 +102,10 @@ const app = Vue.createApp({
                     preferredCommunityClub: this.selectedCC
                 })
                     .then(() => {
-                        console.log("Preferred Community Club updated successfully");
-                        alert("Preferred Community Club updated successfully.");
+                        // console.log("Preferred Community Club updated successfully");
+                        // alert("Preferred Community Club updated successfully.");
+                        const successModal = new bootstrap.Modal(document.getElementById('successModal3'));
+                         successModal.show();
 
                     })
                     .catch((error) => {
