@@ -16,15 +16,15 @@
     <link rel="stylesheet" href="assets/css/animate.css">
     <link rel="stylesheet" href="https://unpkg.com/swiper@7/swiper-bundle.min.css" />
     <style>
-      #app {
+        #app {
             display: flex;
             justify-content: center;
             align-items: center;
-            height: 100vh; /* Full viewport height */
+            height: 100vh;
+            /* Full viewport height */
             text-align: center;
             flex-direction: column;
         }
-        
     </style>
 </head>
 
@@ -83,9 +83,9 @@
     </header>
 
     <div id="app">
-      <h1>ERROR 404</h1>
-      <p>Maybe you were trying to find WAD III?</p>
-      <img src="assets/favicon.png">
+        <h1>ERROR 404</h1>
+        <p>Maybe you were trying to find WAD III?</p>
+        <img src="assets/favicon.png">
     </div>
 
     <script type="module">
@@ -101,7 +101,7 @@
             },
             methods: {
                 handleScroll() {
-                    const scrollPosition = window.scrollY  + 60;
+                    const scrollPosition = window.scrollY + 60;
                     const headerHeight = document.querySelector('header').offsetHeight;
                     const headerElement = document.querySelector('header');
                     if (scrollPosition >= headerHeight) {
@@ -148,5 +148,11 @@
         }).mount('#app');
     </script>
 </body>
+<script src="vendor/jquery/jquery.min.js"></script>
+<script src="vendor/bootstrap/js/bootstrap.min.js"></script>
+<script src="assets/js/isotope.min.js"></script>
+<script src="assets/js/owl-carousel.js"></script>
+<script src="assets/js/counter.js"></script>
+<script src="assets/js/custom.js"></script>
 
 </html>

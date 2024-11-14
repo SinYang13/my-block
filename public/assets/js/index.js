@@ -137,6 +137,8 @@ const eventsApp = Vue.createApp({
           const successModal = new bootstrap.Modal(document.getElementById('successModal2'));
           successModal.show();
 
+          this.paymentReady = true;
+
           return; // Stop the function from proceeding further
         }
 
