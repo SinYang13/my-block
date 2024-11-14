@@ -8,6 +8,12 @@
     <link rel="icon" type="image/png" href="assets/favicon.png">
     <!-- Bootstrap CSS -->
     <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3/dist/css/bootstrap.min.css" rel="stylesheet">
+    <!-- Load jQuery (necessary for Bootstrap JavaScript plugins to work in Bootstrap 4) -->
+    <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
+
+    <!-- Load Bootstrap Bundle JS (includes Popper.js) -->
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
+
     <!-- Vue 3 -->
     <script src="https://unpkg.com/vue@3/dist/vue.global.js"></script>
     <script type="module" src="db/announcementsCRUD.js"></script>
@@ -194,7 +200,8 @@
                         :key="announcement?.id">
                         <div class="item animate__animated animate__fadeInUp">
                             <img v-if="announcement?.img && announcement.img !== ''" :src="announcement.img"
-                                alt="Announcement Image" class="img-fluid" style="height: 200px; object-fit: cover;">
+                                alt="Announcement Image" class="img-fluid"
+                                style="min-height: 200px; max-height: 200px; width: 100%; object-fit: cover;">
                             <span class="category" v-if="new Date(announcement.expiry) < new Date()">Expired!</span>
                             <span class="category" v-else>{{ announcement?.expiry }}</span>
                             <h6 style="font-size: small;">{{ announcement?.from }}</h6>
@@ -282,8 +289,7 @@
         </div>
     </div>
 
-    <!-- Bootstrap JS bundle -->
-    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3/dist/js/bootstrap.bundle.min.js"></script>
+
 
     <script type="module">
         import { readAnnouncements } from './db/announcementsCRUD.js';
