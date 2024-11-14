@@ -133,9 +133,9 @@ const eventsApp = Vue.createApp({
           console.log("error")
           
           status = false
-          alert("Attendee's Details not filled in correctly")
-          // const successModal = new bootstrap.Modal(document.getElementById('successModal3'));
-          // successModal.show();
+          // alert("Attendee's Details not filled in correctly")
+          const successModal = new bootstrap.Modal(document.getElementById('successModal2'));
+          successModal.show();
 
           return; // Stop the function from proceeding further
         }
