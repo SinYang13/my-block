@@ -291,9 +291,14 @@
                 .domain([d3.timeDay.offset(new Date(), -7), new Date()])
                 .range([0, width]);
 
+            const maxYValue = d3.max(data, d => d.count);
+
+            // Determine tick step based on the maximum value
+            const tickOptions = [5, 10, 20, 50, 100];
+            let tickStep = tickOptions.find(step => maxYValue / step <= 10) || 100;
 
             const y = d3.scaleLinear()
-                .domain([0, d3.max(data, d => d.count) + 1])
+                .domain([0, Math.ceil(maxYValue / tickStep) * tickStep]) // Ensure domain covers the max value
                 .nice()
                 .range([height, 0]);
 
@@ -305,11 +310,13 @@
                 );
 
             g.append('g')
-                .call(d3.axisLeft(y).ticks(Math.ceil(d3.max(data, d => d.count) / 20)).tickFormat(d => d))
+                .call(d3.axisLeft(y)
+                    .ticks(10)
+                    .tickValues(d3.range(0, Math.ceil(maxYValue / tickStep) * tickStep + tickStep, tickStep))
+                    .tickFormat(d => d))
                 .selectAll("line")
                 .attr("x2", width)
                 .attr("stroke-dasharray", "2,2"); // Optional: dashed grid lines
-
 
             g.append('path')
                 .datum(data)
@@ -331,6 +338,8 @@
                 .attr('r', 3)
                 .attr('fill', 'steelblue');
         }
+
+
 
         createApp({
             data() {
