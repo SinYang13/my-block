@@ -380,14 +380,16 @@
                                 <a class="list-group-item" href="events_listing_profile.html">
                                     <div class="d-flex justify-content-between align-items-center">
                                         <div><i class="fa fa-ticket mr-1 text-muted"></i>
-                                            <div class="d-inline-block font-weight-medium text-uppercase">&nbsp;Events</div>
+                                            <div class="d-inline-block font-weight-medium text-uppercase">&nbsp;Events
+                                            </div>
                                         </div><span class="badge bg-secondary">{{eventsList.length}}</span>
                                     </div>
                                 </a>
                                 <a class="list-group-item" href="loans_listing_profile.html">
                                     <div class="d-flex justify-content-between align-items-center">
                                         <div><i class="fa fa-file mr-1 text-muted"></i>
-                                            <div class="d-inline-block font-weight-medium text-uppercase">&nbsp;&nbsp;Loans List
+                                            <div class="d-inline-block font-weight-medium text-uppercase">
+                                                &nbsp;&nbsp;Loans List
                                             </div>
                                         </div><span class="badge bg-secondary">{{loanOwners.length}}</span>
                                     </div>
@@ -404,7 +406,8 @@
                                     <button type="button" class="btn btn-danger" @click="logout"
                                         style="width: 100%; margin-top: 10px;">Logout</button>
                                 </div>
-                                <div v-if="userType == 'admin'" class="d-flex justify-content-between align-items-center">
+                                <div v-if="userType == 'admin'"
+                                    class="d-flex justify-content-between align-items-center">
                                     <a type="button" class="btn btn-primary" href="admin.html"
                                         style="width: 100%; margin-top: 10px;">Admin Dashboard</a>
                                 </div>
@@ -415,39 +418,38 @@
                     <div v-if="services_loading" class="text-center">
                         <p>Loading...</p>
                     </div>
-                     
+
                     <div class="col-lg-8 pb-5" v-else-if="serviceList.length != 0">
-            
-                            <div class="container my-5 animate__animated animate__fadeInUp" v-for="items in serviceList">
-                                <div class="card" style="position: relative;">
-                                    <button class="close-btn" @click="deleteService(items.id)">X</button>
-                                    <div class="row no-gutters">
-                                        <!-- Image Column (col-md-4 on larger screens, full-width on smaller screens) -->
-                                        <div class="col-md-4">
-                                            <img :src="items.imageURL" alt="Home Cleaning Service"
-                                                class="img-fluid w-100">
-                                        </div>
-                                        <!-- Content Column -->
-                                        <div class="col-md-8">
-                                            <div class="card-content">
-                                                <h2>{{items.serviceName}}</h2>
-                                                <p><span class="label">Description:</span> {{items.description}}</p>
-                                                <p><span class="label">Price:</span> {{items.price}}</p>
-                                                <p><span class="label">Rating:</span> {{items.rating}}</p>
-                                                <p><span class="label">Duration:</span> {{items.serviceDuration}}</p>
-                                                <p><span class="label">Provider:</span>
-                                                    {{items.serviceProviderInformation}}</p>
-                                            </div>
+
+                        <div class="container my-5 animate__animated animate__fadeInUp" v-for="items in serviceList">
+                            <div class="card" style="position: relative;">
+                                <button class="close-btn" @click="deleteService(items.id)">X</button>
+                                <div class="row no-gutters">
+                                    <!-- Image Column (col-md-4 on larger screens, full-width on smaller screens) -->
+                                    <div class="col-md-4">
+                                        <img :src="items.imageURL" alt="Home Cleaning Service" class="img-fluid w-100">
+                                    </div>
+                                    <!-- Content Column -->
+                                    <div class="col-md-8">
+                                        <div class="card-content">
+                                            <h2>{{items.serviceName}}</h2>
+                                            <p><span class="label">Description:</span> {{items.description}}</p>
+                                            <p><span class="label">Price:</span> {{items.price}}</p>
+                                            <p><span class="label">Rating:</span> {{items.rating}}</p>
+                                            <p><span class="label">Duration:</span> {{items.serviceDuration}}</p>
+                                            <p><span class="label">Provider:</span>
+                                                {{items.serviceProviderInformation}}</p>
                                         </div>
                                     </div>
                                 </div>
                             </div>
-                            <!-- <div class="col-lg-8 pb-5" v-else>
+                        </div>
+                        <!-- <div class="col-lg-8 pb-5" v-else>
                                 <h1>You have not booked mark any services</h1>
                             </div> -->
 
 
-                      
+
                     </div>
                     <div class="col-lg-8 pb-5" v-else>
                         <h1>You have not bookmarked any services</h1>
@@ -455,7 +457,7 @@
                 </div>
             </div>
         </div>
-       
+
         <div class="profile-container animate__animated animate__fadeInUp" v-else>
             <h1>User Profile</h1>
             <p>You have Logged out successfully</p>
@@ -465,5 +467,11 @@
         </div>
     </div>
 </body>
+<script src="vendor/jquery/jquery.min.js"></script>
+<script src="vendor/bootstrap/js/bootstrap.min.js"></script>
+<script src="assets/js/isotope.min.js"></script>
+<script src="assets/js/owl-carousel.js"></script>
+<script src="assets/js/counter.js"></script>
+<script src="assets/js/custom.js"></script>
 
 </html>
