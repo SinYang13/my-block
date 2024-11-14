@@ -24,10 +24,10 @@ function generateQR(value) {
 const app = Vue.createApp({
     data() {
         return {
-            selectedCC:'',
+            selectedCC: '',
             loanOwners: [],
             userid: sessionStorage.getItem("loggedInUserEmail"),
-            userType:sessionStorage.getItem("loggedInUserType"),
+            userType: sessionStorage.getItem("loggedInUserType"),
             showProfile: false,
             userDetails: '',
             createdDate: '',
@@ -39,7 +39,8 @@ const app = Vue.createApp({
             ticketId: '',
             events_loading: true, // Add loading state here
             service_loading: true,
-            loans_loading:true
+            loans_loading: true,
+            ccs: []
 
         };
     }, // data
@@ -62,6 +63,8 @@ const app = Vue.createApp({
             this.getEvents();
             this.getServices();
         };
+
+        this.getCC();
 
     },
     methods: {
@@ -98,14 +101,14 @@ const app = Vue.createApp({
                 updateDoc(userRef, {
                     preferredCommunityClub: this.selectedCC
                 })
-                .then(() => {
-                    console.log("Preferred Community Club updated successfully");
-                    alert("Preferred Community Club updated successfully.");
-            
-                })
-                .catch((error) => {
-                    console.error("Error updating preferred Community Club: ", error);
-                });
+                    .then(() => {
+                        console.log("Preferred Community Club updated successfully");
+                        alert("Preferred Community Club updated successfully.");
+
+                    })
+                    .catch((error) => {
+                        console.error("Error updating preferred Community Club: ", error);
+                    });
             } else {
                 alert("Please select a Community Club.");
             }
@@ -116,50 +119,50 @@ const app = Vue.createApp({
             const month = ["January", "February", "March", "April", "May", "June", "July", "August", "September", "October", "November", "December"];
             const shortmonth = ["Jan", "Feb", "Mar", "Apr", "May", "Jun", "Jul", "Aug", "Sep", "Oct", "Nov", "Dec"];
             const colRef = collection(db, 'users/' + this.userid + '/registrations');
-        
+
             // Custom date parser function
             function parseCustomDate(dateString) {
                 const [datePart, timePart] = dateString.split(", ");
                 const [day, month, year] = datePart.split("/").map(Number);
                 const [time, period] = timePart.split(" ");
                 let [hours, minutes, seconds] = time.split(":").map(Number);
-        
+
                 // Adjust hours based on AM/PM
                 if (period.toLowerCase() === "pm" && hours !== 12) {
                     hours += 12;
                 } else if (period.toLowerCase() === "am" && hours === 12) {
                     hours = 0;
                 }
-        
+
                 return new Date(year, month - 1, day, hours, minutes, seconds);
             }
-        
+
             // Get collection data
             getDocs(colRef)
                 .then((snapshot) => {
                     let event = [];
                     snapshot.docs.forEach((doc) => {
                         console.log(doc.data());
-                        
+
                         // Parse eventDate with the custom date parser
                         let eventDate = parseCustomDate(doc.data().eventDate);
                         console.log(eventDate);
-        
+
                         if (isNaN(eventDate.getTime())) {
                             console.warn(`Invalid date found in document with ID: ${doc.id}`);
                             return; // Skip this document if date parsing fails
                         }
-        
+
                         let longmth = month[eventDate.getMonth()];
                         let shortmth = shortmonth[eventDate.getMonth()];
                         let dd = eventDate.getDate();
                         let day = weekday[eventDate.getDay()];
                         let yyyy = eventDate.getFullYear();
                         let fulldate = `${day} ${dd} ${longmth} ${yyyy}`;
-        
+
                         const time = eventDate.toLocaleTimeString('en-US', { hour: 'numeric', minute: 'numeric', second: 'numeric', hour12: true });
                         console.log(time);
-        
+
                         event.push({
                             ...doc.data(),
                             id: doc.id,
@@ -177,7 +180,7 @@ const app = Vue.createApp({
                     console.log(err.message);
                 });
         },
-        
+
         deleteEvent(eventId) {
             console.log(eventId);
             const docRef = doc(db, 'users/' + this.userid + '/registrations', eventId);
@@ -191,7 +194,7 @@ const app = Vue.createApp({
                     console.error("Error deleting event: ", error);
                 });
         },
-        
+
 
         async getServices() {
             const colRef = collection(db, 'users/' + this.userid + '/selectedServices')
@@ -305,7 +308,24 @@ const app = Vue.createApp({
                     document.getElementById("profileLinkText");
                 profileLinkText.textContent = "Login";
             }
+
+
         },
+        
+        getCC(){
+            const colRef = collection(db, 'community_clubs')
+            getDocs(colRef)
+                .then((snapshot) => {
+                    let cc = []
+                    snapshot.docs.forEach((doc) => {
+                        cc.push({ ...doc.data(), id: doc.id })
+                    })
+                    this.ccs= cc
+                })
+                .catch(err => {
+                    console.log(err.message)
+                })
+        }
     } // methods
 });
 const vm = app.mount('#app'); 
