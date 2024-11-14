@@ -182,12 +182,12 @@
                                             <div class="mb-3 col-3">
                                                 <label for="announcementTitle" class="form-label">Title</label>
                                                 <input type="text" class="form-control" id="announcementTitle"
-                                                    v-model="announcement.title" required></input>
+                                                    v-model="announcement.title" required>
                                             </div>
                                             <div class="mb-3 col-9">
                                                 <label for="announcementContent" class="form-label">Content</label>
                                                 <input type="text" class="form-control" id="announcementContent"
-                                                    v-model="announcement.content" required></input>
+                                                    v-model="announcement.content" required>
                                             </div>
                                         </div>
                                         <div class="row">
@@ -196,11 +196,6 @@
                                                 <input type="text" class="form-control" id="announcementFrom"
                                                     v-model="announcement.from" required>
                                             </div>
-                                            <!-- <div class="mb-3 col-3">
-                                                <label for="announcementDate" class="form-label">Date</label>
-                                                <input type="date" class="form-control" id="announcementDate"
-                                                    v-model="announcement.date" required>
-                                            </div> -->
                                             <div class="mb-3 col-3">
                                                 <label for="announcementExpiry" class="form-label">Expiry Date</label>
                                                 <input type="date" class="form-control" id="announcementExpiry"
@@ -217,12 +212,10 @@
                                                     v-model="announcement.location" required>
                                             </div>
                                         </div>
-
-
-                                        <button type="button" class="btn btn-primary"
-                                            @click="handleCreateAnnouncement">Create
-                                            Announcement</button>
+                                        <button type="button" class="btn btn-primary" :disabled="!formValid"
+                                            @click="handleCreateAnnouncement">Create Announcement</button>
                                     </form>
+
                                 </div>
                             </div>
                         </div>
@@ -563,7 +556,31 @@
                 this.handleProfileLink();
                 window.addEventListener('scroll', this.handleScroll);
                 await this.loadAnnouncements();
-            }
+            },
+            computed: {
+                formValid() {
+                    // Individual checks with logging for debugging
+                    const titleValid = !!this.announcement.title;
+                    const contentValid = !!this.announcement.content;
+                    const fromValid = !!this.announcement.from;
+                    const expiryValid = !!this.announcement.expiry;
+                    const locationValid = !!this.announcement.location;
+                    const imageValid = !!this.announcement.imgFile;
+
+                    console.log("Title Valid:", titleValid);
+                    console.log("Content Valid:", contentValid);
+                    console.log("From Valid:", fromValid);
+                    console.log("Expiry Date Valid:", expiryValid);
+                    console.log("Location Valid:", locationValid);
+                    console.log("Image Selected:", imageValid);
+
+                    // Combining all checks to get the final validity
+                    const isValid = titleValid && contentValid && fromValid && expiryValid && locationValid && imageValid;
+                    console.log("Form valid status:", isValid); // Debugging log
+
+                    return isValid;
+                }
+            },
         }).mount('#app');
     </script>
 </body>

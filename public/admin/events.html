@@ -323,9 +323,11 @@
                                                     v-model="event.postal" required>
                                             </div>
                                             <div class="mb-3 col-4">
-                                                <label for="eventPrice" class="form-label">Price ($X or $Free!)</label>
+                                                <label for="eventPrice" class="form-label">Price ($X or Free!)</label>
                                                 <input type="text" class="form-control" id="eventPrice"
                                                     v-model="event.price" required>
+                                                <small v-if="event.price && !validPrice" class="text-danger">Please
+                                                    enter a valid price format (e.g., $10 or Free!).</small>
                                             </div>
                                         </div>
                                         <div class="row">
@@ -340,10 +342,10 @@
                                                     @change="handleFileUpload" required>
                                             </div>
                                         </div>
-
-                                        <button type="button" class="btn btn-primary" @click="handleCreateEvent">Create
-                                            Event</button>
+                                        <button type="button" class="btn btn-primary" :disabled="!formValid"
+                                            @click="handleCreateEvent">Create Event</button>
                                     </form>
+
                                 </div>
                             </div>
                         </div>
@@ -808,7 +810,32 @@
                 this.handleProfileLink();
                 window.addEventListener('scroll', this.handleScroll);
                 await this.loadEvents();
-            }
+            },
+            computed: {
+                validPrice() {
+                    // Regular expression to check if price is either "$X" (where X is a number) or "Free!"
+                    const pricePattern = /^\$\d+$|^Free!$/;
+                    return pricePattern.test(this.event.price);
+                },
+                formValid() {
+                    // Individual checks with logging for debugging
+                    const titleValid = !!this.event.title;
+                    const catValid = !!this.event.cat;
+                    const dateValid = !!this.event.date;
+                    const placeValid = !!this.event.place;
+                    const postalValid = !!this.event.postal;
+                    const priceValid = this.validPrice;
+                    const descriptionValid = !!this.event.description;
+                    const imageValid = !!this.event.imgFile;
+
+                    // Combining all checks to get the final validity
+                    const isValid = titleValid && catValid && dateValid && placeValid && postalValid && priceValid && descriptionValid && imageValid;
+                    console.log("Form valid status:", isValid); // Debugging log
+
+                    return isValid;
+                }
+            },
+
         }).mount('#app');
     </script>
 </body>

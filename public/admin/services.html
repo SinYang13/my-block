@@ -259,9 +259,8 @@
                                             </div>
                                         </div>
 
-                                        <button type="button" class="btn btn-primary"
-                                            @click="handlecreateService">Create
-                                            Service</button>
+                                        <button type="button" class="btn btn-primary" :disabled="!formValid"
+                                            @click="handleCreateService">Create Service</button>
                                     </form>
                                 </div>
                             </div>
@@ -487,7 +486,7 @@
                 handleUpdateFileUpload(service) {
                     this.service.imgFile = service.target.files[0];
                 },
-                async handlecreateService() {
+                async handleCreateService() {
                     const { description, detailedServiceDescription, price, serviceDuration, imgFile, serviceName, serviceProviderInformation } = this.service;
                     console.log(this.service)
 
@@ -577,7 +576,23 @@
                 this.handleProfileLink();
                 window.addEventListener('scroll', this.handleScroll);
                 await this.loadservices();
-            }
+            },
+            computed: {
+                formValid() {
+                    // Check if each field in `service` is filled
+                    const { serviceName, serviceProviderInformation, price, serviceDuration, imgFile, description, detailedServiceDescription } = this.service;
+
+                    return (
+                        serviceName.trim().length > 0 &&
+                        serviceProviderInformation.trim().length > 0 &&
+                        price.trim().length > 0 &&
+                        serviceDuration.trim().length > 0 &&
+                        imgFile !== null &&
+                        description.trim().length > 0 &&
+                        detailedServiceDescription.trim().length > 0
+                    );
+                }
+            },
         }).mount('#app');
     </script>
 </body>

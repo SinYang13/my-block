@@ -18,7 +18,6 @@
     <script type="module" src="../assets/js/admin_loans.js"></script>
     <link rel="stylesheet" href="styles.css">
     <style>
-
         .visualization-tile {
             overflow-x: hidden;
         }
@@ -188,7 +187,7 @@
                                         </div>
                                         <div class="mb-3 col-2">
                                             <label for="availableQuantity" class="form-label">Quantity</label>
-                                            <input type="text" class="form-control" id="availableQuantity"
+                                            <input type="number" class="form-control" id="availableQuantity"
                                                 v-model="item.availableQuantity" required>
                                         </div>
                                         <div class="mb-3 col-6">
@@ -211,6 +210,8 @@
                                         <div class="mb-3 col-4">
                                             <label for="loanItemSelect" class="form-label">Item Name:</label>
                                             <select id="loanItemSelect" v-model="updateItem.name" class="form-control">
+                                                <option value="" disabled>Select an item</option>
+                                                <!-- Placeholder option -->
                                                 <option v-for="item in items" :key="item.name" :value="item.name">
                                                     {{ item.name }}
                                                 </option>
@@ -229,14 +230,15 @@
                                     </div>
 
                                     <button type="button" class="btn btn-warning me-2" @click="handleSaveUpdate">Update
-                                        Item
-                                    </button>
+                                        Item</button>
 
-                                    <button type="button" class="btn btn-danger ml-4"
+                                    <button type="button" class="btn btn-danger ml-4" :disabled="!this.updateItem.name"
                                         @click="showDeleteModal(updateItem.name)">
                                         Delete Item
                                     </button>
                                 </form>
+
+
                             </div>
                         </div>
                     </div>
