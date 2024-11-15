@@ -1,7 +1,7 @@
 import { db } from './config.js';
 import { readUser } from '../../db/usersCRUD.js';
 import {
-    collection, getDocs, deleteDoc, doc, updateDoc,
+    collection, getDocs, deleteDoc, doc, updateDoc, orderBy, query
 } from "https://www.gstatic.com/firebasejs/10.14.0/firebase-firestore.js";
 
 
@@ -316,13 +316,16 @@ const app = Vue.createApp({
         
         getCC(){
             const colRef = collection(db, 'community_clubs')
-            getDocs(colRef)
+            const orderedQuery = query(colRef, orderBy("cc", "asc"));
+
+            getDocs(orderedQuery)
                 .then((snapshot) => {
                     let cc = []
                     snapshot.docs.forEach((doc) => {
                         cc.push({ ...doc.data(), id: doc.id })
                     })
                     this.ccs= cc
+                    // console.log(this.ccs)
                 })
                 .catch(err => {
                     console.log(err.message)
