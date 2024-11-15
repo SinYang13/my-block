@@ -9,4 +9,6 @@ Running instructions:
 
 Username / Password:  
 Admin: admin@gmail.com / admin  
-User: user@gmail.com / user  
+User: user@gmail.com / user
+Prof Keith: keithfwa@gmail.com / ilovewad2
+Prof Indu: indu@gmail.com / ilovewad2
